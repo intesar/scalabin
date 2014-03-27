@@ -26,6 +26,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
      CREATE COLUMNFAMILY authority( userName varchar PRIMARY KEY, authority varchar );
      CREATE COLUMNFAMILY stats( id varchar PRIMARY KEY, user varchar, year varchar, month varchar, storage varchar, uploadedBytes varchar,
      downloadedBytes varchar);
+     CREATE COLUMNFAMILY blob( id varchar PRIMARY KEY, objId varchar, content blob);
      */	
 
     @Value("${keyspace}")
