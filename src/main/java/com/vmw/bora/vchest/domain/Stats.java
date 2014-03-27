@@ -15,19 +15,19 @@ public class Stats {
 	private String user;
 
 	@Field
-	private int year;
+	private String year;
 
 	@Field
-	private int month;
+	private String month;
 
 	@Field	
-	private long storage;
+	private String storage;
 
 	@Field
-	private long uploadedBytes;
+	private String uploadedBytes;
 
 	@Field
-	private long downloadedBytes;
+	private String downloadedBytes;
 	
 	public String getId() {
 		return id;
@@ -45,43 +45,43 @@ public class Stats {
 		this.user = user;
 	}
 
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 
-	public int getMonth() {
+	public String getMonth() {
 		return month;
 	}
 
-	public void setMonth(int month) {
+	public void setMonth(String month) {
 		this.month = month;
 	}
 
-	public long getStorage() {
+	public String getStorage() {
 		return storage;
 	}
 
-	public void setStorage(long storage) {
+	public void setStorage(String storage) {
 		this.storage = storage;
 	}
 
-	public long getUploadedBytes() {
+	public String getUploadedBytes() {
 		return uploadedBytes;
 	}
 
-	public void setUploadedBytes(long uploadedBytes) {
+	public void setUploadedBytes(String uploadedBytes) {
 		this.uploadedBytes = uploadedBytes;
 	}
 
-	public long getDownloadedBytes() {
+	public String getDownloadedBytes() {
 		return downloadedBytes;
 	}
 
-	public void setDownloadedBytes(long downloadedBytes) {
+	public void setDownloadedBytes(String downloadedBytes) {
 		this.downloadedBytes = downloadedBytes;
 	}
 

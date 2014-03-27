@@ -24,10 +24,10 @@ public class ActivityServiceImplTest {
 	public void testSaveActivity() throws IOException {
 		Activity activity = new Activity();
 		activity.setActivity("upload");
-		activity.setDate(new Date());
+		activity.setDate("21/03/2014");
 		activity.setId("123");
-		activity.setObjId(235);
-		activity.setSize(2048);
+		activity.setObjId("235");
+		activity.setSize("2048");
 		activity.setUser("FooBar");
 		activityService.save(activity);
 		activityService.save(activity);

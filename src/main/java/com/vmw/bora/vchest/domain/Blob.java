@@ -8,7 +8,7 @@ import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
 @Table
-public class ObjBlob {
+public class Blob {
 
 	@PrimaryKey
 	@Field
@@ -18,14 +18,14 @@ public class ObjBlob {
 	private String objId;
 	
 	@Field
-	private ByteBuffer blob;
+	private ByteBuffer content;
 
 	public ByteBuffer getBlob() {
-		return blob;
+		return content;
 	}
 
 	public void setBlob(ByteBuffer blob) {
-		this.blob = blob;
+		this.content = blob;
 	}
 
 	public String getId() {

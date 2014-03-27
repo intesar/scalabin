@@ -17,16 +17,16 @@ public class Activity {
 	private String user;
 	
 	@Field
-	private Date date;
+	private String date;
 	
 	@Field
 	private String activity;
 	
 	@Field
-	private int objId;
+	private String objId;
 	
 	@Field
-	private long size;
+	private String size;
 
 	public String getId() {
 		return id;
@@ -44,11 +44,11 @@ public class Activity {
 		this.user = user;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -60,19 +60,19 @@ public class Activity {
 		this.activity = activity;
 	}
 
-	public int getObjId() {
+	public String getObjId() {
 		return objId;
 	}
 
-	public void setObjId(int objId) {
+	public void setObjId(String objId) {
 		this.objId = objId;
 	}
 
-	public long getSize() {
+	public String getSize() {
 		return size;
 	}
 
-	public void setSize(long size) {
+	public void setSize(String size) {
 		this.size = size;
 	}
 	

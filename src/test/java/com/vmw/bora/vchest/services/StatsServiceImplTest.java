@@ -22,13 +22,13 @@ public class StatsServiceImplTest {
 	@Test(expected = RuntimeException.class)
 	public void testSaveStats() throws IOException {
 		Stats stats = new Stats();
-		stats.setDownloadedBytes(1024);
+		stats.setDownloadedBytes("1024");
 		stats.setId("123");
-		stats.setMonth(1);;
-		stats.setStorage(512);
-		stats.setUploadedBytes(512);
+		stats.setMonth("1");;
+		stats.setStorage("512");
+		stats.setUploadedBytes("512");
 		stats.setUser("Foo bar");
-		stats.setYear(2014);
+		stats.setYear("2014");
 		statsService.save(stats);
 		statsService.save(stats);
 	}

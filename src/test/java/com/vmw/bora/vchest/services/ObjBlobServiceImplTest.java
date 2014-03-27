@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.vmw.bora.vchest.domain.ObjBlob;
+import com.vmw.bora.vchest.domain.Blob;
 
 @Configurable
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,7 +23,7 @@ public class ObjBlobServiceImplTest {
 
 	@Test(expected = RuntimeException.class)
 	public void testSaveObjBlob() throws IOException {
-		ObjBlob objBlob = new ObjBlob();
+		Blob objBlob = new Blob();
 		ByteBuffer bb = ByteBuffer.wrap(IOUtils.toByteArray(this.getClass().getClassLoader().getResourceAsStream("log4j.properties")));
 		objBlob.setBlob(bb);
 		objBlob.setId("123");

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vmw.bora.vchest.domain.ObjBlob;
+import com.vmw.bora.vchest.domain.Blob;
 import com.vmw.bora.vchest.repo.cassandra.ObjBlobRepo;
 import com.vmw.bora.vchest.repo.solr.ObjBlobSolrRepo;
 
@@ -20,7 +20,7 @@ public class ObjBlobServiceImpl {
 	@Autowired
 	private ObjBlobSolrRepo objBlobSolrRepo;
 
-	public void save(ObjBlob objBlob) {
+	public void save(Blob objBlob) {
 		if (objBlobRepo.findByObjId(objBlob.getObjId()) !=null) {
 			logger.error("Blob with that obj ID already exists: " + objBlob.getObjId());
 			throw new RuntimeException();
