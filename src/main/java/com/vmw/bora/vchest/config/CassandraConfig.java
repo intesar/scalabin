@@ -14,6 +14,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     // create keyspace vchest with replication = {'class':'SimpleStrategy', 'replication_factor':1} ;
     // use demo ;
     // CREATE COLUMNFAMILY emp ( id varchar PRIMARY KEY, username varchar, joinDate timestamp, storageSize double, content blob);
+	// CREATE COLUMNFAMILY users ( id varchar PRIMARY KEY, username varchar, password varchar, enabled boolean, tenantId varchar);
     @Value("${keyspace}")
     private String keyspace;
 
