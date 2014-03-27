@@ -1,5 +1,7 @@
 package com.vmw.bora.vchest.services;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +36,9 @@ public class ObjServiceImpl {
 		}
 		objCassandraRepo.delete(obj);
 		objSolrRepo.delete(obj);
+	}
+	
+	public List<Obj> getObjs(String id) {
+		return objSolrRepo.findByParent(id);
 	}
 }

@@ -1,13 +1,9 @@
 package com.vmw.bora.vchest.config;
 
-import java.util.Date;
-
-import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.config.java.AbstractCassandraConfiguration;
-import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
 @Configuration
@@ -15,9 +11,10 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
     // run the below commends on cql cli.
-    // create keyspace vchest with replication = {'class':'SimpleStrategy', 'replication_factor':1} ;
-    // use demo ;
-    /*
+	/*
+     create keyspace vchest with replication = {'class':'SimpleStrategy', 'replication_factor':1} ;
+     use vchest ;
+    
      CREATE COLUMNFAMILY emp ( id varchar PRIMARY KEY, username varchar, joinDate timestamp, storageSize double, content blob);
 	 CREATE COLUMNFAMILY users ( id varchar PRIMARY KEY, username varchar, password varchar, enabled boolean, tenantId varchar);
 	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, bucketName varchar, kind  varchar, locationUri varchar, size  varchar, 

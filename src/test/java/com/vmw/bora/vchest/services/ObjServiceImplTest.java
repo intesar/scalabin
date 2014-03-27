@@ -44,8 +44,8 @@ public class ObjServiceImplTest {
 		obj.setKind("FooKind");
 		
 		objService.save(obj);
-		objService.delete(obj);
+		objService.delete(obj.getId());
 
-		objService.delete(obj);
+		objService.delete(obj.getId());
 	}
 }

@@ -1,4 +1,4 @@
-package com.vmw.bora.vchest.domain;
+package com.vmw.bora.vchest.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
