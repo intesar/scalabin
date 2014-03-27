@@ -9,30 +9,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.vmw.bora.vchest.domain.Users;
-import com.vmw.bora.vchest.services.UsersServiceImpl;
+
+import com.vmw.bora.vchest.domain.BucketDto;
 
 @Component
-@Path("/users")
-public class UserRestService {
+@Path("/bucket")
+public class BucketRestService {
 
-	@Autowired
-	UsersServiceImpl usersService;
-
-	@GET
-	@Path("/ping")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public String save() {
-		return "done";
-	}
-	
 	@POST
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public String save(Users user) {
-		user.setId(user.getUserName());
-		user.setEnabled(true);
-		usersService.save(user);
+	public String save(BucketDto bucket) {
+		System.out.println(bucket.getName() + " " + bucket.getParent());
+		// TODO 
 		return "done";
 	}
 
