@@ -27,9 +27,16 @@ public class ObjBlobServiceImplTest {
 		ByteBuffer bb = ByteBuffer.wrap(IOUtils.toByteArray(this.getClass().getClassLoader().getResourceAsStream("log4j.properties")));
 		objBlob.setBlob(bb);
 		objBlob.setId("123");
-		objBlob.setObjId("1002");
 		objBlobService.save(objBlob);
 		objBlobService.save(objBlob);
 	}
 
+	@Test
+	public void testSaveObjBlob2() throws IOException {
+		Blob objBlob = new Blob();
+		ByteBuffer bb = ByteBuffer.wrap(IOUtils.toByteArray(this.getClass().getClassLoader().getResourceAsStream("log4j.properties")));
+		objBlob.setBlob(bb);
+		objBlob.setId("124");
+		objBlobService.save(objBlob);
+	}
 }

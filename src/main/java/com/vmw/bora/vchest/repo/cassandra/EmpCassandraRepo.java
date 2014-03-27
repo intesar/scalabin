@@ -20,6 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Repository
 public interface EmpCassandraRepo extends TypedIdCassandraRepository<Emp, String> {
 
-	//@Query("SELECT * FROM emp e WHERE e.username = ?1")
+	//@Query("SELECT * FROM emp WHERE username = ?1")
     //List<Emp> findAllByUsername(String username);
 }

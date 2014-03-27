@@ -15,9 +15,6 @@ public class Blob {
 	private String id;
 	
 	@Field
-	private String objId;
-	
-	@Field
 	private ByteBuffer content;
 
 	public ByteBuffer getBlob() {
@@ -36,12 +33,4 @@ public class Blob {
 		this.id = id;
 	}
 
-	public String getObjId() {
-		return objId;
-	}
-
-	public void setObjId(String objId) {
-		this.objId = objId;
-	}
-	
 }

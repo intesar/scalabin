@@ -21,8 +21,8 @@ public class ObjBlobServiceImpl {
 	private ObjBlobSolrRepo objBlobSolrRepo;
 
 	public void save(Blob objBlob) {
-		if (objBlobRepo.findByObjId(objBlob.getObjId()) !=null) {
-			logger.error("Blob with that obj ID already exists: " + objBlob.getObjId());
+		if (objBlobRepo.findOne(objBlob.getId())!=null) {
+			logger.error("Blob with that obj ID already exists: " + objBlob.getId());
 			throw new RuntimeException();
 		}
 		objBlobRepo.save(objBlob);
