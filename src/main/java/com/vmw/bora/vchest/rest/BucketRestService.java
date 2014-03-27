@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -41,4 +43,13 @@ public class BucketRestService {
 		return "done";
 	}
 
+	@DELETE
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("/{id}")
+	public String delete(@PathParam("id") String id) {
+		System.out.println("Bucket is: " + id);
+		objServiceImpl.delete(id);
+		return "done";
+	}
 }

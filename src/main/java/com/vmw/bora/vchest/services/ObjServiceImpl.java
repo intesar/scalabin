@@ -25,9 +25,9 @@ public class ObjServiceImpl {
 		objSolrRepo.save(obj);
 	}
 
-	public void delete(Obj obj) {
-		if ((objCassandraRepo.exists(obj.toString()) != true)
-				|| (objSolrRepo.exists(obj.toString()) != true)) {
+	public void delete(String id) {
+		Obj obj = objCassandraRepo.findOne(id);
+		if (obj == null) {
 			logger.error("Delete failed following object not found bucket:"
 					+ obj.getBucketName() + " uri:" + obj.getLocationUri());
 			throw new RuntimeException();
