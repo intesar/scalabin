@@ -9,4 +9,7 @@ public class SearchUtil {
         return new Sort(Sort.Direction.ASC, "bucketName");
     }
 	
+	public static Sort sortByYearMonth() {
+        return new Sort(Sort.Direction.DESC, "year", "month");
+    }
 }
