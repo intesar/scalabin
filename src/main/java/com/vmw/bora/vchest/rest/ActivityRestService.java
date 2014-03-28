@@ -23,8 +23,7 @@ public class ActivityRestService {
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	//@Path("/user/{id}")
-	public List<Activity> get(/*@PathParam("id") String id*/) {
+	public List<Activity> get() {
 		String id = UserContext.getLoggedInUser();
 		System.out.println("Showing activity for user: " + id);
 		List<Activity> result = activityServiceImpl.findByUser(id);

@@ -21,7 +21,7 @@ public class UsersServiceImpl {
 	private UsersSolrRepo usersSolrRepo;
 
 	public void save(Users users) {
-		if (usersCassandraRepo.findOne(users.getUserName())!=null) {
+		if (usersSolrRepo.findByUserNameAndTenantId(users.getUserName(), users.getTenantId())!=null) {
 			logger.error("User Name exists: " + users.getUserName());
 			throw new RuntimeException();
 		}
