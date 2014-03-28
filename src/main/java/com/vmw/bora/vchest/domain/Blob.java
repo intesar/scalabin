@@ -13,6 +13,7 @@ public class Blob {
 	@PrimaryKey
 	private String id;
 	
+	@Field
 	private ByteBuffer content;
 
 	public ByteBuffer getBlob() {

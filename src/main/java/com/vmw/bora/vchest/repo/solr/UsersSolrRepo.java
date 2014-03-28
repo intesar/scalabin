@@ -8,4 +8,5 @@ import com.vmw.bora.vchest.domain.Users;
 @Repository
 public interface UsersSolrRepo extends SolrCrudRepository<Users, String> {
 
+	
 }
