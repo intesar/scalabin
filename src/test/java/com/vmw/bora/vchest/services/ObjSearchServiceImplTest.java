@@ -33,6 +33,7 @@ public class ObjSearchServiceImplTest {
 		Obj o1 = new Obj();
 		o1.setKind("text");
 		o1.setId("object1");
+		o1.setParent("home");
 		o1.setBucketName("arizona");
 		objService.save(o1);
 		
@@ -46,18 +47,21 @@ public class ObjSearchServiceImplTest {
 		Obj o2 = new Obj();
 		o2.setKind("text");
 		o2.setId("object2");
+		o2.setParent("home");
 		o2.setBucketName("california");
 		objService.save(o2);
 		
 		Obj o3 = new Obj();
 		o3.setKind("text");
 		o3.setId("object3");
+		o3.setParent("home");
 		o3.setBucketName("arizona");
 		objService.save(o3);
 		
 		Obj o4 = new Obj();
 		o4.setKind("png");
 		o4.setId("object4");
+		o4.setParent("home");
 		objService.save(o4);
 		
 		/*
