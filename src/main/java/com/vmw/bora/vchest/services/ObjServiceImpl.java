@@ -48,7 +48,7 @@ public class ObjServiceImpl {
 		objSolrRepo.delete(obj);
 	}
 	
-	public List<Obj> getObjs(String id) {
-		return objSolrRepo.findByParent(id);
+	public List<Obj> getObjs(String id, String owner) {
+		return objSolrRepo.findByParentAndOwner(id, owner);
 	}
 }

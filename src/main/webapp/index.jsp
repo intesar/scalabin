@@ -96,7 +96,7 @@ div#users-contain table td,div#users-contain table th {
 				function(event) {
 					if (event.currentTarget.className) {
 						currentBucket = event.currentTarget.className;
-						$("#parent").val(currentBucket);
+						$(".parent").val(currentBucket);
 						$.getJSON("rest/bucket/" + currentBucket, display);
 						$("#location").html(
 								objs[currentBucket].locationUri + "/"
@@ -124,10 +124,36 @@ div#users-contain table td,div#users-contain table th {
 			width : 350,
 			modal : true
 		});
+		$("#dialog-form1").dialog({
+			autoOpen : false,
+			height : 200,
+			width : 350,
+			modal : true
+		});
 
 		$("#create-user").button().click(function() {
 			$("#dialog-form").dialog("open");
 		});
+		$("#create-user1").button().click(function() {
+			$("#dialog-form1").dialog("open");
+		});
+
+		$("#createFolder").click(function() {
+			$.ajax({
+				url : "rest/bucket/",
+				type : "POST",
+				contentType : "application/json",
+				data : '{ "name": "' + $("#folderName").val() + '", "parent": "'+ currentBucket +'" }',
+				error : function(xhr, status) {
+					$.getJSON("rest/bucket/" + currentBucket,
+							display);
+				},
+				success : function(result) {
+					$.getJSON("rest/bucket/" + currentBucket,
+							display);
+				}
+			})
+		})
 
 	});
 </script>
@@ -138,8 +164,9 @@ div#users-contain table td,div#users-contain table th {
 	<div align="center">
 		<a href="">Home</a>
 		<button id="create-user">Upload</button>
+		<button id="create-user1">Add Folder</button>
 	</div>
-	
+
 	<div align="center">
 
 		<h3 id="location"></h3>
@@ -163,12 +190,29 @@ div#users-contain table td,div#users-contain table th {
 					<input type="file" name="file" size="45" />
 				</p>
 
-				<input type="hidden" name="parent" id="parent"
+				<input type="hidden" name="parent" class="parent"
 					class="text ui-widget-content ui-corner-all"> <input
 					type="submit" value="Upload It" />
 
 			</fieldset>
 		</form>
+	</div>
+
+	<div id="dialog-form1" title="Add Folder">
+		<fieldset>
+
+			<input type="hidden" name="parent" class="parent"
+				class="text ui-widget-content ui-corner-all"> 
+				
+				Name: <input
+				type="text" value="" id="folderName"/> 
+				
+			
+
+			<input type="submit" value="Add" id="createFolder"/> 
+
+
+		</fieldset>
 	</div>
 
 

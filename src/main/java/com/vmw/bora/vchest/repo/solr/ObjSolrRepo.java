@@ -10,6 +10,6 @@ import com.vmw.bora.vchest.domain.Obj;
 @Repository
 public interface ObjSolrRepo extends SolrCrudRepository<Obj, String> {
 
-	List<Obj> findByParent(String id);
+	List<Obj> findByParentAndOwner(String id, String owner);
 	
 }

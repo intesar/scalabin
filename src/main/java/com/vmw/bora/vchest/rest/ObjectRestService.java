@@ -66,6 +66,7 @@ public class ObjectRestService {
 		obj.setDateModified(new Date().toString());
 		obj.setChunkCount("1");
 		obj.setKind("file");
+		obj.setOwner(UserContext.getLoggedInUser());
 		
 		objServiceImpl.save(obj);
 		

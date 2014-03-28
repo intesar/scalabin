@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Component;
 
 import com.vmw.bora.vchest.domain.Obj;
@@ -53,7 +54,7 @@ public class BucketRestService {
 		obj.setDateModified(new Date().toString());
 		obj.setChunkCount("0");
 		obj.setKind("folder");
-		
+		obj.setOwner(UserContext.getLoggedInUser());
 		objServiceImpl.save(obj);
 		return Response.status(200).entity(obj.getId()).build();
 	}
@@ -74,6 +75,6 @@ public class BucketRestService {
 	@Path("/{id}")
 	public List<Obj> get(@PathParam("id") String id) {
 		System.out.println("Bucket is: " + id);
-		return objServiceImpl.getObjs(id);
+		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser());
 	}
 }
