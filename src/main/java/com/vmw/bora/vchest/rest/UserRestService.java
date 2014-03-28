@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.vmw.bora.vchest.domain.Users;
+import com.vmw.bora.vchest.services.ActivityServiceImpl;
 import com.vmw.bora.vchest.services.UsersServiceImpl;
 
 @Component
@@ -19,6 +20,9 @@ public class UserRestService {
 	@Autowired
 	UsersServiceImpl usersService;
 
+	@Autowired
+	ActivityServiceImpl activityServiceImpl;
+	
 	@GET
 	@Path("/ping")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -33,6 +37,10 @@ public class UserRestService {
 		user.setId(user.getUserName());
 		user.setEnabled(true);
 		usersService.save(user);
+		
+		// activity
+		activityServiceImpl.addActivity("addUser", "Users", "0K", usersService.getTenant(UserContext.getLoggedInUser()));
+
 		return "done";
 	}
 

@@ -24,8 +24,9 @@ public class StatsRestService {
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/user/{id}")
-	public List<Stats> get(@PathParam("id") String id) {
+	public Stats get(@PathParam("id") String id) {
 		System.out.println("Showing stats for user: " + id);
-		return statsServiceImpl.findByUser(id);
+		Stats stats =  statsServiceImpl.findByUser(id);
+		return stats;
 	}
 }

@@ -23,7 +23,6 @@ public class StatsServiceImplTest {
 	public void testSaveStats() throws IOException {
 		Stats stats = new Stats();
 		stats.setDownloadedBytes("1024");
-		stats.setId("123");
 		stats.setMonth("1");;
 		stats.setStorage("512");
 		stats.setUploadedBytes("512");

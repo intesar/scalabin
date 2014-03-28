@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vmw.bora.vchest.domain.Obj;
+import com.vmw.bora.vchest.services.ActivityServiceImpl;
 import com.vmw.bora.vchest.services.ObjSearchServiceImpl;
 import com.vmw.bora.vchest.services.ObjServiceImpl;
 import com.vmw.bora.vchest.services.UsersServiceImpl;
@@ -29,6 +30,8 @@ public class SearchRestService {
 	@Autowired
 	ObjSearchServiceImpl objSearchServiceImpl;
 	
+	@Autowired
+	ActivityServiceImpl activityServiceImpl;
 	
 	/*
 	@GET
@@ -55,6 +58,13 @@ public class SearchRestService {
 		System.out.println("search on q: " + q);
 		String owner = UserContext.getLoggedInUser();
 		String tenant = usersServiceImpl.getTenant(owner);
-		return objSearchServiceImpl.findByBucketNameContainingAndOwnerAndTenant(q, owner, tenant);
+		
+		List<Obj> result =  objSearchServiceImpl.findByBucketNameContainingAndOwnerAndTenant(q, owner, tenant);
+		
+		// activity
+		activityServiceImpl.addActivity("search", "Obj", String.valueOf(result.size()), usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		
+		return result;
+
 	}
 }

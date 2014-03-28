@@ -81,6 +81,10 @@ public class BucketRestService {
 		System.out.println("Bucket is: " + id);
 		// TODO recursively delete all.
 		objServiceImpl.delete(id);
+		
+		// activity
+		activityServiceImpl.addActivity("delete", id, "0K", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+				
 		return Response.status(200).entity(SUCCESS).build();
 	}
 	
@@ -89,6 +93,10 @@ public class BucketRestService {
 	@Path("/{id}")
 	public List<Obj> get(@PathParam("id") String id) {
 		System.out.println("Bucket is: " + id);
+		
+		// activity
+		activityServiceImpl.addActivity("get", id, "0K", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		
 		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser());
 	}
 	

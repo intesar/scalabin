@@ -9,9 +9,6 @@ public class Stats {
 
 	@PrimaryKey
 	@Field
-	protected String id;
-		
-	@Field
 	private String user;
 
 	@Field
@@ -29,14 +26,6 @@ public class Stats {
 	@Field
 	private String downloadedBytes;
 	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getUser() {
 		return user;
 	}

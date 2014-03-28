@@ -23,6 +23,9 @@ public class ActivityServiceImpl {
 
 	@Autowired
 	private ActivityRepo activityRepo;
+	
+	@Autowired
+	private StatsServiceImpl statServiceImpl;
 
 	@Autowired
 	private ActivitySolrRepo activitySolrRepo;
@@ -34,9 +37,47 @@ public class ActivityServiceImpl {
 		a.setActivity(type);
 		a.setObjId(on);
 		a.setSize(size);
-		a.setUser(UserContext.getLoggedInUser());
+		String user = UserContext.getLoggedInUser(); 
+		a.setUser(user);
 		a.setTenantId(tenant);
 		save(a);
+		
+		Stats stat = statServiceImpl.findByUser(user);
+		if(stat!= null)
+		{
+			switch (type) {
+			case "post":
+				stat.setUploadedBytes(String.valueOf(Integer.valueOf(stat
+						.getUploadedBytes()) + Integer.valueOf(size)));
+				stat.setStorage(stat.getStorage() + size);
+			case "get":
+				stat.setDownloadedBytes(String.valueOf(Integer.valueOf(stat
+						.getDownloadedBytes()) + Integer.valueOf(size)));
+			case "delete":
+				stat.setStorage(String.valueOf(Integer.valueOf(stat
+						.getStorage()) - Integer.valueOf(size)));
+			case "search":
+				stat.setDownloadedBytes(String.valueOf(Integer.valueOf(stat
+						.getDownloadedBytes()) + 1));
+			default:
+			}
+			statServiceImpl.save(stat);
+		} else {
+			Stats stats = new Stats();
+			stats.setMonth("March");
+			stats.setYear("2014");
+			stats.setUser(user);
+			switch (type) {
+			case "post":
+				stats.setUploadedBytes(size);
+				stats.setStorage(size);
+			case "get":
+				stats.setDownloadedBytes(size);
+			default:
+				// delete & search on new objects not allowed
+			}
+			statServiceImpl.save(stat);
+		}
 	}
 	
 	public void save(Activity activity) {

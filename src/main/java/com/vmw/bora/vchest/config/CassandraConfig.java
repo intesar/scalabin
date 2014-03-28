@@ -21,7 +21,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 	 parent varchar, dateModified varchar, chunkCount varchar, owner varchar, tenant varchar, group varchar, shared varchar);
      CREATE COLUMNFAMILY activity( id varchar PRIMARY KEY, user varchar, date varchar, activity varchar, objId varchar, size varchar, tenantId varchar);
      CREATE COLUMNFAMILY authority( userName varchar PRIMARY KEY, authority varchar );
-     CREATE COLUMNFAMILY stats( id varchar PRIMARY KEY, user varchar, year varchar, month varchar, storage varchar, uploadedBytes varchar,
+     CREATE COLUMNFAMILY stats(user varchar PRIMARY KEY, year varchar, month varchar, storage varchar, uploadedBytes varchar,
      downloadedBytes varchar);
      CREATE COLUMNFAMILY blob( id varchar PRIMARY KEY, objId varchar, content blob);
      */	
