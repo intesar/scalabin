@@ -34,4 +34,8 @@ public class ObjSearchServiceImpl {
 		result = objSolrRepo.findByAllFields(searchTerm, SearchUtil.sortByBucketName());
 		return result;
 	}
+	
+	public List<Obj> findByBucketNameContainingAndOwnerAndTenant(String name, String owner, String tenant) {
+		return this.objSolrRepo.findByBucketNameContainingAndOwnerAndTenant(name, owner, tenant);
+	}
 }

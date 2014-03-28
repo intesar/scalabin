@@ -21,11 +21,12 @@ public class AuthorityServiceImpl {
 	private AuthoritySolrRepo authoritySolrRepo;
 
 	public void save(Authority authority) {
-		if (authorityRepo.findOne(authority.getUserName()) !=null) {
-			logger.error("Authority with that username exists: " + authority.getUserName());
-			throw new RuntimeException();
-		}
-		authorityRepo.save(authority);
-		authoritySolrRepo.save(authority);
+		//if (authorityRepo.findOne(authority.getUserName()) !=null) {
+		//	logger.error("Authority with that username exists: " + authority.getUserName());
+		//	throw new RuntimeException();
+		//}
+		// we don't need this, b/c of a bug
+		//authorityRepo.save(authority);
+		//authoritySolrRepo.save(authority);
 	}
 }

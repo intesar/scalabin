@@ -81,7 +81,7 @@ div#users-contain table td,div#users-contain table th {
 						+ obj.bucketName + '</a></td> <td align="center"><a>'
 						+ obj.kind + '</a></td> <td align="center"><a>'
 						+ obj.dateModified + '</a></td><td align="center">'
-						+ obj.size + '</td><td align="center">' + obj.owner
+						+ obj.size + '</td><td align="center">' + obj.locationUri + '</td><td align="center">' + obj.owner
 						+ '</td><td><a href="javascript:void(0)" class="'
 						+ obj.id + '">Delete</a></td></tr>');
 				$('#cart_table tr:last').after(row);
@@ -154,6 +154,10 @@ div#users-contain table td,div#users-contain table th {
 				}
 			})
 		})
+		
+		$("#search").click(function(){
+			$.getJSON("rest/search/" + $("#q").val(), display);
+		})
 
 	});
 </script>
@@ -165,6 +169,9 @@ div#users-contain table td,div#users-contain table th {
 		<a href="">Home</a>
 		<button id="create-user">Upload</button>
 		<button id="create-user1">Add Folder</button>
+		<input type="text" id="q" />
+		<button id="search">Search</button>
+		
 	</div>
 
 	<div align="center">
@@ -177,6 +184,7 @@ div#users-contain table td,div#users-contain table th {
 				<th>Kind</th>
 				<th>Modified</th>
 				<th>Size</th>
+				<th>Location</th>
 				<th>Owner</th>
 				<th></th>
 			</tr>
@@ -205,18 +213,13 @@ div#users-contain table td,div#users-contain table th {
 				class="text ui-widget-content ui-corner-all"> 
 				
 				Name: <input
-				type="text" value="" id="folderName"/> 
-				
-			
+				type="text" value="" id="folderName"/>
 
 			<input type="submit" value="Add" id="createFolder"/> 
 
 
 		</fieldset>
 	</div>
-
-
-
 
 </body>
 </html>

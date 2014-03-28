@@ -25,13 +25,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-
+		System.out.println(username);
 		String tokens[] = username.split("@");
+		//for (Users u1 : repo.findAll()) {
+		//	System.out.println(u1);
+		//}
 		Users u = this.repo.findByUserNameAndTenantId(tokens[0], tokens[1]);
 
 		if (u == null) {
 			throw new UsernameNotFoundException(username);
 		}
+		System.out.println(u);
 		UserDetails details = new User(u.getUserName(),
 				u.getPassword(), true, true, true, true,
 				Collections.singleton(new GrantedAuthorityImpl("ROLE_USER")));

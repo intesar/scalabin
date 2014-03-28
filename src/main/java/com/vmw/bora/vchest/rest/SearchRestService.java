@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.vmw.bora.vchest.domain.Obj;
 import com.vmw.bora.vchest.services.ObjSearchServiceImpl;
 import com.vmw.bora.vchest.services.ObjServiceImpl;
+import com.vmw.bora.vchest.services.UsersServiceImpl;
 
 @Component
 @Path("/search")
@@ -23,7 +24,11 @@ public class SearchRestService {
 	ObjServiceImpl objServiceImpl;
 	
 	@Autowired
+	UsersServiceImpl usersServiceImpl;
+	
+	@Autowired
 	ObjSearchServiceImpl objSearchServiceImpl;
+	
 	
 	/*
 	@GET
@@ -41,5 +46,15 @@ public class SearchRestService {
 	public List<Obj> getByAll(@PathParam("id") String id, @PathParam("q") String q) {
 		System.out.println("search on q: " + q);
 		return objSearchServiceImpl.searchByAllFields(q);
+	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("/{q}")
+	public List<Obj> getByAll(@PathParam("q") String q) {
+		System.out.println("search on q: " + q);
+		String owner = UserContext.getLoggedInUser();
+		String tenant = usersServiceImpl.getTenant(owner);
+		return objSearchServiceImpl.findByBucketNameContainingAndOwnerAndTenant(q, owner, tenant);
 	}
 }

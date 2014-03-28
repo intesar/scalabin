@@ -24,5 +24,7 @@ public interface ObjSolrRepo extends SolrCrudRepository<Obj, String> {
 			+ "owner:*?0* OR " + "tenant:*?0* OR " + "group:*?0* OR "
 			+ "shared:*?0* OR ")
 	public List<Obj> findByAllFields(String searchTerm, Sort s);
+	
+	public List<Obj> findByBucketNameContainingAndOwnerAndTenant(String name, String owner, String tenant);
 
 }

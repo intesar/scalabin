@@ -22,6 +22,7 @@ import com.vmw.bora.vchest.domain.Blob;
 import com.vmw.bora.vchest.domain.Obj;
 import com.vmw.bora.vchest.services.ObjBlobServiceImpl;
 import com.vmw.bora.vchest.services.ObjServiceImpl;
+import com.vmw.bora.vchest.services.UsersServiceImpl;
  
 @Component
 @Path("/object")
@@ -35,6 +36,9 @@ public class ObjectRestService {
 	
 	@Autowired
 	ObjBlobServiceImpl objBlobServiceImpl;
+	
+	@Autowired
+	UsersServiceImpl usersServiceImpl;
 	
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -67,6 +71,7 @@ public class ObjectRestService {
 		obj.setChunkCount("1");
 		obj.setKind("file");
 		obj.setOwner(UserContext.getLoggedInUser());
+		obj.setTenant(this.usersServiceImpl.getTenant(obj.getOwner()));
 		
 		objServiceImpl.save(obj);
 		

@@ -28,4 +28,12 @@ public class UsersServiceImpl {
 		usersCassandraRepo.save(users);
 		usersSolrRepo.save(users);
 	}
+	
+	public Users getByUsername(String username) {
+		return this.usersSolrRepo.findOne(username);
+	}
+	
+	public String getTenant(String username) {
+		return getByUsername(username).getTenantId();
+	}
 }
