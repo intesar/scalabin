@@ -82,8 +82,9 @@ div#users-contain table td,div#users-contain table th {
 						+ obj.kind + '</a></td> <td align="center"><a>'
 						+ obj.dateModified + '</a></td><td align="center">'
 						+ obj.size + '</td><td align="center">' + obj.locationUri + '</td><td align="center">' + obj.owner
-						+ '</td><td><a href="javascript:void(0)" class="'
-						+ obj.id + '">Delete</a></td></tr>');
+						+ '</td><td align="center">' +obj.shared +'</td><td><a href="javascript:void(0)" class="'
+						+ obj.id + '">Delete</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="'
+						+ obj.id + ' share">Share</a></td></tr>');
 				$('#cart_table tr:last').after(row);
 			});
 		}
@@ -103,8 +104,10 @@ div#users-contain table td,div#users-contain table th {
 										+ objs[currentBucket].bucketName);
 					}
 					if (event.target.className) {
+						var tokens = event.target.className.split(" ");
+						if (tokens[1] == "delete") {
 						$.ajax({
-							url : "rest/bucket/" + event.target.className,
+							url : "rest/bucket/" + tokens[0],
 							type : "DELETE",
 							error : function(xhr, status) {
 								$.getJSON("rest/bucket/" + currentBucket,
@@ -115,6 +118,20 @@ div#users-contain table td,div#users-contain table th {
 										display);
 							}
 						})
+						} else {
+							$.ajax({
+								url : "rest/bucket/public/" + tokens[0],
+								type : "POST",
+								error : function(xhr, status) {
+									$.getJSON("rest/bucket/" + currentBucket,
+											display);
+								},
+								success : function(result) {
+									$.getJSON("rest/bucket/" + currentBucket,
+											display);
+								}
+							})
+						}
 					}
 				});
 
@@ -186,6 +203,7 @@ div#users-contain table td,div#users-contain table th {
 				<th>Size</th>
 				<th>Location</th>
 				<th>Owner</th>
+				<th>Shared</th>
 				<th></th>
 			</tr>
 		</table>

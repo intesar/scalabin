@@ -41,7 +41,7 @@ public class Obj {
 	private String group;
 
 	@Field
-	private String shared;
+	private String shared = "private";
 
 	public String getId() {
 		return id;

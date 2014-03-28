@@ -59,8 +59,16 @@ public class ObjServiceImpl {
 		}
 		return true;
 	}
+	
 
-	public List<Obj> getObjs(String id, String owner) {
-		return objSolrRepo.findByParentAndOwner(id, owner);
+	public Obj getByObjId(String id, String owner, String tenant) {
+		return objSolrRepo.findByIdAndOwnerAndTenant(id, owner, tenant);
+	}
+	
+	public List<Obj> getObjs(String id, String owner, String tenant) {
+		if (id.equals("home")) {
+			return objSolrRepo.findInHome(owner, tenant);
+		}
+		return objSolrRepo.findByParentAndOwnerAndTenant(id, owner, tenant);
 	}
 }
