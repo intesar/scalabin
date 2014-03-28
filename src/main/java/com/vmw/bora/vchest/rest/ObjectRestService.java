@@ -42,6 +42,7 @@ public class ObjectRestService {
 	@Autowired
 	ObjBlobServiceImpl objBlobServiceImpl;
 	
+	//curl -i -F name=bookmarks.html -u admin:admin -F file=@bookmarks.html http://localhost:8080/vChest/rest/object
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(
@@ -84,6 +85,7 @@ public class ObjectRestService {
  
 	}
 
+	//http://localhost:8080/vChest/rest/bucket/706fa510-55d6-4cc3-82bd-6642309c3de8
 	@DELETE
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -95,6 +97,9 @@ public class ObjectRestService {
 		return Response.status(200).entity(SUCCESS).build();
 	}
 
+	//http://localhost:8080/vChest/rest/object/1b04072f-5e9f-4217-8765-3e80c3fe6007
+	// octet-stream
+	// authorization
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
