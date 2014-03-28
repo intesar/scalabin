@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import com.vmw.bora.vchest.services.ObjServiceImpl;
 public class BucketRestService {
 	
 	final static String HOME = "home";
+	final static String SUCCESS = "success";
 
 	@Autowired
 	ObjServiceImpl objServiceImpl;
@@ -38,7 +40,7 @@ public class BucketRestService {
 	@POST
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public String save(BucketDto bucket) {
+	public Response save(BucketDto bucket) {
 		System.out.println(bucket.getName() + " " + bucket.getParent());
 		Obj obj = new Obj();
 		obj.setId(UUID.randomUUID().toString());
@@ -53,17 +55,17 @@ public class BucketRestService {
 		obj.setKind("folder");
 		
 		objServiceImpl.save(obj);
-		return "done";
+		return Response.status(200).entity(SUCCESS).build();
 	}
 
 	@DELETE
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{id}")
-	public String delete(@PathParam("id") String id) {
+	public Response delete(@PathParam("id") String id) {
 		System.out.println("Bucket is: " + id);
 		objServiceImpl.delete(id);
-		return "done";
+		return Response.status(200).entity(SUCCESS).build();
 	}
 	
 	@GET

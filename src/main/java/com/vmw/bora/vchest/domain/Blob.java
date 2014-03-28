@@ -14,7 +14,6 @@ public class Blob {
 	@Field
 	private String id;
 	
-	@Field
 	private ByteBuffer content;
 
 	public ByteBuffer getBlob() {
