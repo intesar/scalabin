@@ -47,6 +47,10 @@ public class ObjServiceImpl {
 		objCassandraRepo.delete(obj);
 		objSolrRepo.delete(obj);
 	}
+	public void deleteAll() {
+		objCassandraRepo.deleteAll();
+		objSolrRepo.deleteAll();
+	}
 	
 	public List<Obj> getObjs(String id, String owner) {
 		return objSolrRepo.findByParentAndOwner(id, owner);
