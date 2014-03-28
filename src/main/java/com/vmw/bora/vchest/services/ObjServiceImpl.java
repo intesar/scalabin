@@ -23,6 +23,16 @@ public class ObjServiceImpl {
 	private ObjSolrRepo objSolrRepo;
 
 	public void save(Obj obj) {
+		if (obj.getParent().equals("home")) {
+			obj.setLocationUri("/" + obj.getParent());
+		} else {
+			// A h /home
+			// B a /home/a
+			// C b /home/a/b
+			Obj parent = objCassandraRepo.findOne(obj.getParent());
+			obj.setLocationUri(parent.getLocationUri() + "/" + parent.getBucketName());
+		}
+		
 		objCassandraRepo.save(obj);
 		objSolrRepo.save(obj);
 	}

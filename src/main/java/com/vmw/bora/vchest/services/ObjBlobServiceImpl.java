@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vmw.bora.vchest.domain.Blob;
 import com.vmw.bora.vchest.repo.cassandra.ObjBlobRepo;
-import com.vmw.bora.vchest.repo.solr.ObjBlobSolrRepo;
 
 @Service
 @Transactional
@@ -17,15 +16,11 @@ public class ObjBlobServiceImpl {
 	@Autowired
 	private ObjBlobRepo objBlobRepo;
 
-	@Autowired
-	private ObjBlobSolrRepo objBlobSolrRepo;
-
 	public void save(Blob objBlob) {
 		if (objBlobRepo.findOne(objBlob.getId())!=null) {
 			logger.error("Blob with that obj ID already exists: " + objBlob.getId());
 			throw new RuntimeException();
 		}
 		objBlobRepo.save(objBlob);
-		objBlobSolrRepo.save(objBlob);
 	}
 }

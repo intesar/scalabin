@@ -55,7 +55,7 @@ public class BucketRestService {
 		obj.setKind("folder");
 		
 		objServiceImpl.save(obj);
-		return Response.status(200).entity(SUCCESS).build();
+		return Response.status(200).entity(obj.getId()).build();
 	}
 
 	@DELETE
@@ -64,6 +64,7 @@ public class BucketRestService {
 	@Path("/{id}")
 	public Response delete(@PathParam("id") String id) {
 		System.out.println("Bucket is: " + id);
+		// TODO recursively delete all.
 		objServiceImpl.delete(id);
 		return Response.status(200).entity(SUCCESS).build();
 	}

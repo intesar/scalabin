@@ -11,7 +11,6 @@ import org.springframework.data.cassandra.mapping.Table;
 public class Blob {
 
 	@PrimaryKey
-	@Field
 	private String id;
 	
 	private ByteBuffer content;
