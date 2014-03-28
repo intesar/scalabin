@@ -23,6 +23,16 @@ public class ObjServiceImpl {
 	private ObjSolrRepo objSolrRepo;
 
 	public void save(Obj obj) {
+		if (obj.getParent().equals("home")) {
+			obj.setLocationUri("/" + obj.getParent());
+		} else {
+			// A h /home
+			// B a /home/a
+			// C b /home/a/b
+			Obj parent = objCassandraRepo.findOne(obj.getParent());
+			obj.setLocationUri(parent.getLocationUri() + "/" + parent.getBucketName());
+		}
+		
 		objCassandraRepo.save(obj);
 		objSolrRepo.save(obj);
 	}
@@ -37,7 +47,11 @@ public class ObjServiceImpl {
 		objCassandraRepo.delete(obj);
 		objSolrRepo.delete(obj);
 	}
-	
+	public void deleteAll() {
+		objCassandraRepo.deleteAll();
+		objSolrRepo.deleteAll();
+	}
+
 	public boolean find(String id) {
 		Obj obj = objCassandraRepo.findOne(id);
 		if(obj==null) {
@@ -45,7 +59,8 @@ public class ObjServiceImpl {
 		}
 		return true;
 	}
-	public List<Obj> getObjs(String id) {
-		return objSolrRepo.findByParent(id);
+
+	public List<Obj> getObjs(String id, String owner) {
+		return objSolrRepo.findByParentAndOwner(id, owner);
 	}
 }

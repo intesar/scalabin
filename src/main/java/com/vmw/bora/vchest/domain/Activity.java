@@ -12,21 +12,24 @@ public class Activity {
 	@PrimaryKey
 	@Field
 	private String id;
-	
+
 	@Field
 	private String user;
-	
+
 	@Field
 	private String date;
-	
+
 	@Field
 	private String activity;
-	
+
 	@Field
 	private String objId;
-	
+
 	@Field
 	private String size;
+
+	@Field
+	private String tenantId;
 
 	public String getId() {
 		return id;
@@ -75,5 +78,13 @@ public class Activity {
 	public void setSize(String size) {
 		this.size = size;
 	}
-	
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+
 }

@@ -17,12 +17,16 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Component;
 
+import com.vmw.bora.vchest.domain.Activity;
 import com.vmw.bora.vchest.domain.Obj;
 import com.vmw.bora.vchest.dto.BucketDto;
+import com.vmw.bora.vchest.services.ActivityServiceImpl;
 import com.vmw.bora.vchest.services.ObjBlobServiceImpl;
 import com.vmw.bora.vchest.services.ObjServiceImpl;
+import com.vmw.bora.vchest.services.UsersServiceImpl;
 
 @Component
 @Path("/bucket")
@@ -36,6 +40,12 @@ public class BucketRestService {
 	
 	@Autowired
 	ObjBlobServiceImpl objBlobServiceImpl;
+	
+	@Autowired
+	ActivityServiceImpl activityServiceImpl;
+	
+	@Autowired
+	UsersServiceImpl usersServiceImpl;
 	
 	@POST
 	@Consumes({MediaType.APPLICATION_JSON})
@@ -53,9 +63,14 @@ public class BucketRestService {
 		obj.setDateModified(new Date().toString());
 		obj.setChunkCount("0");
 		obj.setKind("folder");
-		
+		obj.setOwner(UserContext.getLoggedInUser());
+		obj.setTenant(usersServiceImpl.getTenant(obj.getOwner()));
 		objServiceImpl.save(obj);
-		return Response.status(200).entity(SUCCESS).build();
+		
+		// activity
+		activityServiceImpl.addActivity("post", obj.getId(), "0K", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		
+		return Response.status(200).entity(obj.getId()).build();
 	}
 
 	@DELETE
@@ -64,6 +79,7 @@ public class BucketRestService {
 	@Path("/{id}")
 	public Response delete(@PathParam("id") String id) {
 		System.out.println("Bucket is: " + id);
+		// TODO recursively delete all.
 		objServiceImpl.delete(id);
 		return Response.status(200).entity(SUCCESS).build();
 	}
@@ -73,6 +89,15 @@ public class BucketRestService {
 	@Path("/{id}")
 	public List<Obj> get(@PathParam("id") String id) {
 		System.out.println("Bucket is: " + id);
-		return objServiceImpl.getObjs(id);
+		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser());
 	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public List<Obj> getFromHome() {
+		System.out.println("Bucket is: home");
+		return objServiceImpl.getObjs("home", UserContext.getLoggedInUser());
+	}
+	
+	
 }

@@ -16,10 +16,12 @@ public class Users {
 	@XmlElement
 	private String id;
 
-	@Field
+	@Field(value="username")
 	@XmlElement
 	private String userName;
 
+	@Field
+	@XmlElement
 	private String password;
 
 	@Field
