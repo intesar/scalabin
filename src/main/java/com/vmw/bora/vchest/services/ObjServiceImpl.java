@@ -38,6 +38,13 @@ public class ObjServiceImpl {
 		objSolrRepo.delete(obj);
 	}
 	
+	public boolean find(String id) {
+		Obj obj = objCassandraRepo.findOne(id);
+		if(obj==null) {
+			return false;
+		}
+		return true;
+	}
 	public List<Obj> getObjs(String id) {
 		return objSolrRepo.findByParent(id);
 	}

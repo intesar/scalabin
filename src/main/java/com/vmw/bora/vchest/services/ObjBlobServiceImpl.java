@@ -40,4 +40,14 @@ public class ObjBlobServiceImpl {
 		objBlobRepo.delete(blob);
 		objBlobSolrRepo.delete(blob);
 	}
+	
+	public Blob find(String id) {
+		Blob blob = objBlobRepo.findOne(id);
+		if (blob == null) {
+			logger.error("Delete failed following object not found id:"
+					+ id);
+			throw new RuntimeException();
+		}
+		return blob;
+	}
 }

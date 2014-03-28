@@ -1,4 +1,5 @@
 package com.vmw.bora.vchest.rest;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -7,6 +8,7 @@ import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -32,6 +34,7 @@ public class ObjectRestService {
  
 	final static String HOME = "home";
 	final static String SUCCESS = "success";
+	final static String FAILED = "failed";
 	
 	@Autowired
 	ObjServiceImpl objServiceImpl;
@@ -92,5 +95,19 @@ public class ObjectRestService {
 		return Response.status(200).entity(SUCCESS).build();
 	}
 
- 
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response get(@PathParam("id") String id) {
+		System.out.print("id:" + id);
+		if (!objServiceImpl.find(id)) {
+			return Response.status(404).entity(FAILED).build();
+		}
+		Blob blob = objBlobServiceImpl.find(id);
+		ByteBuffer byteBuffer = blob.getBlob();
+		byte[] byteArray = byteBuffer.array();
+		System.out.print("Sending Response.");
+		return Response.ok(new ByteArrayInputStream(byteArray)).build();
+	}
+	
 }
