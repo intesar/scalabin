@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vmw.bora.vchest.domain.Blob;
+import com.vmw.bora.vchest.domain.Obj;
 import com.vmw.bora.vchest.repo.cassandra.ObjBlobRepo;
 import com.vmw.bora.vchest.repo.solr.ObjBlobSolrRepo;
 
@@ -27,5 +28,16 @@ public class ObjBlobServiceImpl {
 		}
 		objBlobRepo.save(objBlob);
 		objBlobSolrRepo.save(objBlob);
+	}
+	
+	public void delete(String id) {
+		Blob blob = objBlobRepo.findOne(id);
+		if (blob == null) {
+			logger.error("Delete failed following object not found id:"
+					+ id);
+			throw new RuntimeException();
+		}
+		objBlobRepo.delete(blob);
+		objBlobSolrRepo.delete(blob);
 	}
 }

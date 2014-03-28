@@ -10,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vmw.bora.vchest.domain.Obj;
-import com.vmw.bora.vchest.domain.Users;
 
 @Configurable
 @RunWith(SpringJUnit4ClassRunner.class)
