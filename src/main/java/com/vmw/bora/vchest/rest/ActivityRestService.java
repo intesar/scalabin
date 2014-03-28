@@ -26,6 +26,7 @@ public class ActivityRestService {
 	@Path("/user/{id}")
 	public List<Activity> get(@PathParam("id") String id) {
 		System.out.println("Showing activity for user: " + id);
-		return activityServiceImpl.findByUser(id);
+		List<Activity> result = activityServiceImpl.findByUser(id);
+		return result;
 	}
 }

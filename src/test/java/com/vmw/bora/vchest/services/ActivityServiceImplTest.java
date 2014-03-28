@@ -20,16 +20,15 @@ public class ActivityServiceImplTest {
 	@Autowired()
 	ActivityServiceImpl activityService;
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void testSaveActivity() throws IOException {
 		Activity activity = new Activity();
 		activity.setActivity("upload");
 		activity.setDate("21/03/2014");
-		activity.setId("123");
+		activity.setId("1234");
 		activity.setObjId("235");
 		activity.setSize("2048");
 		activity.setUser("FooBar");
-		activityService.save(activity);
 		activityService.save(activity);
 	}
 

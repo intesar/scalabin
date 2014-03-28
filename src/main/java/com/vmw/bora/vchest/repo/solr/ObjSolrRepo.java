@@ -18,11 +18,11 @@ public interface ObjSolrRepo extends SolrCrudRepository<Obj, String> {
 	@Query("kind:*?0*")
 	public List<Obj> findByKind(String searchTerm, Sort s);
 
-	@Query("id:*?0*^0.1 OR " + "bucketName:*?0* OR " + "kind:*?0* OR "
-			+ "locationUri:*?0* OR " + "size:*?0*^0.1 OR " + "parent:*?0* OR "
-			+ "dateModified:*?0* OR " + "chunkCount:*?0*^0.1 OR "
+	@Query("id:*?0* OR " + "bucketName:*?0* OR " + "kind:*?0* OR "
+			+ "locationUri:*?0* OR " + "size:*?0* OR " + "parent:*?0* OR "
+			+ "dateModified:*?0* OR " + "chunkCount:*?0* OR "
 			+ "owner:*?0* OR " + "tenant:*?0* OR " + "group:*?0* OR "
-			+ "shared:*?0*^0.1 OR ")
+			+ "shared:*?0* OR ")
 	public List<Obj> findByAllFields(String searchTerm, Sort s);
 
 }

@@ -37,9 +37,9 @@ public class SearchRestService {
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Path("/term/{term}")
-	public List<Obj> getByAll(@PathParam("term") String term) {
-		System.out.println("search on term: " + term);
-		return objSearchServiceImpl.searchByAllFields(term);
+	@Path("/user/{id}/query/{q}")
+	public List<Obj> getByAll(@PathParam("id") String id, @PathParam("q") String q) {
+		System.out.println("search on q: " + q);
+		return objSearchServiceImpl.searchByAllFields(q);
 	}
 }

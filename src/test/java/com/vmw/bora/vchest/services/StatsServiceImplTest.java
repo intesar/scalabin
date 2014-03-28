@@ -19,7 +19,7 @@ public class StatsServiceImplTest {
 	@Autowired()
 	StatsServiceImpl statsService;
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void testSaveStats() throws IOException {
 		Stats stats = new Stats();
 		stats.setDownloadedBytes("1024");
@@ -29,7 +29,6 @@ public class StatsServiceImplTest {
 		stats.setUploadedBytes("512");
 		stats.setUser("Foo bar");
 		stats.setYear("2014");
-		statsService.save(stats);
 		statsService.save(stats);
 	}
 
