@@ -89,14 +89,28 @@ public class BucketRestService {
 	@Path("/{id}")
 	public List<Obj> get(@PathParam("id") String id) {
 		System.out.println("Bucket is: " + id);
-		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser());
+		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser(), usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 	}
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<Obj> getFromHome() {
 		System.out.println("Bucket is: home");
-		return objServiceImpl.getObjs("home", UserContext.getLoggedInUser());
+		return objServiceImpl.getObjs("home", UserContext.getLoggedInUser(), usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+	}
+	
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path(value="/public/{id}")
+	public Response makeBucketPublic(@PathParam("id") String id) {
+		String username = UserContext.getLoggedInUser();
+		String tenant = usersServiceImpl.getTenant(username);
+		Obj obj = objServiceImpl.getByObjId(id, username, tenant);
+		
+		obj.setShared("public");
+		objServiceImpl.save(obj);
+		
+		return Response.status(200).entity(id).build();
 	}
 	
 	

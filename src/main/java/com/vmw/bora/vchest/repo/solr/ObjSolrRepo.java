@@ -12,7 +12,13 @@ import com.vmw.bora.vchest.domain.Obj;
 @Repository
 public interface ObjSolrRepo extends SolrCrudRepository<Obj, String> {
 
-	List<Obj> findByParentAndOwner(String id, String owner);
+	List<Obj> findByParentAndOwnerAndTenant(String id, String owner, String tenant);
+	
+	@Query("parent:home AND tenant:?1 AND (owner:?0 OR shared:public)")
+	List<Obj> findInHome(String owner, String tenant);
+	
+	
+	Obj findByIdAndOwnerAndTenant(String id, String owner, String tenant);
 	
 
 	@Query("kind:*?0*")
