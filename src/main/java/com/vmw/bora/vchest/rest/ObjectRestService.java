@@ -1,4 +1,5 @@
 package com.vmw.bora.vchest.rest;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,8 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,32 +31,35 @@ import com.vmw.bora.vchest.domain.Obj;
 import com.vmw.bora.vchest.services.ObjBlobServiceImpl;
 import com.vmw.bora.vchest.services.ObjServiceImpl;
 import com.vmw.bora.vchest.services.UsersServiceImpl;
- 
+
 @Component
 @Path("/object")
 public class ObjectRestService {
- 
+
 	final static String HOME = "home";
 	final static String SUCCESS = "success";
 	final static String FAILED = "failed";
-	
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@Autowired
 	ObjServiceImpl objServiceImpl;
-	
+
 	@Autowired
 	ObjBlobServiceImpl objBlobServiceImpl;
-	
+
 	@Autowired
 	UsersServiceImpl usersServiceImpl;
 
-	//curl -i -F name=bookmarks.html -u admin:admin -F file=@bookmarks.html http://localhost:8080/vChest/rest/object
+	// curl -i -F name=bookmarks.html -u admin:admin -F file=@bookmarks.html
+	// http://localhost:8080/vChest/rest/object
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadFile(
-		@FormDataParam("file") InputStream is,
-		@FormDataParam("file") FormDataContentDisposition fileDetail,
-		@FormDataParam("parent") String parent) {
- 
+	public Response uploadFile(@FormDataParam("file") InputStream is,
+			@FormDataParam("file") FormDataContentDisposition fileDetail,
+			@FormDataParam("parent") String parent) {
+
+		logger.info("uploading file [{}] user [{}]", fileDetail.getFileName(), UserContext.getLoggedInUser());
 		String fileName = "test";
 		if (fileDetail != null) {
 			fileName = fileDetail.getFileName();
@@ -65,7 +71,7 @@ public class ObjectRestService {
 			e.printStackTrace();
 			// return error
 		}
-		
+
 		Obj obj = new Obj();
 		obj.setId(UUID.randomUUID().toString());
 		obj.setName(fileName);
@@ -79,38 +85,38 @@ public class ObjectRestService {
 		obj.setKind("file");
 		obj.setOwner(UserContext.getLoggedInUser());
 		obj.setTenantId(this.usersServiceImpl.getTenant(obj.getOwner()));
-		
+
 		objServiceImpl.save(obj);
-		
+
 		Blob blob = new Blob();
 		blob.setId(obj.getId());
 		blob.setBlob(bb);
 		objBlobServiceImpl.save(blob);
- 
+
 		return Response.status(200).entity(obj.getId()).build();
- 
+
 	}
 
-	//http://localhost:8080/vChest/rest/bucket/706fa510-55d6-4cc3-82bd-6642309c3de8
+	// http://localhost:8080/vChest/rest/bucket/706fa510-55d6-4cc3-82bd-6642309c3de8
 	@DELETE
-	@Consumes({MediaType.APPLICATION_JSON})
+	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{id}")
 	public Response delete(@PathParam("id") String id) {
-		System.out.println("File is: " + id);
+		logger.info("delete file [{}]", id);
 		objServiceImpl.delete(id);
 		objBlobServiceImpl.delete(id);
 		return Response.status(200).entity(SUCCESS).build();
 	}
 
-	//http://localhost:8080/vChest/rest/object/1b04072f-5e9f-4217-8765-3e80c3fe6007
+	// http://localhost:8080/vChest/rest/object/1b04072f-5e9f-4217-8765-3e80c3fe6007
 	// octet-stream
 	// authorization
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response get(@PathParam("id") String id) {
-		System.out.print("id:" + id);
+		logger.info("downloading file [{}] user[{}]", id, UserContext.getLoggedInUser());
 		if (!objServiceImpl.find(id)) {
 			return Response.status(404).entity(FAILED).build();
 		}
@@ -120,5 +126,5 @@ public class ObjectRestService {
 		System.out.print("Sending Response.");
 		return Response.ok(new ByteArrayInputStream(byteArray)).build();
 	}
-	
+
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.vmw.bora.vchest.domain.Users;
 
 @Repository
-public interface UsersCassandraRepo extends TypedIdCassandraRepository<Users, String> {
+public interface UsersCassandraRepo extends
+		TypedIdCassandraRepository<Users, String> {
 
 }

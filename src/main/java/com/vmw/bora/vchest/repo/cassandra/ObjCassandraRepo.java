@@ -13,5 +13,5 @@ import com.vmw.bora.vchest.domain.Obj;
 @Repository
 public interface ObjCassandraRepo extends
 		TypedIdCassandraRepository<Obj, String> {
-	
+
 }

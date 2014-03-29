@@ -2,9 +2,10 @@ package com.vmw.bora.vchest.services;
 
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +17,10 @@ import com.vmw.bora.vchest.domain.Users;
 import com.vmw.bora.vchest.repo.solr.UsersSolrRepo;
 
 @Component
-@Qualifier(value="userDetailsServiceImpl")
+@Qualifier(value = "userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private UsersSolrRepo repo;
@@ -25,19 +28,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-		System.out.println(username);
+		logger.info("trying to load user [{}] for authentication", username);
+
 		String tokens[] = username.split("@");
-		//for (Users u1 : repo.findAll()) {
-		//	System.out.println(u1);
-		//}
+		if (tokens.length != 2) {
+			logger.error(
+					"invalid username [{}], valid username should have username@tenant",
+					username);
+			throw new UsernameNotFoundException(username);
+		}
+
 		Users u = this.repo.findByUsernameAndTenantId(tokens[0], tokens[1]);
 
 		if (u == null) {
+			logger.error("unable to find username [{}] tenant [{}]", tokens[0],
+					tokens[1]);
 			throw new UsernameNotFoundException(username);
 		}
-		System.out.println(u);
-		UserDetails details = new User(u.getUsername(),
-				u.getPassword(), true, true, true, true,
+
+		logger.info(
+				"found user [{}] and tenant [{}] returning details for authentication",
+				tokens[0], tokens[1]);
+
+		UserDetails details = new User(u.getUsername(), u.getPassword(), true,
+				true, true, true,
 				Collections.singleton(new GrantedAuthorityImpl("ROLE_USER")));
 		return details;
 	}

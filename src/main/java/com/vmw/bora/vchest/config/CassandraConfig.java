@@ -42,12 +42,28 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
      
      */	
 
-    @Value("${keyspace}")
+    @Value("${cas.keyspace}")
     private String keyspace;
+    
+    @Value("${cas.hosts}")
+    private String hosts;
+    
+    @Value("${cas.port}")
+    private int port;
 
     @Override
     public String getKeyspaceName() {
         return this.keyspace;
+    }
+    
+    @Override
+    public String getContactPoints() {
+    	return this.hosts;
+    }
+    
+    @Override
+    public int getPort() {
+    	return this.port;
     }
 
     @Override

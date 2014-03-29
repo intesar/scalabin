@@ -31,7 +31,7 @@ public class Users {
 	@Field("users_groupId")
 	@XmlElement
 	private String groupId;
-	
+
 	@Field("users_tenantId")
 	@XmlElement
 	private String tenantId;
@@ -76,7 +76,6 @@ public class Users {
 		this.groupId = groupId;
 	}
 
-	
 	public String getTenantId() {
 		return tenantId;
 	}

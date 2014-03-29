@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class BucketDto {
+
 	@XmlElement
 	public String name;
 	@XmlElement

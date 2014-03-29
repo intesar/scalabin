@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.vmw.bora.vchest.domain.Stats;
 
 @Repository
-public interface StatsRepo extends
-		TypedIdCassandraRepository<Stats, String> {
+public interface StatsRepo extends TypedIdCassandraRepository<Stats, String> {
 
 }

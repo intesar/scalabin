@@ -1,9 +1,7 @@
 package com.vmw.bora.vchest.domain;
 
 import java.nio.ByteBuffer;
-import java.util.Date;
 
-import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 

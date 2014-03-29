@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.vmw.bora.vchest.domain.Authority;
 
 @Repository
-public interface AuthoritySolrRepo extends SolrCrudRepository<Authority, String> {
+public interface AuthoritySolrRepo extends
+		SolrCrudRepository<Authority, String> {
 
 }

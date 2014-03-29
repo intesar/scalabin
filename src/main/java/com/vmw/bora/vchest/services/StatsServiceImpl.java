@@ -24,22 +24,22 @@ public class StatsServiceImpl {
 	private StatsSolrRepo statsSolrRepo;
 
 	public void save(Stats stats) {
-		if ( StringUtils.isEmpty(stats.getId())) {
+		if (StringUtils.isEmpty(stats.getId())) {
 			stats.setId(UUID.randomUUID().toString());
 		}
 		statsRepo.save(stats);
 		statsSolrRepo.save(stats);
 	}
-	
+
 	public void update(Stats stats) {
 		statsRepo.save(stats);
 	}
-	
-	//public Stats findByUser(String user) {
-	//	return statsSolrRepo.findByUser(user);
-	//}
-	
-	public Stats findByUserAndTenant(String user, String tenant ) {
-		return statsSolrRepo.findByUsernameAndTenantId(user,tenant);
+
+	// public Stats findByUser(String user) {
+	// return statsSolrRepo.findByUser(user);
+	// }
+
+	public Stats findByUserAndTenant(String user, String tenant) {
+		return statsSolrRepo.findByUsernameAndTenantId(user, tenant);
 	}
 }

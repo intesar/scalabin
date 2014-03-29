@@ -1,10 +1,8 @@
 package com.vmw.bora.vchest.config;
 
 import java.net.MalformedURLException;
-import java.util.Date;
 
 import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.beans.Field;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

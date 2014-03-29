@@ -8,7 +8,7 @@ import org.springframework.data.cassandra.mapping.Table;
 
 @Table
 public class Obj {
-	
+
 	@PrimaryKey
 	@Field
 	private String id;
@@ -141,7 +141,5 @@ public class Obj {
 	public void setShared(String shared) {
 		this.shared = shared;
 	}
-
-	
 
 }
