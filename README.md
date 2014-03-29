@@ -1,8 +1,105 @@
 vChest
 ======
 
-test script
-http://localhost:8080/vChest/rest/bucket/public/616bea2c-c88b-4e90-a596-65c1dc3f70c6
+====================================================================
+
+    # drop all indexes
+    http://localhost:8983/solr/update?stream.body=%3Cdelete%3E%3Cquery%3E*:*%3C/query%3E%3C/delete%3E&commit=true
+    
+    #solr schema changes. Schema.xml content.
+    
+    
+    <field name="users_username" type="text_general" indexed="true" stored="true"/>
+    <field name="users_password" type="text_general" indexed="true" stored="true"/>
+    <field name="users_enabled" type="boolean" indexed="true" stored="true"/>
+    <field name="users_tenantId" type="text_general" indexed="true" stored="true"/>
+    <field name="users_groupId" type="text_general" indexed="true" stored="true"/>
+
+
+    <field name="username" type="text_general" indexed="true" stored="true"/>
+    <field name="password" type="text_general" indexed="true" stored="true"/>
+    <field name="enabled" type="boolean" indexed="true" stored="true"/>
+    
+    <field name="tenantId" type="text_general" indexed="true" stored="true"/>
+    <field name="groupId" type="text_general" indexed="true" stored="true"/>
+
+    <field name="userId" type="text_general" indexed="true" stored="true"/>
+    <field name="authority" type="text_general" indexed="true" stored="true"/>
+	<!-- you might see this already defined.
+	<field name="name" type="text_general" indexed="true" stored="true"/>
+	-->
+	<field name="location" type="text_general" indexed="true" stored="true"/>
+	<field name="size" type="long" indexed="true" stored="true"/>
+	<field name="modified" type="date" indexed="true" stored="true"/>
+	<field name="chunkCount" type="long" indexed="true" stored="true"/>
+	<field name="kind" type="text_general" indexed="true" stored="true"/>
+	<field name="shared" type="text_general" indexed="true" stored="true"/>
+	
+	<field name="actionDate" type="date" indexed="true" stored="true"/>
+	<field name="actionType" type="text_general" indexed="true" stored="true"/>
+	
+	<field name="activity_username" type="text_general" indexed="true" stored="true"/>
+	<field name="activity_actionDate" type="date" indexed="true" stored="true"/>
+	<field name="activity_actionType" type="text_general" indexed="true" stored="true"/>
+	<field name="activity_objId" type="text_general" indexed="true" stored="true"/>
+	<field name="activity_objName" type="text_general" indexed="true" stored="true"/>
+	<field name="activity_size" type="long" indexed="true" stored="true"/>
+	<field name="activity_groupId" type="text_general" indexed="true" stored="true"/>
+	<field name="activity_tenantId" type="text_general" indexed="true" stored="true"/>
+	
+	<field name="stats_username" type="text_general" indexed="true" stored="true"/>
+	<field name="stats_groupId" type="text_general" indexed="true" stored="true"/>
+	<field name="stats_tenantId" type="text_general" indexed="true" stored="true"/>
+	
+	<field name="objId" type="text_general" indexed="true" stored="true"/>
+	<field name="objName" type="text_general" indexed="true" stored="true"/>
+	
+    <field name="year" type="long" indexed="true" stored="true"/>
+    <field name="month" type="long" indexed="true" stored="true"/>
+    <field name="storage" type="long" indexed="true" stored="true"/>
+    <field name="uploadedBytes" type="long" indexed="true" stored="true"/>
+    <field name="downloadedBytes" type="long" indexed="true" stored="true"/>
+    
+    <field name="parent" type="text_general" indexed="true" stored="true"/>
+    <field name="owner" type="text_general" indexed="true" stored="true"/>
+    
+
+    
+=============================================================================
+
+// run the below commends on cql cli.
+
+	 
+	 DROP KEYSPACE vChest;
+     
+     DROP COLUMNFAMILY users;
+     DROP COLUMNFAMILY authority;
+     DROP COLUMNFAMILY obj;
+     DROP COLUMNFAMILY blob;
+     DROP COLUMNFAMILY activity;
+     DROP COLUMNFAMILY stats;
+     
+     create keyspace vchest with replication = {'class':'SimpleStrategy', 'replication_factor':1} ;
+     use vchest ;
+    
+     CREATE COLUMNFAMILY users ( id varchar PRIMARY KEY, username varchar, password varchar, enabled boolean, groupId varchar, tenantId varchar);
+	 CREATE COLUMNFAMILY authority( id varchar PRIMARY KEY, userId varchar, authority varchar );
+	 
+	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, name varchar, kind  varchar, location varchar, size  int, 
+	 parent varchar, modified timestamp, chunkCount int, owner varchar, tenantId varchar, groupId varchar, shared varchar);
+	 
+	 CREATE COLUMNFAMILY blob( id varchar PRIMARY KEY, objId varchar, content blob);
+	 
+     CREATE COLUMNFAMILY activity( id varchar PRIMARY KEY, username varchar, actionDate timestamp, actionType varchar, objId varchar, objName varchar, 
+     	size int, groupId varchar, tenantId varchar);
+     
+     CREATE COLUMNFAMILY stats(id varchar PRIMARY KEY, username varchar, year int, month int, storage int, uploadedBytes int,
+     downloadedBytes int, groupid varchar, tenantId varchar);
+     
+     
+ =====================================================================================    
+
+# API test script
 
 ***START****
 
