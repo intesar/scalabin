@@ -6,18 +6,17 @@
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<!-- HTTP basic authentication in Spring Security -->
-	<http pattern="/rest/users*" security="none"/>
-	<http auto-config="true">
+	<http pattern="/rest/users*" security="none" />
+
+	<http>
 		<intercept-url pattern="/**" access="ROLE_USER" />
+		<form-login/>
 		<http-basic />
-		<logout logout-url="/sign-out"/>
+    	<logout logout-url="/sign-out"/>
 	</http>
 
 	<authentication-manager>
 		<authentication-provider user-service-ref="userDetailsServiceImpl" />
-		<!-- <authentication-provider> <user-service> <user name="admin1" password="admin" 
-			authorities="ROLE_USER" /> <user name="admin2" password="admin" authorities="ROLE_USER" 
-			/> </user-service> </authentication-provider> -->
 	</authentication-manager>
 
 </beans:beans>

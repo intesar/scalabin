@@ -75,21 +75,32 @@ div#users-contain table td,div#users-contain table th {
 		$("#location").html("/home");
 		var display = function(data) {
 			$('#cart_table').find("tr:gt(0)").remove();
-			$.each(data, function(arrayID, obj) {
-				objs[obj.id] = obj;
-				var row = ('<tr> <td align="center" class="' 
+			$
+					.each(
+							data,
+							function(arrayID, obj) {
+								objs[obj.id] = obj;
+								var row = ('<tr> <td align="center" class="' 
 						+ obj.id +'"><a>'
-						+ obj.name + '</a></td> <td align="center"><a>'
-						+ obj.kind + '</a></td> <td align="center"><a>'
-						+ obj.modified + '</a></td><td align="center">'
-						+ obj.size + '</td><td align="center">' 
-						+ obj.location + '</td><td align="center">' 
-						+ obj.owner + '</td><td align="center">' 
-						+ obj.shared +'</td><td><a href="javascript:void(0)" class="'
-						+ obj.id + ' delete">Delete</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="'
-						+ obj.id + ' share">Share</a></td></tr>');
-				$('#cart_table tr:last').after(row);
-			});
+										+ obj.name
+										+ '</a></td> <td align="center"><a>'
+										+ obj.kind
+										+ '</a></td> <td align="center"><a>'
+										+ obj.modified
+										+ '</a></td><td align="center">'
+										+ obj.size
+										+ '</td><td align="center">'
+										+ obj.location
+										+ '</td><td align="center">'
+										+ obj.owner
+										+ '</td><td align="center">'
+										+ obj.shared
+										+ '</td><td><a href="javascript:void(0)" class="'
+										+ obj.id
+										+ ' delete">Delete</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="'
+										+ obj.id + ' share">Share</a></td></tr>');
+								$('#cart_table tr:last').after(row);
+							});
 		}
 
 		$.getJSON("rest/bucket/home", display);
@@ -109,18 +120,18 @@ div#users-contain table td,div#users-contain table th {
 					if (event.target.className) {
 						var tokens = event.target.className.split(" ");
 						if (tokens[1] == "delete") {
-						$.ajax({
-							url : "rest/bucket/" + tokens[0],
-							type : "DELETE",
-							error : function(xhr, status) {
-								$.getJSON("rest/bucket/" + currentBucket,
-										display);
-							},
-							success : function(result) {
-								$.getJSON("rest/bucket/" + currentBucket,
-										display);
-							}
-						})
+							$.ajax({
+								url : "rest/bucket/" + tokens[0],
+								type : "DELETE",
+								error : function(xhr, status) {
+									$.getJSON("rest/bucket/" + currentBucket,
+											display);
+								},
+								success : function(result) {
+									$.getJSON("rest/bucket/" + currentBucket,
+											display);
+								}
+							})
 						} else {
 							$.ajax({
 								url : "rest/bucket/public/" + tokens[0],
@@ -158,24 +169,24 @@ div#users-contain table td,div#users-contain table th {
 			$("#dialog-form1").dialog("open");
 		});
 
-		$("#createFolder").click(function() {
-			$.ajax({
-				url : "rest/bucket/",
-				type : "POST",
-				contentType : "application/json",
-				data : '{ "name": "' + $("#folderName").val() + '", "parent": "'+ currentBucket +'" }',
-				error : function(xhr, status) {
-					$.getJSON("rest/bucket/" + currentBucket,
-							display);
-				},
-				success : function(result) {
-					$.getJSON("rest/bucket/" + currentBucket,
-							display);
-				}
-			})
-		})
-		
-		$("#search").click(function(){
+		$("#createFolder").click(
+				function() {
+					$.ajax({
+						url : "rest/bucket/",
+						type : "POST",
+						contentType : "application/json",
+						data : '{ "name": "' + $("#folderName").val()
+								+ '", "parent": "' + currentBucket + '" }',
+						error : function(xhr, status) {
+							$.getJSON("rest/bucket/" + currentBucket, display);
+						},
+						success : function(result) {
+							$.getJSON("rest/bucket/" + currentBucket, display);
+						}
+					})
+				})
+
+		$("#search").click(function() {
 			$.getJSON("rest/search/" + $("#q").val(), display);
 		})
 
@@ -191,7 +202,10 @@ div#users-contain table td,div#users-contain table th {
 		<button id="create-user1">Add Folder</button>
 		<input type="text" id="q" />
 		<button id="search">Search</button>
-		
+		<p>
+			<a href="sign-out">logout</a>
+		</p>
+
 	</div>
 
 	<div align="center">
@@ -231,12 +245,9 @@ div#users-contain table td,div#users-contain table th {
 		<fieldset>
 
 			<input type="hidden" name="parent" class="parent"
-				class="text ui-widget-content ui-corner-all"> 
-				
-				Name: <input
-				type="text" value="" id="folderName"/>
-
-			<input type="submit" value="Add" id="createFolder"/> 
+				class="text ui-widget-content ui-corner-all"> Name: <input
+				type="text" value="" id="folderName" /> <input type="submit"
+				value="Add" id="createFolder" />
 
 
 		</fieldset>
