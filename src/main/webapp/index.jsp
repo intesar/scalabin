@@ -86,7 +86,7 @@ div#users-contain table td,div#users-contain table th {
 						+ obj.location + '</td><td align="center">' 
 						+ obj.owner + '</td><td align="center">' 
 						+ obj.shared +'</td><td><a href="javascript:void(0)" class="'
-						+ obj.id + '">Delete</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="'
+						+ obj.id + ' delete">Delete</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="'
 						+ obj.id + ' share">Share</a></td></tr>');
 				$('#cart_table tr:last').after(row);
 			});
