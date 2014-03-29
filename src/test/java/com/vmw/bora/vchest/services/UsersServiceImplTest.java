@@ -25,7 +25,7 @@ public class UsersServiceImplTest {
 		user.setEnabled(true);
 		user.setPassword("FooPassword");
 		user.setTenantId("FooTenant");
-		user.setUserName("FooUser");
+		user.setUsername("FooUser");
 		usersService.save(user);
 		usersService.save(user);
 	}

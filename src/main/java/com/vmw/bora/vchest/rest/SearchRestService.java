@@ -62,7 +62,7 @@ public class SearchRestService {
 		List<Obj> result =  objSearchServiceImpl.findByBucketNameContainingAndOwnerAndTenant(q, owner, tenant);
 		
 		// activity
-		activityServiceImpl.addActivity("search", "Obj", String.valueOf(result.size()), usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("search", "Obj", result.size(), usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 		
 		return result;
 

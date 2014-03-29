@@ -22,7 +22,7 @@ public class AuthorityServiceImplTest {
 	@Test(expected = RuntimeException.class)
 	public void testSaveAuthority() throws IOException {
 		Authority authority = new Authority();
-		authority.setUserName("FooUser");
+		authority.setUserId("FooUser");
 		authority.setAuthority("auth1");
 		authorityService.save(authority);
 		authorityService.save(authority);

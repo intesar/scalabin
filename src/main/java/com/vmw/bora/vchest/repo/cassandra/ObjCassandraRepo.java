@@ -5,8 +5,6 @@
  */
 package com.vmw.bora.vchest.repo.cassandra;
 
-import java.util.List;
-
 import org.springframework.data.cassandra.repository.TypedIdCassandraRepository;
 import org.springframework.stereotype.Repository;
 

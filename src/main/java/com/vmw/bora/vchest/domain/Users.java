@@ -16,24 +16,28 @@ public class Users {
 	@XmlElement
 	private String id;
 
-	@Field(value="username")
 	@XmlElement
-	private String userName;
+	@Field("users_username")
+	private String username;
 
-	@Field
 	@XmlElement
+	@Field("users_password")
 	private String password;
 
-	@Field
+	@Field("users_enabled")
 	@XmlElement
 	private boolean enabled;
 
-	@Field
+	@Field("users_groupId")
+	@XmlElement
+	private String groupId;
+	
+	@Field("users_tenantId")
 	@XmlElement
 	private String tenantId;
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
 	public String getId() {
@@ -44,8 +48,8 @@ public class Users {
 		this.id = id;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -64,44 +68,21 @@ public class Users {
 		this.enabled = enabled;
 	}
 
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	
 	public String getTenantId() {
 		return tenantId;
 	}
 
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Users other = (Users) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Users [id=" + id + ", userName=" + userName + ", password="
-				+ password + ", enabled=" + enabled + ", tenantId=" + tenantId
-				+ "]";
 	}
 
 }

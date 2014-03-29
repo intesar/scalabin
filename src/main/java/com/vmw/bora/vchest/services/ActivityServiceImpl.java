@@ -1,5 +1,6 @@
 package com.vmw.bora.vchest.services;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -24,83 +25,53 @@ public class ActivityServiceImpl {
 
 	@Autowired
 	private ActivityRepo activityRepo;
-	
+
 	@Autowired
 	private StatsServiceImpl statServiceImpl;
 
 	@Autowired
 	private ActivitySolrRepo activitySolrRepo;
-	
+
 	@Autowired
 	UsersServiceImpl usersServiceImpl;
 
-	public void addActivity(String type, String on, String size, String tenant) {
+	public void addActivity(String type, String on, long size, String tenant) {
 		Activity a = new Activity();
 		a.setId(UUID.randomUUID().toString());
-		a.setDate(new Date().toString());
-		a.setActivity(type);
+		a.setActionDate(new Date());
+		a.setActionType(type);
 		a.setObjId(on);
 		a.setSize(size);
-		String user = UserContext.getLoggedInUser(); 
-		a.setUser(user);
+		String user = UserContext.getLoggedInUser();
+		a.setUsername(user);
 		a.setTenantId(tenant);
 		save(a);
-		
+
 		Stats stat = statServiceImpl.findByUserAndTenant(user, tenant);
-		if(stat!= null)
-		{
+		if (stat != null) {
 			switch (type) {
 			case "post":
-				String ub = "0";
-				if (StringUtils.isNotBlank(stat
-						.getUploadedBytes())) {
-					ub = stat
-							.getUploadedBytes();
-				}
-				stat.setUploadedBytes(String.valueOf (Integer.valueOf(ub) + Integer.valueOf(size)));
-				String s = "0";
-				if (StringUtils.isNotBlank(stat
-						.getStorage())) {
-					s = stat
-							.getStorage();
-				}
-				stat.setStorage(String.valueOf (Integer.valueOf(s) + Integer.valueOf(size)));
+				stat.setUploadedBytes(stat.getUploadedBytes() + size);
+				stat.setStorage(stat.getStorage() + size);
 				break;
 			case "get":
-				String db = "0";
-				if (StringUtils.isNotBlank(stat
-						.getDownloadedBytes())) {
-					db = stat
-							.getDownloadedBytes();
-				}
-				stat.setDownloadedBytes(String.valueOf (Integer.valueOf(db) + Integer.valueOf(size)));
+				stat.setDownloadedBytes(stat.getDownloadedBytes() + size);
 				break;
 			case "delete":
-				String s1 = "0";
-				if (StringUtils.isNotBlank(stat
-						.getStorage())) {
-					s1 = stat
-							.getStorage();
-				}
-				stat.setStorage(String.valueOf(Integer.valueOf(s1) - Integer.valueOf(size)));
+				stat.setStorage(stat.getStorage() - size);
 				break;
 			case "search":
-				String db1 = "0";
-				if (StringUtils.isNotBlank(stat
-						.getDownloadedBytes())) {
-					db1 = stat
-							.getDownloadedBytes();
-				}
-				stat.setDownloadedBytes(String.valueOf(Integer.valueOf(db1) + 1));
+				stat.setDownloadedBytes(stat.getDownloadedBytes() + 1);
 			default:
 			}
 			statServiceImpl.save(stat);
 		} else {
 			Stats stats = new Stats();
-			stats.setMonth("March");
-			stats.setYear("2014");
-			stats.setUser(user);
-			stats.setTenant(this.usersServiceImpl.getTenant(user));
+			Calendar now = Calendar.getInstance();
+			stats.setMonth(now.get(Calendar.MONTH));
+			stats.setYear(now.get(Calendar.YEAR));
+			stats.setUsername(user);
+			stats.setTenantId(this.usersServiceImpl.getTenant(user));
 			switch (type) {
 			case "post":
 				stats.setUploadedBytes(size);
@@ -113,13 +84,13 @@ public class ActivityServiceImpl {
 			statServiceImpl.save(stats);
 		}
 	}
-	
+
 	public void save(Activity activity) {
 		activityRepo.save(activity);
 		activitySolrRepo.save(activity);
 	}
-	
+
 	public List<Activity> findByUser(String user) {
-		return activitySolrRepo.findByUser(user, SearchUtil.sortByYearMonth());
+		return activitySolrRepo.findByUsername(user, SearchUtil.sortByYearMonth());
 	}
 }

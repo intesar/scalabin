@@ -1,6 +1,5 @@
 package com.vmw.bora.vchest.domain;
 
-import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
@@ -8,18 +7,28 @@ import org.springframework.data.cassandra.mapping.Table;
 public class Authority {
 
 	@PrimaryKey
-	@Field
-	private String userName;
-	
-	public String getUserName() {
-		return userName;
-	}
+	private String id;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+	// unique user.id
+	private String userId;
 
 	private String authority;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public String getAuthority() {
 		return authority;
@@ -28,5 +37,5 @@ public class Authority {
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
-	
+
 }

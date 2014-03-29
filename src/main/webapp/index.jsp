@@ -77,12 +77,15 @@ div#users-contain table td,div#users-contain table th {
 			$('#cart_table').find("tr:gt(0)").remove();
 			$.each(data, function(arrayID, obj) {
 				objs[obj.id] = obj;
-				var row = ('<tr> <td align="center" class="' + obj.id +'"><a>'
-						+ obj.bucketName + '</a></td> <td align="center"><a>'
+				var row = ('<tr> <td align="center" class="' 
+						+ obj.id +'"><a>'
+						+ obj.name + '</a></td> <td align="center"><a>'
 						+ obj.kind + '</a></td> <td align="center"><a>'
-						+ obj.dateModified + '</a></td><td align="center">'
-						+ obj.size + '</td><td align="center">' + obj.locationUri + '</td><td align="center">' + obj.owner
-						+ '</td><td align="center">' +obj.shared +'</td><td><a href="javascript:void(0)" class="'
+						+ obj.modified + '</a></td><td align="center">'
+						+ obj.size + '</td><td align="center">' 
+						+ obj.location + '</td><td align="center">' 
+						+ obj.owner + '</td><td align="center">' 
+						+ obj.shared +'</td><td><a href="javascript:void(0)" class="'
 						+ obj.id + '">Delete</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="'
 						+ obj.id + ' share">Share</a></td></tr>');
 				$('#cart_table tr:last').after(row);
@@ -100,8 +103,8 @@ div#users-contain table td,div#users-contain table th {
 						$(".parent").val(currentBucket);
 						$.getJSON("rest/bucket/" + currentBucket, display);
 						$("#location").html(
-								objs[currentBucket].locationUri + "/"
-										+ objs[currentBucket].bucketName);
+								objs[currentBucket].location + "/"
+										+ objs[currentBucket].name);
 					}
 					if (event.target.className) {
 						var tokens = event.target.className.split(" ");

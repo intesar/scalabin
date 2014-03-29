@@ -33,7 +33,7 @@ public class TenantUserRestService {
 	@Path("/user")
 	public String save(Users user) {
 		Users u = this.usersService.getByUsername(UserContext.getLoggedInUser());
-		user.setId(user.getUserName());
+		user.setId(user.getUsername());
 		user.setEnabled(true);
 		user.setTenantId(u.getTenantId());
 		usersService.save(user);

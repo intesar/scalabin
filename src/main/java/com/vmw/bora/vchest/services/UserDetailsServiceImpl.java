@@ -30,13 +30,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		//for (Users u1 : repo.findAll()) {
 		//	System.out.println(u1);
 		//}
-		Users u = this.repo.findByUserNameAndTenantId(tokens[0], tokens[1]);
+		Users u = this.repo.findByUsernameAndTenantId(tokens[0], tokens[1]);
 
 		if (u == null) {
 			throw new UsernameNotFoundException(username);
 		}
 		System.out.println(u);
-		UserDetails details = new User(u.getUserName(),
+		UserDetails details = new User(u.getUsername(),
 				u.getPassword(), true, true, true, true,
 				Collections.singleton(new GrantedAuthorityImpl("ROLE_USER")));
 		return details;

@@ -40,6 +40,6 @@ public class StatsServiceImpl {
 	//}
 	
 	public Stats findByUserAndTenant(String user, String tenant ) {
-		return statsSolrRepo.findByUserAndTenant(user,tenant);
+		return statsSolrRepo.findByUsernameAndTenantId(user,tenant);
 	}
 }

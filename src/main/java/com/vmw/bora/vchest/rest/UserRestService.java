@@ -34,7 +34,7 @@ public class UserRestService {
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public String save(Users user) {
-		user.setId(user.getUserName());
+		user.setId(user.getUsername());
 		user.setEnabled(true);
 		usersService.save(user);
 		

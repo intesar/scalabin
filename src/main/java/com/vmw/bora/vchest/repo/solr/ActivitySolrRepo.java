@@ -12,7 +12,7 @@ import com.vmw.bora.vchest.domain.Activity;
 @Repository
 public interface ActivitySolrRepo extends SolrCrudRepository<Activity, String> {
 
-	@Query("user:?0")
-	public List<Activity> findByUser(String user, Sort s);
+	//@Query("user:?0")
+	public List<Activity> findByUsername(String user, Sort s);
 
 }

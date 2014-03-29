@@ -13,22 +13,28 @@ public class Activity {
 	@Field
 	private String id;
 
-	@Field
-	private String user;
+	@Field("activity_username")
+	private String username;
 
-	@Field
-	private String date;
+	@Field("activity_actionDate")
+	private Date actionDate;
 
-	@Field
-	private String activity;
+	@Field("activity_actionType")
+	private String actionType;
 
-	@Field
+	@Field("activity_objId")
 	private String objId;
 
-	@Field
-	private String size;
+	@Field("activity_objName")
+	private String objName;
 
-	@Field
+	@Field("activity_size")
+	private long size;
+
+	@Field("activity_groupId")
+	private String groupId;
+
+	@Field("activity_tenantId")
 	private String tenantId;
 
 	public String getId() {
@@ -39,28 +45,28 @@ public class Activity {
 		this.id = id;
 	}
 
-	public String getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getDate() {
-		return date;
+	public Date getActionDate() {
+		return actionDate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setActionDate(Date actionDate) {
+		this.actionDate = actionDate;
 	}
 
-	public String getActivity() {
-		return activity;
+	public String getActionType() {
+		return actionType;
 	}
 
-	public void setActivity(String activity) {
-		this.activity = activity;
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
 	}
 
 	public String getObjId() {
@@ -71,12 +77,20 @@ public class Activity {
 		this.objId = objId;
 	}
 
-	public String getSize() {
+	public long getSize() {
 		return size;
 	}
 
-	public void setSize(String size) {
+	public void setSize(long size) {
 		this.size = size;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 
 	public String getTenantId() {
@@ -85,6 +99,14 @@ public class Activity {
 
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	public String getObjName() {
+		return objName;
+	}
+
+	public void setObjName(String objName) {
+		this.objName = objName;
 	}
 
 }

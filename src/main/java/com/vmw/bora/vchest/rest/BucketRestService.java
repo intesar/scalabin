@@ -54,21 +54,21 @@ public class BucketRestService {
 		System.out.println(bucket.getName() + " " + bucket.getParent());
 		Obj obj = new Obj();
 		obj.setId(UUID.randomUUID().toString());
-		obj.setBucketName(bucket.getName());
+		obj.setName(bucket.getName());
 		if (StringUtils.isBlank(bucket.getParent())) {
 			obj.setParent(HOME);
 		} else {
 			obj.setParent(bucket.getParent());
 		}
-		obj.setDateModified(new Date().toString());
-		obj.setChunkCount("0");
+		obj.setModified(new Date());
+		obj.setChunkCount(0);
 		obj.setKind("folder");
 		obj.setOwner(UserContext.getLoggedInUser());
-		obj.setTenant(usersServiceImpl.getTenant(obj.getOwner()));
+		obj.setTenantId(usersServiceImpl.getTenant(obj.getOwner()));
 		objServiceImpl.save(obj);
 		
 		// activity
-		activityServiceImpl.addActivity("post", obj.getId(), "100", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("post", obj.getId(), 100, usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 		
 		return Response.status(200).entity(obj.getId()).build();
 	}
@@ -83,7 +83,7 @@ public class BucketRestService {
 		objServiceImpl.delete(id);
 		
 		// activity
-		activityServiceImpl.addActivity("delete", id, "100", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("delete", id, 100, usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 				
 		return Response.status(200).entity(SUCCESS).build();
 	}
@@ -95,7 +95,7 @@ public class BucketRestService {
 		System.out.println("Bucket is: " + id);
 		
 		// activity
-		activityServiceImpl.addActivity("get", id, "100", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("get", id, 100, usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 		
 		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser(), usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 	}
@@ -119,7 +119,7 @@ public class BucketRestService {
 		objServiceImpl.save(obj);
 		
 		// activity
-		activityServiceImpl.addActivity("post", id, "100", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("post", id, 100, usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 		
 		return Response.status(200).entity(id).build();
 	}

@@ -12,9 +12,9 @@ import com.vmw.bora.vchest.domain.Stats;
 @Repository
 public interface StatsSolrRepo extends SolrCrudRepository<Stats, String> {
 
-	@Query("user:?0")
-	public Stats findByUser(String user);
+	@Query("username:?0")
+	public Stats findByUsername(String user);
 	
-	public Stats findByUserAndTenant(String user, String tenant);
+	public Stats findByUsernameAndTenantId(String username, String tenantId);
 	
 }

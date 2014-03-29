@@ -34,7 +34,7 @@ public class ObjSearchServiceImplTest {
 		o1.setKind("text");
 		o1.setId("object1");
 		o1.setParent("home");
-		o1.setBucketName("arizona");
+		o1.setName("arizona");
 		objService.save(o1);
 		
 		List<Obj> result = objSearchService.searchByKind("text");
@@ -48,14 +48,14 @@ public class ObjSearchServiceImplTest {
 		o2.setKind("text");
 		o2.setId("object2");
 		o2.setParent("home");
-		o2.setBucketName("california");
+		o2.setName("california");
 		objService.save(o2);
 		
 		Obj o3 = new Obj();
 		o3.setKind("text");
 		o3.setId("object3");
 		o3.setParent("home");
-		o3.setBucketName("arizona");
+		o3.setName("arizona");
 		objService.save(o3);
 		
 		Obj o4 = new Obj();
@@ -70,11 +70,11 @@ public class ObjSearchServiceImplTest {
 		result = objSearchService.searchByKind("text");
 		assertEquals(3, result.size());
 		assertEquals("object1", result.get(0).getId());
-		assertEquals("arizona", result.get(0).getBucketName());
+		assertEquals("arizona", result.get(0).getName());
 		assertEquals("object3", result.get(1).getId());
-		assertEquals("arizona", result.get(1).getBucketName());
+		assertEquals("arizona", result.get(1).getName());
 		assertEquals("object2", result.get(2).getId());
-		assertEquals("california", result.get(2).getBucketName());
+		assertEquals("california", result.get(2).getName());
 		
 		result = objSearchService.searchByKind("png");
 		assertEquals(1, result.size());

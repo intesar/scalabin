@@ -12,18 +12,34 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 
     // run the below commends on cql cli.
 	/*
+	 
+	 DROP KEYSPACE vChest;
+     
+     DROP COLUMNFAMILY users;
+     DROP COLUMNFAMILY authority;
+     DROP COLUMNFAMILY obj;
+     DROP COLUMNFAMILY blob;
+     DROP COLUMNFAMILY activity;
+     DROP COLUMNFAMILY stats;
+     
      create keyspace vchest with replication = {'class':'SimpleStrategy', 'replication_factor':1} ;
      use vchest ;
     
-     CREATE COLUMNFAMILY emp ( id varchar PRIMARY KEY, username varchar, joinDate timestamp, storageSize double, content blob);
-	 CREATE COLUMNFAMILY users ( id varchar PRIMARY KEY, username varchar, password varchar, enabled boolean, tenantId varchar);
-	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, bucketName varchar, kind  varchar, locationUri varchar, size  varchar, 
-	 parent varchar, dateModified varchar, chunkCount varchar, owner varchar, tenant varchar, group varchar, shared varchar);
-     CREATE COLUMNFAMILY activity( id varchar PRIMARY KEY, user varchar, date varchar, activity varchar, objId varchar, size varchar, tenantId varchar);
-     CREATE COLUMNFAMILY authority( userName varchar PRIMARY KEY, authority varchar );
-     CREATE COLUMNFAMILY stats(id varchar PRIMARY KEY, user varchar, year varchar, month varchar, storage varchar, uploadedBytes varchar,
-     downloadedBytes varchar);
-     CREATE COLUMNFAMILY blob( id varchar PRIMARY KEY, objId varchar, content blob);
+     CREATE COLUMNFAMILY users ( id varchar PRIMARY KEY, username varchar, password varchar, enabled boolean, groupId varchar, tenantId varchar);
+	 CREATE COLUMNFAMILY authority( id varchar PRIMARY KEY, userId varchar, authority varchar );
+	 
+	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, name varchar, kind  varchar, location varchar, size  int, 
+	 parent varchar, modified timestamp, chunkCount int, owner varchar, tenantId varchar, groupId varchar, shared varchar);
+	 
+	 CREATE COLUMNFAMILY blob( id varchar PRIMARY KEY, objId varchar, content blob);
+	 
+     CREATE COLUMNFAMILY activity( id varchar PRIMARY KEY, username varchar, actionDate timestamp, actionType varchar, objId varchar, objName varchar, 
+     	size int, groupId varchar, tenantId varchar);
+     
+     CREATE COLUMNFAMILY stats(id varchar PRIMARY KEY, username varchar, year int, month int, storage int, uploadedBytes int,
+     downloadedBytes int, groupid varchar, tenantId varchar);
+     
+     
      */	
 
     @Value("${keyspace}")

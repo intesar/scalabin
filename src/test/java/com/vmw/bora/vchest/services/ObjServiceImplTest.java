@@ -1,6 +1,7 @@
 package com.vmw.bora.vchest.services;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,10 +39,10 @@ public class ObjServiceImplTest {
 	@Ignore
 	public void testSaveObj() throws IOException {
 		Obj obj = new Obj();
-		obj.setBucketName("FooBucket1");
-		obj.setChunkCount("Foo101");
-		obj.setDateModified("FooDate1");
-		obj.setGroup("FooGroup1");
+		obj.setName("FooBucket1");
+		obj.setChunkCount(101);
+		obj.setModified(new Date());
+		obj.setGroupId("FooGroup1");
 		obj.setId("FooId1");
 		obj.setKind("FooKind1");
 		
@@ -52,10 +53,10 @@ public class ObjServiceImplTest {
 	@Ignore
 	public void testDeleteObj() {
 		Obj obj = new Obj();
-		obj.setBucketName("FooBucket");
-		obj.setChunkCount("Foo10");
-		obj.setDateModified("FooDate");
-		obj.setGroup("FooGroup");
+		obj.setName("FooBucket");
+		obj.setChunkCount(10);
+		//obj.seModified(new Date());
+		obj.setGroupId("FooGroup");
 		obj.setId("FooId");
 		obj.setKind("FooKind");
 		

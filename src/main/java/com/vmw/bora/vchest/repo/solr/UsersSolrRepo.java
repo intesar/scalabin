@@ -7,5 +7,5 @@ import com.vmw.bora.vchest.domain.Users;
 
 @Repository
 public interface UsersSolrRepo extends SolrCrudRepository<Users, String> {
-	public Users findByUserNameAndTenantId(String username, String tenant);
+	public Users findByUsernameAndTenantId(String username, String tenant);
 }

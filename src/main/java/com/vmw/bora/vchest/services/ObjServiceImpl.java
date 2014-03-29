@@ -24,13 +24,13 @@ public class ObjServiceImpl {
 
 	public void save(Obj obj) {
 		if (obj.getParent().equals("home")) {
-			obj.setLocationUri("/" + obj.getParent());
+			obj.setLocation("/" + obj.getParent());
 		} else {
 			// A h /home
 			// B a /home/a
 			// C b /home/a/b
 			Obj parent = objCassandraRepo.findOne(obj.getParent());
-			obj.setLocationUri(parent.getLocationUri() + "/" + parent.getBucketName());
+			obj.setLocation(parent.getLocation() + "/" + parent.getName());
 		}
 		
 		objCassandraRepo.save(obj);
@@ -41,7 +41,7 @@ public class ObjServiceImpl {
 		Obj obj = objCassandraRepo.findOne(id);
 		if (obj == null) {
 			logger.error("Delete failed following object not found bucket:"
-					+ obj.getBucketName() + " uri:" + obj.getLocationUri());
+					+ obj.getName() + " uri:" + obj.getLocation());
 			throw new RuntimeException();
 		}
 		objCassandraRepo.delete(obj);
@@ -62,13 +62,13 @@ public class ObjServiceImpl {
 	
 
 	public Obj getByObjId(String id, String owner, String tenant) {
-		return objSolrRepo.findByIdAndOwnerAndTenant(id, owner, tenant);
+		return objSolrRepo.findByIdAndOwnerAndTenantId(id, owner, tenant);
 	}
 	
 	public List<Obj> getObjs(String id, String owner, String tenant) {
 		if (id.equals("home")) {
 			return objSolrRepo.findInHome(owner, tenant);
 		}
-		return objSolrRepo.findByParentAndOwnerAndTenant(id, owner, tenant);
+		return objSolrRepo.findByParentAndOwnerAndTenantId(id, owner, tenant);
 	}
 }

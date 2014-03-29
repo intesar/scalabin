@@ -68,17 +68,17 @@ public class ObjectRestService {
 		
 		Obj obj = new Obj();
 		obj.setId(UUID.randomUUID().toString());
-		obj.setBucketName(fileName);
+		obj.setName(fileName);
 		if (StringUtils.isBlank(parent)) {
 			obj.setParent(HOME);
 		} else {
 			obj.setParent(parent);
 		}
-		obj.setDateModified(new Date().toString());
-		obj.setChunkCount("1");
+		obj.setModified(new Date());
+		obj.setChunkCount(1);
 		obj.setKind("file");
 		obj.setOwner(UserContext.getLoggedInUser());
-		obj.setTenant(this.usersServiceImpl.getTenant(obj.getOwner()));
+		obj.setTenantId(this.usersServiceImpl.getTenant(obj.getOwner()));
 		
 		objServiceImpl.save(obj);
 		

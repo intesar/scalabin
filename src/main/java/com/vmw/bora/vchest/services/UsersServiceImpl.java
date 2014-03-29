@@ -21,18 +21,19 @@ public class UsersServiceImpl {
 	private UsersSolrRepo usersSolrRepo;
 
 	public void save(Users users) {
-		if (usersSolrRepo.findByUserNameAndTenantId(users.getUserName(), users.getTenantId())!=null) {
-			logger.error("User Name exists: " + users.getUserName());
+		if (usersSolrRepo.findByUsernameAndTenantId(users.getUsername(),
+				users.getTenantId()) != null) {
+			logger.error("User Name exists: " + users.getUsername());
 			throw new RuntimeException();
 		}
 		usersCassandraRepo.save(users);
 		usersSolrRepo.save(users);
 	}
-	
+
 	public Users getByUsername(String username) {
 		return this.usersSolrRepo.findOne(username);
 	}
-	
+
 	public String getTenant(String username) {
 		return getByUsername(username).getTenantId();
 	}

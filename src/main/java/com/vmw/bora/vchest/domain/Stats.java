@@ -6,33 +6,35 @@ import org.springframework.data.cassandra.mapping.Table;
 
 @Table
 public class Stats {
-	
+
 	@PrimaryKey
 	@Field
 	private String id;
 
-	@Field
-	private String user;
+	@Field("stats_username")
+	private String username;
 
 	@Field
-	private String year;
+	private int year;
 
 	@Field
-	private String month;
-
-	@Field	
-	private String storage;
+	private int month;
 
 	@Field
-	private String uploadedBytes;
+	private long storage;
 
 	@Field
-	private String downloadedBytes;
-	
+	private long uploadedBytes;
+
 	@Field
-	private String tenant;
-	
-	
+	private long downloadedBytes;
+
+	@Field("stats_groupId")
+	private String groupId;
+
+	@Field("stats_tenantId")
+	private String tenantId;
+
 	public String getId() {
 		return id;
 	}
@@ -41,60 +43,68 @@ public class Stats {
 		this.id = id;
 	}
 
-	public String getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getYear() {
+	public int getYear() {
 		return year;
 	}
 
-	public void setYear(String year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 
-	public String getMonth() {
+	public int getMonth() {
 		return month;
 	}
 
-	public void setMonth(String month) {
+	public void setMonth(int month) {
 		this.month = month;
 	}
 
-	public String getStorage() {
+	public long getStorage() {
 		return storage;
 	}
 
-	public void setStorage(String storage) {
+	public void setStorage(long storage) {
 		this.storage = storage;
 	}
 
-	public String getUploadedBytes() {
+	public long getUploadedBytes() {
 		return uploadedBytes;
 	}
 
-	public void setUploadedBytes(String uploadedBytes) {
+	public void setUploadedBytes(long uploadedBytes) {
 		this.uploadedBytes = uploadedBytes;
 	}
 
-	public String getDownloadedBytes() {
+	public long getDownloadedBytes() {
 		return downloadedBytes;
 	}
 
-	public void setDownloadedBytes(String downloadedBytes) {
+	public void setDownloadedBytes(long downloadedBytes) {
 		this.downloadedBytes = downloadedBytes;
 	}
 
-	public String getTenant() {
-		return tenant;
+	public String getGroupId() {
+		return groupId;
 	}
 
-	public void setTenant(String tenant) {
-		this.tenant = tenant;
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 }
