@@ -6,8 +6,11 @@ import org.springframework.data.cassandra.mapping.Table;
 
 @Table
 public class Stats {
-
+	
 	@PrimaryKey
+	@Field
+	private String id;
+
 	@Field
 	private String user;
 
@@ -26,6 +29,18 @@ public class Stats {
 	@Field
 	private String downloadedBytes;
 	
+	@Field
+	private String tenant;
+	
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getUser() {
 		return user;
 	}
@@ -72,6 +87,14 @@ public class Stats {
 
 	public void setDownloadedBytes(String downloadedBytes) {
 		this.downloadedBytes = downloadedBytes;
+	}
+
+	public String getTenant() {
+		return tenant;
+	}
+
+	public void setTenant(String tenant) {
+		this.tenant = tenant;
 	}
 
 }

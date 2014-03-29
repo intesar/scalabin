@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class ActivityServiceImpl {
 
 	@Autowired
 	private ActivitySolrRepo activitySolrRepo;
+	
+	@Autowired
+	UsersServiceImpl usersServiceImpl;
 
 	public void addActivity(String type, String on, String size, String tenant) {
 		Activity a = new Activity();
@@ -42,23 +46,52 @@ public class ActivityServiceImpl {
 		a.setTenantId(tenant);
 		save(a);
 		
-		Stats stat = statServiceImpl.findByUser(user);
+		Stats stat = statServiceImpl.findByUserAndTenant(user, tenant);
 		if(stat!= null)
 		{
 			switch (type) {
 			case "post":
-				stat.setUploadedBytes(String.valueOf(Integer.valueOf(stat
-						.getUploadedBytes()) + Integer.valueOf(size)));
-				stat.setStorage(stat.getStorage() + size);
+				String ub = "0";
+				if (StringUtils.isNotBlank(stat
+						.getUploadedBytes())) {
+					ub = stat
+							.getUploadedBytes();
+				}
+				stat.setUploadedBytes(String.valueOf (Integer.valueOf(ub) + Integer.valueOf(size)));
+				String s = "0";
+				if (StringUtils.isNotBlank(stat
+						.getStorage())) {
+					s = stat
+							.getStorage();
+				}
+				stat.setStorage(String.valueOf (Integer.valueOf(s) + Integer.valueOf(size)));
+				break;
 			case "get":
-				stat.setDownloadedBytes(String.valueOf(Integer.valueOf(stat
-						.getDownloadedBytes()) + Integer.valueOf(size)));
+				String db = "0";
+				if (StringUtils.isNotBlank(stat
+						.getDownloadedBytes())) {
+					db = stat
+							.getDownloadedBytes();
+				}
+				stat.setDownloadedBytes(String.valueOf (Integer.valueOf(db) + Integer.valueOf(size)));
+				break;
 			case "delete":
-				stat.setStorage(String.valueOf(Integer.valueOf(stat
-						.getStorage()) - Integer.valueOf(size)));
+				String s1 = "0";
+				if (StringUtils.isNotBlank(stat
+						.getStorage())) {
+					s1 = stat
+							.getStorage();
+				}
+				stat.setStorage(String.valueOf(Integer.valueOf(s1) - Integer.valueOf(size)));
+				break;
 			case "search":
-				stat.setDownloadedBytes(String.valueOf(Integer.valueOf(stat
-						.getDownloadedBytes()) + 1));
+				String db1 = "0";
+				if (StringUtils.isNotBlank(stat
+						.getDownloadedBytes())) {
+					db1 = stat
+							.getDownloadedBytes();
+				}
+				stat.setDownloadedBytes(String.valueOf(Integer.valueOf(db1) + 1));
 			default:
 			}
 			statServiceImpl.save(stat);
@@ -67,6 +100,7 @@ public class ActivityServiceImpl {
 			stats.setMonth("March");
 			stats.setYear("2014");
 			stats.setUser(user);
+			stats.setTenant(this.usersServiceImpl.getTenant(user));
 			switch (type) {
 			case "post":
 				stats.setUploadedBytes(size);
@@ -76,7 +110,7 @@ public class ActivityServiceImpl {
 			default:
 				// delete & search on new objects not allowed
 			}
-			statServiceImpl.save(stat);
+			statServiceImpl.save(stats);
 		}
 	}
 	

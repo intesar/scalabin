@@ -68,7 +68,7 @@ public class BucketRestService {
 		objServiceImpl.save(obj);
 		
 		// activity
-		activityServiceImpl.addActivity("post", obj.getId(), "0K", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("post", obj.getId(), "100", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 		
 		return Response.status(200).entity(obj.getId()).build();
 	}
@@ -83,7 +83,7 @@ public class BucketRestService {
 		objServiceImpl.delete(id);
 		
 		// activity
-		activityServiceImpl.addActivity("delete", id, "0K", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("delete", id, "100", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 				
 		return Response.status(200).entity(SUCCESS).build();
 	}
@@ -95,7 +95,7 @@ public class BucketRestService {
 		System.out.println("Bucket is: " + id);
 		
 		// activity
-		activityServiceImpl.addActivity("get", id, "0K", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("get", id, "100", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 		
 		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser(), usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 	}
@@ -117,6 +117,9 @@ public class BucketRestService {
 		
 		obj.setShared("public");
 		objServiceImpl.save(obj);
+		
+		// activity
+		activityServiceImpl.addActivity("post", id, "100", usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
 		
 		return Response.status(200).entity(id).build();
 	}

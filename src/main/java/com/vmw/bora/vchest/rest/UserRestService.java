@@ -39,7 +39,7 @@ public class UserRestService {
 		usersService.save(user);
 		
 		// activity
-		activityServiceImpl.addActivity("addUser", "Users", "0K", usersService.getTenant(UserContext.getLoggedInUser()));
+		//activityServiceImpl.addActivity("addUser", "Users", "0K", usersService.getTenant(UserContext.getLoggedInUser()));
 
 		return "done";
 	}

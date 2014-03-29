@@ -1,5 +1,8 @@
 package com.vmw.bora.vchest.services;
 
+import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ public class StatsServiceImpl {
 	private StatsSolrRepo statsSolrRepo;
 
 	public void save(Stats stats) {
+		if ( StringUtils.isEmpty(stats.getId())) {
+			stats.setId(UUID.randomUUID().toString());
+		}
 		statsRepo.save(stats);
 		statsSolrRepo.save(stats);
 	}
@@ -29,7 +35,11 @@ public class StatsServiceImpl {
 		statsRepo.save(stats);
 	}
 	
-	public Stats findByUser(String user) {
-		return statsRepo.findOne(user);
+	//public Stats findByUser(String user) {
+	//	return statsSolrRepo.findByUser(user);
+	//}
+	
+	public Stats findByUserAndTenant(String user, String tenant ) {
+		return statsSolrRepo.findByUserAndTenant(user,tenant);
 	}
 }

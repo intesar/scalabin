@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.vmw.bora.vchest.domain.Stats;
 import com.vmw.bora.vchest.services.StatsServiceImpl;
+import com.vmw.bora.vchest.services.UsersServiceImpl;
 
 @Component
 @Path("/stats")
@@ -21,12 +22,16 @@ public class StatsRestService {
 	@Autowired
 	StatsServiceImpl statsServiceImpl;
 	
+	@Autowired
+	UsersServiceImpl usersServiceImpl;
+	
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Path("/user/{id}")
-	public Stats get(@PathParam("id") String id) {
+	public Stats get() {
+		String id = UserContext.getLoggedInUser();
+		String tenant = usersServiceImpl.getTenant(id);
 		System.out.println("Showing stats for user: " + id);
-		Stats stats =  statsServiceImpl.findByUser(id);
+		Stats stats =  statsServiceImpl.findByUserAndTenant(id, tenant);
 		return stats;
 	}
 }
