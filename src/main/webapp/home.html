@@ -79,20 +79,21 @@ div#users-contain table td,div#users-contain table th {
 							data,
 							function(arrayID, obj) {
 								objs[obj.id] = obj;
-								var row = ('<tr> <td align="center" class="' 
-						+ obj.id +'"><a>'
+								var row = ('<tr> <td align="left"> <a href="javascript:void(0)" class="'
+										+ obj.id
+										+ ' name">'
 										+ obj.name
-										+ '</a></td> <td align="center"><a>'
+										+ '</a></td> <td align="left"><a>'
 										+ obj.kind
-										+ '</a></td> <td align="center"><a>'
+										+ '</a></td> <td align="left"><a>'
 										+ obj.modified
-										+ '</a></td><td align="center">'
+										+ '</a></td><td align="left">'
 										+ obj.size
-										+ '</td><td align="center">'
+										+ '</td><td align="left">'
 										+ obj.location
-										+ '</td><td align="center">'
+										+ '</td><td align="left">'
 										+ obj.owner
-										+ '</td><td align="center">'
+										+ '</td><td align="left">'
 										+ obj.shared
 										+ '</td><td><a href="javascript:void(0)" class="'
 										+ obj.id
@@ -108,17 +109,16 @@ div#users-contain table td,div#users-contain table th {
 				"click",
 				"td",
 				function(event) {
-					if (event.currentTarget.className) {
-						currentBucket = event.currentTarget.className;
-						$(".parent").val(currentBucket);
-						$.getJSON("rest/bucket/" + currentBucket, display);
-						$("#location").html(
-								objs[currentBucket].location + "/"
-										+ objs[currentBucket].name);
-					}
 					if (event.target.className) {
 						var tokens = event.target.className.split(" ");
-						if (tokens[1] == "delete") {
+						currentBucket = tokens[0]
+						if (tokens[1] == "name") {
+							$(".parent").val(currentBucket);
+							$.getJSON("rest/bucket/" + currentBucket, display);
+							$("#location").html(
+									objs[currentBucket].location + "/"
+											+ objs[currentBucket].name);
+						} else if (tokens[1] == "delete") {
 							$.ajax({
 								url : "rest/bucket/" + tokens[0],
 								type : "DELETE",
@@ -161,10 +161,10 @@ div#users-contain table td,div#users-contain table th {
 			modal : true
 		});
 
-		$("#create-user").button().click(function() {
+		$("#create-user").click(function() {
 			$("#dialog-form").dialog("open");
 		});
-		$("#create-user1").button().click(function() {
+		$("#create-user1").click(function() {
 			$("#dialog-form1").dialog("open");
 		});
 
@@ -185,10 +185,15 @@ div#users-contain table td,div#users-contain table th {
 					})
 				})
 
-		$("#search").click(function() {
-			$.getJSON("rest/search/" + $("#q").val(), display);
-		})
-
+		$('#q').keypress(function(event) {
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			if (keycode == '13') {
+				if ($("#q").val().length > 0 )
+					$.getJSON("rest/search/" + $("#q").val(), display);
+				else 
+					$.getJSON("rest/bucket/home", display);
+			}
+		});
 	});
 </script>
 
@@ -196,20 +201,18 @@ div#users-contain table td,div#users-contain table th {
 <body>
 
 	<div align="center">
-		<a href="">Home</a>
-		<button id="create-user">Upload</button>
-		<button id="create-user1">Add Folder</button>
-		<input type="text" id="q" />
-		<button id="search">Search</button>
-		<p>
-			<a href="sign-out">logout</a>
-		</p>
 
+		<a href="">Home</a> <a href="javascript:void(0)" id="create-user">Upload</a>
+		<a href="javascript:void(0)" id="create-user1">Add Folder</a> <a
+			href="sign-out">logout</a>
+	</div>
+	<div align="center">
+		<span> <input type="text" id="q" />
+			<h3 id="location"></h3>
+		</span>
 	</div>
 
 	<div align="center">
-
-		<h3 id="location"></h3>
 		<table style="width: 90%;" id="cart_table"
 			class="ui-widget ui-widget-content">
 			<tr class="ui-widget-header ">
