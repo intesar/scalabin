@@ -24,12 +24,13 @@ public interface ObjSolrRepo extends SolrCrudRepository<Obj, String> {
 	@Query("kind:*?0*")
 	public List<Obj> findByKind(String searchTerm, Sort s);
 
-	@Query("id:*?0* OR " + "name:*?0* OR " + "kind:*?0* OR "
-			+ "locationUri:*?0* OR " + "size:*?0* OR " + "parent:*?0* OR "
-			+ "modified:*?0* OR " + "chunkCount:*?0* OR "
-			+ "owner:*?0* OR " + "tenantId:*?0* OR " + "groupId:*?0* OR "
-			+ "shared:*?0* OR ")
-	public List<Obj> findByAllFields(String searchTerm, Sort s);
+	@Query("name:?0 OR name:*?0* AND (tenantId:?2 AND (owner:?1 OR shared:public))")
+//	@Query("id:*?0* OR " + "name:*?0* OR " + "kind:*?0* OR "
+//			+ "location:*?0* OR " + "size:*?0* OR " + "parent:*?0* OR "
+//			+ "modified:*?0* OR " + "chunkCount:*?0* OR "
+//			+ "owner:*?0* OR " + "tenantId:*?0* OR " + "groupId:*?0* OR "
+//			+ "shared:*?0* OR ")
+	public List<Obj> findByAllFields(String searchTerm, String username, String tenant, Sort s);
 	
 	public List<Obj> findByNameContainingAndOwnerAndTenantId(String name, String owner, String tenant);
 

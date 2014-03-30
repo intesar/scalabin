@@ -3,7 +3,7 @@
     <display-name>vChest</display-name>
     <session-config>
         <session-timeout>
-            1
+            30
         </session-timeout>
     </session-config>
     <welcome-file-list>

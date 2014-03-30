@@ -47,14 +47,14 @@ public class SearchRestService {
 	 * objSearchServiceImpl.searchByKind(term); }
 	 */
 
-	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Path("/user/{id}/query/{q}")
-	public List<Obj> getByAll(@PathParam("id") String id,
-			@PathParam("q") String q) {
-		logger.info("search on query [{}]", q);
-		return objSearchServiceImpl.searchByAllFields(q);
-	}
+//	@GET
+//	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+//	@Path("/user/{id}/query/{q}")
+//	public List<Obj> getByAll(@PathParam("id") String id,
+//			@PathParam("q") String q) {
+//		logger.info("search on query [{}]", q);
+//		return objSearchServiceImpl.searchByAllFields(q);
+//	}
 
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -65,7 +65,7 @@ public class SearchRestService {
 		String tenant = UserContext.getUserTenant();
 
 		List<Obj> result = objSearchServiceImpl
-				.findByBucketNameContainingAndOwnerAndTenant(q, owner, tenant);
+				.searchByAllFields(q, owner, tenant);
 
 		// activity
 		activityServiceImpl.addActivity("search", "Obj", result.size(), UserContext.getUserTenant());

@@ -29,9 +29,9 @@ public class ObjSearchServiceImpl {
 		return result;
 	}
 
-	public List<Obj> searchByAllFields(String searchTerm) {
+	public List<Obj> searchByAllFields(String searchTerm, String username, String tenant) {
 		List<Obj> result = null;
-		result = objSolrRepo.findByAllFields(searchTerm,
+		result = objSolrRepo.findByAllFields(searchTerm, username, tenant,
 				SearchUtil.sortByBucketName());
 		return result;
 	}
