@@ -66,12 +66,11 @@ public class BucketRestService {
 		obj.setChunkCount(0);
 		obj.setKind("folder");
 		obj.setOwner(UserContext.getLoggedInUser());
-		obj.setTenantId(usersServiceImpl.getTenant(obj.getOwner()));
+		obj.setTenantId(UserContext.getUserTenant());
 		objServiceImpl.save(obj);
 
 		// activity
-		activityServiceImpl.addActivity("post", obj.getId(), 100,
-				usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("post", obj.getId(), 100, UserContext.getUserTenant());
 
 		return Response.status(200).entity(obj.getId()).build();
 	}
@@ -86,8 +85,7 @@ public class BucketRestService {
 		objServiceImpl.delete(id);
 
 		// activity
-		activityServiceImpl.addActivity("delete", id, 100,
-				usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("delete", id, 100, UserContext.getUserTenant());
 
 		return Response.status(200).entity(SUCCESS).build();
 	}
@@ -99,19 +97,16 @@ public class BucketRestService {
 		logger.info("get obj content for [{}]", id);
 
 		// activity
-		activityServiceImpl.addActivity("get", id, 100,
-				usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("get", id, 100, UserContext.getUserTenant());
 
-		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser(),
-				usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		return objServiceImpl.getObjs(id, UserContext.getLoggedInUser(), UserContext.getUserTenant());
 	}
 
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<Obj> getFromHome() {
 		logger.info("get obj [home] contents");
-		return objServiceImpl.getObjs("home", UserContext.getLoggedInUser(),
-				usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		return objServiceImpl.getObjs("home", UserContext.getLoggedInUser(), UserContext.getUserTenant());
 	}
 
 	@POST
@@ -121,15 +116,14 @@ public class BucketRestService {
 		logger.info("make obj [{}] public", id);
 
 		String username = UserContext.getLoggedInUser();
-		String tenant = usersServiceImpl.getTenant(username);
+		String tenant = UserContext.getUserTenant();
 		Obj obj = objServiceImpl.getByObjId(id, username, tenant);
 
 		obj.setShared("public");
 		objServiceImpl.save(obj);
 
 		// activity
-		activityServiceImpl.addActivity("post", id, 100,
-				usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("post", id, 100, UserContext.getUserTenant());
 
 		return Response.status(200).entity(id).build();
 	}

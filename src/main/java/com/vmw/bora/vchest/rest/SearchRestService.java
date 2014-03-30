@@ -62,14 +62,13 @@ public class SearchRestService {
 	public List<Obj> getByAll(@PathParam("q") String q) {
 		logger.info("search on query [{}] user [{}]", q, UserContext.getLoggedInUser());
 		String owner = UserContext.getLoggedInUser();
-		String tenant = usersServiceImpl.getTenant(owner);
+		String tenant = UserContext.getUserTenant();
 
 		List<Obj> result = objSearchServiceImpl
 				.findByBucketNameContainingAndOwnerAndTenant(q, owner, tenant);
 
 		// activity
-		activityServiceImpl.addActivity("search", "Obj", result.size(),
-				usersServiceImpl.getTenant(UserContext.getLoggedInUser()));
+		activityServiceImpl.addActivity("search", "Obj", result.size(), UserContext.getUserTenant());
 
 		return result;
 

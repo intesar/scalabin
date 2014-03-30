@@ -1,5 +1,7 @@
 package com.vmw.bora.vchest.rest;
 
+import java.util.UUID;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -37,12 +39,12 @@ public class TenantUserRestService {
 	@Path("/user")
 	public String save(Users user) {
 
-		String tenant = this.usersService.getTenant(UserContext
-				.getLoggedInUser());
+		String tenant = UserContext.getUserTenant();
+		
 		logger.info("add user [{}] tenant [{}] by [{}]", user.getUsername(),
 				tenant, UserContext.getLoggedInUser());
 
-		user.setId(user.getUsername());
+		user.setId(UUID.randomUUID().toString());
 		user.setEnabled(true);
 		user.setTenantId(tenant);
 		usersService.save(user);

@@ -7,12 +7,13 @@
 
 	<!-- HTTP basic authentication in Spring Security -->
 	<http pattern="/rest/users*" security="none" />
+	<http pattern="/index.html" security="none" />
 
 	<http>
 		<intercept-url pattern="/**" access="ROLE_USER" />
-		<form-login/>
+		<form-login />
 		<http-basic />
-    	<logout logout-url="/sign-out"/>
+    	<logout logout-url="/sign-out" logout-success-url="/index.html" />
 	</http>
 
 	<authentication-manager>

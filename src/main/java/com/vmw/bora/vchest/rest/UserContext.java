@@ -8,18 +8,30 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class UserContext {
 
-	private static Logger logger = LoggerFactory.getLogger(UserContext.getLoggedInUser());
+	private static Logger logger = LoggerFactory.getLogger(UserContext
+			.getLoggedInUser());
 
+	/**
+	 * finds logged-in user's username.
+	 */
 	public static String getLoggedInUser() {
-		try {
-			SecurityContext sc = SecurityContextHolder.getContext();
-			Authentication auth = sc.getAuthentication();
-			String name = auth.getName();
-			return name;
-		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage(), ex);
-			throw new RuntimeException("User not authenticated!");
-		}
-
+		String username = getPrincipal();
+		return username.split("@")[0];
 	}
+
+	/**
+	 * finds logged-in user's tenant.
+	 */
+	public static String getUserTenant() {
+		String username = getPrincipal();
+		return username.split("@")[1];
+	}
+
+	private static String getPrincipal() {
+		SecurityContext sc = SecurityContextHolder.getContext();
+		Authentication auth = sc.getAuthentication();
+		String name = auth.getName();
+		return name;
+	}
+
 }

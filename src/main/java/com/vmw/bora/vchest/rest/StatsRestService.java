@@ -31,7 +31,7 @@ public class StatsRestService {
 	public Stats get() {
 		String id = UserContext.getLoggedInUser();
 		logger.info("get stats user [{}]", id);
-		String tenant = usersServiceImpl.getTenant(id);
+		String tenant = UserContext.getUserTenant();
 		Stats stats = statsServiceImpl.findByUserAndTenant(id, tenant);
 		return stats;
 	}

@@ -70,7 +70,7 @@ public class ActivityServiceImpl {
 			stats.setMonth(now.get(Calendar.MONTH));
 			stats.setYear(now.get(Calendar.YEAR));
 			stats.setUsername(user);
-			stats.setTenantId(this.usersServiceImpl.getTenant(user));
+			stats.setTenantId(UserContext.getUserTenant());
 			switch (type) {
 			case "post":
 				stats.setUploadedBytes(size);

@@ -30,11 +30,15 @@ public class UsersServiceImpl {
 		usersSolrRepo.save(users);
 	}
 
-	public Users getByUsername(String username) {
-		return this.usersSolrRepo.findOne(username);
+	public Users getByUsername(String username, String tenant) {
+		return this.usersSolrRepo.findByUsernameAndTenantId(username, tenant);
 	}
-
-	public String getTenant(String username) {
-		return getByUsername(username).getTenantId();
-	}
+		
+//	public Users getByUsername(String username) {
+//		return this.usersSolrRepo.findOne(username);
+//	}
+//
+//	public String getTenant(String username) {
+//		return getByUsername(username).getTenantId();
+//	}
 }

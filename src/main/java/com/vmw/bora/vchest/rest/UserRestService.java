@@ -1,5 +1,7 @@
 package com.vmw.bora.vchest.rest;
 
+import java.util.UUID;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -39,15 +41,14 @@ public class UserRestService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public String save(Users user) {
+		
 		logger.info("add tenant [{}] user [{}]", user.getTenantId(),
 				user.getUsername());
-		user.setId(user.getUsername());
+		
+		user.setId(UUID.randomUUID().toString());
 		user.setEnabled(true);
+		user.setGroupId("default");
 		usersService.save(user);
-
-		// activity
-		// activityServiceImpl.addActivity("addUser", "Users", "0K",
-		// usersService.getTenant(UserContext.getLoggedInUser()));
 
 		return "done";
 	}

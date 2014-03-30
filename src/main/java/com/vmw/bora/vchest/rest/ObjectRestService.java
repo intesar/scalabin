@@ -84,7 +84,7 @@ public class ObjectRestService {
 		obj.setChunkCount(1);
 		obj.setKind("file");
 		obj.setOwner(UserContext.getLoggedInUser());
-		obj.setTenantId(this.usersServiceImpl.getTenant(obj.getOwner()));
+		obj.setTenantId(UserContext.getUserTenant());
 
 		objServiceImpl.save(obj);
 

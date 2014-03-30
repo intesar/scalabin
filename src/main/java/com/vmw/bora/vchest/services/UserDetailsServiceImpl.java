@@ -50,7 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				"found user [{}] and tenant [{}] returning details for authentication",
 				tokens[0], tokens[1]);
 
-		UserDetails details = new User(u.getUsername(), u.getPassword(), true,
+		UserDetails details = new User(username, u.getPassword(), true,
 				true, true, true,
 				Collections.singleton(new GrantedAuthorityImpl("ROLE_USER")));
 		return details;
