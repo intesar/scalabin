@@ -111,8 +111,8 @@ div#users-contain table td,div#users-contain table th {
 				function(event) {
 					if (event.target.className) {
 						var tokens = event.target.className.split(" ");
-						currentBucket = tokens[0]
 						if (tokens[1] == "name") {
+							currentBucket = tokens[0]
 							$(".parent").val(currentBucket);
 							$.getJSON("rest/bucket/" + currentBucket, display);
 							$("#location").html(
