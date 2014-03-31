@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
-@Table
+@Table("binary_content")
 public class Blob {
 
 	@PrimaryKey

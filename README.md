@@ -88,7 +88,7 @@ vChest
 	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, name varchar, kind  varchar, location varchar, size  int, 
 	 parent varchar, modified timestamp, chunkCount int, owner varchar, tenantId varchar, groupId varchar, shared varchar);
 	 
-	 CREATE COLUMNFAMILY blob( id varchar PRIMARY KEY, objId varchar, content blob);
+	 CREATE COLUMNFAMILY binary_content( id varchar PRIMARY KEY, objId varchar, content blob);
 	 
      CREATE COLUMNFAMILY activity( id varchar PRIMARY KEY, username varchar, actionDate timestamp, actionType varchar, objId varchar, objName varchar, 
      	size int, groupId varchar, tenantId varchar);
@@ -133,6 +133,7 @@ curl -i -F name=README.txt -F file=@README.txt http://localhost:8080/vChest/rest
 // verify bucket contents
 curl -X GET -H "Accept: application/json" http://localhost:8080/vChest/rest/bucket -u li2@citi2.com:password
 
+// download
 !!!!ALERT!!!!!
 curl -X GET http://localhost:8080/vChest/rest/object/18667673-1a6d-402f-98d4-95f62263fc7e -u li2@citi2.com:password
 
@@ -144,7 +145,7 @@ curl -H "Accept: application/json" -X GET http://localhost:8080/vChest/rest/sear
 curl -X GET -H "Accept: application/json" http://localhost:8080/vChest/rest/bucket -u li2@citi2.com:password
 
 // delete
-!!!!ALERT!!!!!
+!!!!ALERT !!!!!
 curl -H "Accept: application/json" -X DELETE http://localhost:8080/vChest/rest/bucket/cd91298b-24f6-4599-9c7e-f93a0925a791 -u li2@citi2.com:password
 
 // verify parent

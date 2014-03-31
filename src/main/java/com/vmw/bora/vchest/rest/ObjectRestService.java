@@ -59,14 +59,19 @@ public class ObjectRestService {
 			@FormDataParam("file") FormDataContentDisposition fileDetail,
 			@FormDataParam("parent") String parent) {
 
-		logger.info("uploading file [{}] user [{}]", fileDetail.getFileName(), UserContext.getLoggedInUser());
+		logger.info("uploading file [{}] user [{}]", fileDetail.getFileName(),
+				UserContext.getLoggedInUser());
 		String fileName = "test";
 		if (fileDetail != null) {
 			fileName = fileDetail.getFileName();
 		}
 		ByteBuffer bb = null;
 		try {
+			// logger.info("file contents [{}]",
+			// IOUtils.toString(IOUtils.toByteArray(is), "UTF-8"));
 			bb = ByteBuffer.wrap(IOUtils.toByteArray(is));
+			// logger.info("file contents [{}]", IOUtils.toString(bb.array(),
+			// "UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			// return error
@@ -116,15 +121,25 @@ public class ObjectRestService {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response get(@PathParam("id") String id) {
-		logger.info("downloading file [{}] user[{}]", id, UserContext.getLoggedInUser());
+		logger.info("downloading file [{}] user [{}]", id,
+				UserContext.getLoggedInUser());
+
 		if (!objServiceImpl.find(id)) {
 			return Response.status(404).entity(FAILED).build();
 		}
-		Blob blob = objBlobServiceImpl.find(id);
+
+		Obj obj = objServiceImpl.getByObjId(id, UserContext.getLoggedInUser(),
+				UserContext.getUserTenant());
+
+		Blob blob = objBlobServiceImpl.find(obj.getId());
 		ByteBuffer byteBuffer = blob.getBlob();
-		byte[] byteArray = byteBuffer.array();
-		System.out.print("Sending Response.");
-		return Response.ok(new ByteArrayInputStream(byteArray)).build();
+		byte[] byteArray = BytesUtil.getArray(byteBuffer);
+
+		return Response
+				.ok(byteArray, MediaType.APPLICATION_OCTET_STREAM)
+				.header("content-disposition",
+						"attachment; filename = " + obj.getName()).build();
+
 	}
 
 }

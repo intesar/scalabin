@@ -11,6 +11,6 @@ import com.vmw.bora.vchest.domain.Blob;
 @Repository
 public interface ObjBlobRepo extends TypedIdCassandraRepository<Blob, String> {
 
-	@Query("SELECT * FROM blob o WHERE o.id = ?1")
-	List<Blob> findByObjId(String id);
+	//@Query("SELECT * FROM blob o WHERE o.id = ?1")
+	//List<Blob> findByObjId(String id);
 }
