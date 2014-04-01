@@ -65,6 +65,7 @@ public class BucketRestService {
 		obj.setModified(new Date());
 		obj.setChunkCount(0);
 		obj.setKind("folder");
+		obj.setSize(0);
 		obj.setOwner(UserContext.getLoggedInUser());
 		obj.setTenantId(UserContext.getUserTenant());
 		objServiceImpl.save(obj);

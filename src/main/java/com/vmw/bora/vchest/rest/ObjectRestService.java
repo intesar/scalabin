@@ -90,9 +90,15 @@ public class ObjectRestService {
 		obj.setKind("file");
 		obj.setOwner(UserContext.getLoggedInUser());
 		obj.setTenantId(UserContext.getUserTenant());
+		obj.setSize(bb.limit());
 
 		objServiceImpl.save(obj);
 
+		Obj pObj = objServiceImpl.getByObjId(obj.getParent(), UserContext.getLoggedInUser(), UserContext.getUserTenant());
+		pObj.setSize(pObj.getSize() + obj.getSize());
+		objServiceImpl.save(pObj);
+		
+		
 		Blob blob = new Blob();
 		blob.setId(obj.getId());
 		blob.setBlob(bb);
