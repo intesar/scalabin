@@ -22,7 +22,7 @@ import com.vmw.bora.vchest.repo.solr.ObjSolrRepo;
 public class ObjServiceImplTest {
 
 	@Autowired()
-	ObjServiceImpl objService;
+	ObjService objService;
 
 	@Autowired()
 	ObjSolrRepo repo;

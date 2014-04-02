@@ -32,6 +32,7 @@ vChest
 	<field name="size" type="long" indexed="true" stored="true"/>
 	<field name="modified" type="date" indexed="true" stored="true"/>
 	<field name="chunkCount" type="long" indexed="true" stored="true"/>
+	<field name="itemCount" type="long" indexed="true" stored="true"/>
 	<field name="kind" type="text_general" indexed="true" stored="true"/>
 	<field name="shared" type="text_general" indexed="true" stored="true"/>
 	
@@ -88,6 +89,8 @@ vChest
 	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, name varchar, kind  varchar, location varchar, size  int, 
 	 parent varchar, modified timestamp, chunkCount int, owner varchar, tenantId varchar, groupId varchar, shared varchar);
 	 
+	 ALTER COLUMNFAMILY obj ADD itemCount int;
+	 
 	 CREATE COLUMNFAMILY binary_content( id varchar PRIMARY KEY, objId varchar, content blob);
 	 
      CREATE COLUMNFAMILY activity( id varchar PRIMARY KEY, username varchar, actionDate timestamp, actionType varchar, objId varchar, objName varchar, 
@@ -104,7 +107,7 @@ vChest
 ***START****
 
 // Register Tenant & Admin
-curl -X POST -H "Content-Type: application/json" -d '{"username":"bob2","password":"password", "tenantId":"citi2.com"}' http://localhost:8080/vChest/rest/users
+curl -X POST -H "Content-Type: application/json" -d '{"username":"amjad","password":"password", "tenantId":"amj.com"}' http://localhost:8080/vChest/rest/users
 
 // Add user to tenant
 curl -X POST -H "Content-Type: application/json" -d '{"username":"li2","password":"password"}' http://localhost:8080/vChest/rest/tenant/user -u bob2@citi2.com:password
@@ -131,11 +134,11 @@ curl -X GET -H "Accept: application/json" http://localhost:8080/vChest/rest/buck
 curl -i -F name=README.txt -F file=@README.txt http://localhost:8080/vChest/rest/object/ -u li2@citi2.com:password
 
 // verify bucket contents
-curl -X GET -H "Accept: application/json" http://localhost:8080/vChest/rest/bucket -u li2@citi2.com:password
+curl -X GET -H "Accept: application/json" http://localhost:8080/vChest/rest/bucket -u amjad@amj.com:password
 
 // download
 !!!!ALERT!!!!!
-curl -X GET http://localhost:8080/vChest/rest/object/18667673-1a6d-402f-98d4-95f62263fc7e -u li2@citi2.com:password
+curl -X GET http://localhost:8080/vChest/rest/object/142dcbcd-acb6-4b30-a808-58b6826ae271 -u amjad@amj.com:password
 
 // search, delete, share, stats, activity
 
@@ -156,7 +159,7 @@ curl -X GET -H "Accept: application/json" http://localhost:8080/vChest/rest/buck
 curl -H "Accept: application/json" -X POST http://localhost:8080/vChest/rest/bucket/public/d45fef46-13f1-4823-a990-ae390c9d1d39 -u li2@citi2.com:password
 
 // stats
-curl -H "Accept: application/json" -X GET http://localhost:8080/vChest/rest/stats/ -u li2@citi2.com:password
+curl -H "Accept: application/json" -X GET http://localhost:8080/vChest/rest/stats/ -u amjad@amj.com:password
 
 // activity
 curl -H "Accept: application/json" -X GET http://localhost:8080/vChest/rest/activity/ -u li2@citi2.com:password

@@ -1,11 +1,8 @@
 package com.vmw.bora.vchest.rest;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.Date;
-import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -18,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,28 +24,19 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 import com.vmw.bora.vchest.domain.Blob;
 import com.vmw.bora.vchest.domain.Obj;
-import com.vmw.bora.vchest.services.ObjBlobServiceImpl;
-import com.vmw.bora.vchest.services.ObjServiceImpl;
-import com.vmw.bora.vchest.services.UsersServiceImpl;
+import com.vmw.bora.vchest.services.ObjService;
 
 @Component
 @Path("/object")
 public class ObjectRestService {
 
-	final static String HOME = "home";
-	final static String SUCCESS = "success";
-	final static String FAILED = "failed";
-
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	ObjServiceImpl objServiceImpl;
+	private ObjService objService;
 
 	@Autowired
-	ObjBlobServiceImpl objBlobServiceImpl;
-
-	@Autowired
-	UsersServiceImpl usersServiceImpl;
+	private ObjService objBlobService;
 
 	// curl -i -F name=bookmarks.html -u admin:admin -F file=@bookmarks.html
 	// http://localhost:8080/vChest/rest/object
@@ -59,52 +46,24 @@ public class ObjectRestService {
 			@FormDataParam("file") FormDataContentDisposition fileDetail,
 			@FormDataParam("parent") String parent) {
 
-		logger.info("uploading file [{}] user [{}]", fileDetail.getFileName(),
-				UserContext.getLoggedInUser());
-		String fileName = "test";
+		logger.info("uploading file [{}] user [{}] tenant [{}]", fileDetail.getFileName(),
+				UserContext.getLoggedInUser(), UserContext.getUserTenant());
+		
+		String fileName = null;
 		if (fileDetail != null) {
 			fileName = fileDetail.getFileName();
 		}
 		ByteBuffer bb = null;
 		try {
-			// logger.info("file contents [{}]",
-			// IOUtils.toString(IOUtils.toByteArray(is), "UTF-8"));
 			bb = ByteBuffer.wrap(IOUtils.toByteArray(is));
-			// logger.info("file contents [{}]", IOUtils.toString(bb.array(),
-			// "UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			// return error
 		}
 
-		Obj obj = new Obj();
-		obj.setId(UUID.randomUUID().toString());
-		obj.setName(fileName);
-		if (StringUtils.isBlank(parent)) {
-			obj.setParent(HOME);
-		} else {
-			obj.setParent(parent);
-		}
-		obj.setModified(new Date());
-		obj.setChunkCount(1);
-		obj.setKind("file");
-		obj.setOwner(UserContext.getLoggedInUser());
-		obj.setTenantId(UserContext.getUserTenant());
-		obj.setSize(bb.limit());
+		String id = objBlobService.addObject(fileName, parent, bb);
 
-		objServiceImpl.save(obj);
-
-		Obj pObj = objServiceImpl.getByObjId(obj.getParent(), UserContext.getLoggedInUser(), UserContext.getUserTenant());
-		pObj.setSize(pObj.getSize() + obj.getSize());
-		objServiceImpl.save(pObj);
-		
-		
-		Blob blob = new Blob();
-		blob.setId(obj.getId());
-		blob.setBlob(bb);
-		objBlobServiceImpl.save(blob);
-
-		return Response.status(200).entity(obj.getId()).build();
+		return Response.status(200).entity(id).build();
 
 	}
 
@@ -114,10 +73,15 @@ public class ObjectRestService {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{id}")
 	public Response delete(@PathParam("id") String id) {
-		logger.info("delete file [{}]", id);
-		objServiceImpl.delete(id);
-		objBlobServiceImpl.delete(id);
-		return Response.status(200).entity(SUCCESS).build();
+		logger.info("delete file [{}] user [{}] tenant [{}]", id, UserContext.getLoggedInUser(), UserContext.getUserTenant());
+
+		if (objService.getByObjId(id) == null) {
+			return Response.status(404).entity(id).build();
+		}
+
+		objService.delete(id);
+		objBlobService.delete(id);
+		return Response.status(200).entity(id).build();
 	}
 
 	// http://localhost:8080/vChest/rest/object/1b04072f-5e9f-4217-8765-3e80c3fe6007
@@ -127,17 +91,16 @@ public class ObjectRestService {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response get(@PathParam("id") String id) {
-		logger.info("downloading file [{}] user [{}]", id,
-				UserContext.getLoggedInUser());
+		logger.info("downloading file [{}] user [{}] tenant [{}]", id,
+				UserContext.getLoggedInUser(), UserContext.getUserTenant());
 
-		if (!objServiceImpl.find(id)) {
-			return Response.status(404).entity(FAILED).build();
+		if (objService.getByObjId(id) == null) {
+			return Response.status(404).entity(id).build();
 		}
 
-		Obj obj = objServiceImpl.getByObjId(id, UserContext.getLoggedInUser(),
-				UserContext.getUserTenant());
+		Obj obj = objService.getByObjId(id);
 
-		Blob blob = objBlobServiceImpl.find(obj.getId());
+		Blob blob = objBlobService.findBlob(obj.getId());
 		ByteBuffer byteBuffer = blob.getBlob();
 		byte[] byteArray = BytesUtil.getArray(byteBuffer);
 

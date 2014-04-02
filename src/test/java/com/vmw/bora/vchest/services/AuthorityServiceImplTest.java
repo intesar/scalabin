@@ -17,7 +17,7 @@ import com.vmw.bora.vchest.domain.Authority;
 public class AuthorityServiceImplTest {
 
 	@Autowired()
-	AuthorityServiceImpl authorityService;
+	AuthorityService authorityService;
 
 	@Test(expected = RuntimeException.class)
 	public void testSaveAuthority() throws IOException {

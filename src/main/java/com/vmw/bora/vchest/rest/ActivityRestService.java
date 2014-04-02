@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vmw.bora.vchest.domain.Activity;
-import com.vmw.bora.vchest.services.ActivityServiceImpl;
+import com.vmw.bora.vchest.services.ActivityService;
 
 @Component
 @Path("/activity")
@@ -23,14 +23,14 @@ public class ActivityRestService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	ActivityServiceImpl activityServiceImpl;
+	private ActivityService activityService;
 
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<Activity> get() {
-		String id = UserContext.getLoggedInUser();
-		logger.info("get activity [{}]", id);
-		List<Activity> result = activityServiceImpl.findByUser(id);
+		logger.info("get activity user [{}] tenant [{}]", UserContext.getLoggedInUser(), UserContext.getUserTenant());
+		// TODO find user by tenant
+		List<Activity> result = activityService.getAll();
 		return result;
 	}
 }

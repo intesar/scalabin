@@ -1,39 +1,29 @@
 package com.vmw.bora.vchest.domain;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
 @Table
-@XmlRootElement
 public class Users {
 
 	@PrimaryKey
 	@Field
-	@XmlElement
 	private String id;
 
-	@XmlElement
 	@Field("users_username")
 	private String username;
 
-	@XmlElement
 	@Field("users_password")
 	private String password;
 
 	@Field("users_enabled")
-	@XmlElement
 	private boolean enabled;
 
 	@Field("users_groupId")
-	@XmlElement
 	private String groupId;
 
 	@Field("users_tenantId")
-	@XmlElement
 	private String tenantId;
 
 	public String getUsername() {

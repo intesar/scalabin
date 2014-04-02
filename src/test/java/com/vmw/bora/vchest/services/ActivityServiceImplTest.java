@@ -18,7 +18,7 @@ import com.vmw.bora.vchest.domain.Activity;
 public class ActivityServiceImplTest {
 
 	@Autowired()
-	ActivityServiceImpl activityService;
+	ActivityService activityService;
 
 	@Test
 	public void testSaveActivity() throws IOException {

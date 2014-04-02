@@ -14,28 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vmw.bora.vchest.domain.Obj;
-import com.vmw.bora.vchest.services.ActivityServiceImpl;
-import com.vmw.bora.vchest.services.ObjSearchServiceImpl;
-import com.vmw.bora.vchest.services.ObjServiceImpl;
-import com.vmw.bora.vchest.services.UsersServiceImpl;
+import com.vmw.bora.vchest.services.ActivityService;
+import com.vmw.bora.vchest.services.ObjSearchService;
 
 @Component
 @Path("/search")
 public class SearchRestService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	@Autowired
-	ObjServiceImpl objServiceImpl;
 
 	@Autowired
-	UsersServiceImpl usersServiceImpl;
+	private ObjSearchService objSearchService;
 
 	@Autowired
-	ObjSearchServiceImpl objSearchServiceImpl;
-
-	@Autowired
-	ActivityServiceImpl activityServiceImpl;
+	private ActivityService activityService;
 
 	/*
 	 * @GET
@@ -47,28 +39,32 @@ public class SearchRestService {
 	 * objSearchServiceImpl.searchByKind(term); }
 	 */
 
-//	@GET
-//	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-//	@Path("/user/{id}/query/{q}")
-//	public List<Obj> getByAll(@PathParam("id") String id,
-//			@PathParam("q") String q) {
-//		logger.info("search on query [{}]", q);
-//		return objSearchServiceImpl.searchByAllFields(q);
-//	}
+	// @GET
+	// @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	// @Path("/user/{id}/query/{q}")
+	// public List<Obj> getByAll(@PathParam("id") String id,
+	// @PathParam("q") String q) {
+	// logger.info("search on query [{}]", q);
+	// return objSearchServiceImpl.searchByAllFields(q);
+	// }
 
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{q}")
 	public List<Obj> getByAll(@PathParam("q") String q) {
-		logger.info("search on query [{}] user [{}]", q, UserContext.getLoggedInUser());
+		
 		String owner = UserContext.getLoggedInUser();
 		String tenant = UserContext.getUserTenant();
+		
+		logger.info("search on query [{}] user [{}] tenant [{}]", q,
+				owner, tenant);
 
-		List<Obj> result = objSearchServiceImpl
-				.searchByAllFields(q, owner, tenant);
+		List<Obj> result = objSearchService.searchByAllFields(q, owner,
+				tenant);
 
 		// activity
-		activityServiceImpl.addActivity("search", "Obj", result.size(), UserContext.getUserTenant());
+		activityService.addActivity("search", "Obj", result.size(),
+				UserContext.getUserTenant());
 
 		return result;
 

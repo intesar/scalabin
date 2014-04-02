@@ -68,10 +68,10 @@ div#users-contain table td,div#users-contain table th {
 
 <script type="text/javascript">
 	$(function() {
-		var currentBucket = "home";
+		var currentBucket = "";
 		$("#parent").val(currentBucket);
 		var objs = new Array();
-		$("#location").html("/home");
+		$("#location").html("/");
 		var display = function(data) {
 			$('#cart_table').find("tr:gt(0)").remove();
 			$
@@ -89,6 +89,8 @@ div#users-contain table td,div#users-contain table th {
 										+ dateFormat(obj.modified)
 										+ '</a></td><td align="left">'
 										+ bytesToSize(obj.size)
+										+ '</td><td align="left">'
+										+ obj.itemCount
 										+ '</td><td align="left">'
 										+ obj.location
 										+ '</td><td align="left">'
@@ -114,7 +116,7 @@ div#users-contain table td,div#users-contain table th {
 			   return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
 			}
 
-		$.getJSON("rest/bucket/home", display);
+		$.getJSON("rest/bucket/", display);
 
 		$("#cart_table").on(
 				"click",
@@ -202,7 +204,7 @@ div#users-contain table td,div#users-contain table th {
 				if ($("#q").val().length > 0 )
 					$.getJSON("rest/search/" + $("#q").val(), display);
 				else 
-					$.getJSON("rest/bucket/home", display);
+					$.getJSON("rest/bucket/", display);
 			}
 		});
 	});
@@ -231,6 +233,7 @@ div#users-contain table td,div#users-contain table th {
 				<th>Kind</th>
 				<th>Modified</th>
 				<th>Size</th>
+				<th>Items</th>
 				<th>Location</th>
 				<th>Owner</th>
 				<th>Shared</th>

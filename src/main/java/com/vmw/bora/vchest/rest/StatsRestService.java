@@ -11,26 +11,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vmw.bora.vchest.domain.Stats;
-import com.vmw.bora.vchest.services.StatsServiceImpl;
-import com.vmw.bora.vchest.services.UsersServiceImpl;
+import com.vmw.bora.vchest.services.UsersService;
+import com.vmw.bora.vchest.services.impl.StatsServiceImpl;
 
 @Component
 @Path("/stats")
 public class StatsRestService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	@Autowired
-	StatsServiceImpl statsServiceImpl;
 
 	@Autowired
-	UsersServiceImpl usersServiceImpl;
+	private StatsServiceImpl statsServiceImpl;
+
+	@Autowired
+	UsersService usersServiceImpl;
 
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Stats get() {
+		logger.info("get stats user [{}] tenants [{}]", UserContext.getLoggedInUser(), UserContext.getUserTenant());
 		String id = UserContext.getLoggedInUser();
-		logger.info("get stats user [{}]", id);
 		String tenant = UserContext.getUserTenant();
 		Stats stats = statsServiceImpl.findByUserAndTenant(id, tenant);
 		return stats;

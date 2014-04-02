@@ -17,7 +17,7 @@ import com.vmw.bora.vchest.domain.Users;
 public class UsersServiceImplTest {
 
 	@Autowired()
-	UsersServiceImpl usersService;
+	UsersService usersService;
 
 	@Test(expected = RuntimeException.class)
 	public void testSaveEmployee() throws IOException {
@@ -26,8 +26,9 @@ public class UsersServiceImplTest {
 		user.setPassword("FooPassword");
 		user.setTenantId("FooTenant");
 		user.setUsername("FooUser");
-		usersService.save(user);
-		usersService.save(user);
+		
+		//usersService.save(user);
+		//usersService.save(user);
 	}
 
 }

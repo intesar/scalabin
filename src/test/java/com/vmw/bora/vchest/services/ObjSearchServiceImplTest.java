@@ -20,15 +20,15 @@ import com.vmw.bora.vchest.domain.Obj;
 public class ObjSearchServiceImplTest {
 
 	@Autowired()
-	ObjServiceImpl objService;
+	ObjService objService;
 
 	@Autowired()
-	ObjSearchServiceImpl objSearchService;
+	ObjSearchService objSearchService;
 	
 	@Test
 	public void testSearchByKind() {
 		
-		objService.deleteAll(); // clear all prev. records
+		//objService.deleteAll(); // clear all prev. records
 		
 		Obj o1 = new Obj();
 		o1.setKind("text");

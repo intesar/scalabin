@@ -29,10 +29,16 @@ public class Obj {
 	private String parent;
 
 	@Field
+	private boolean home;
+
+	@Field
 	private Date modified;
 
 	@Field
 	private long chunkCount;
+
+	@Field
+	private long itemCount;
 
 	@Field
 	private String owner;
@@ -86,6 +92,14 @@ public class Obj {
 		this.size = size;
 	}
 
+	public boolean isHome() {
+		return home;
+	}
+
+	public void setHome(boolean home) {
+		this.home = home;
+	}
+
 	public String getParent() {
 		return parent;
 	}
@@ -108,6 +122,14 @@ public class Obj {
 
 	public void setChunkCount(long chunkCount) {
 		this.chunkCount = chunkCount;
+	}
+
+	public long getItemCount() {
+		return itemCount;
+	}
+
+	public void setItemCount(long itemCount) {
+		this.itemCount = itemCount;
 	}
 
 	public String getOwner() {

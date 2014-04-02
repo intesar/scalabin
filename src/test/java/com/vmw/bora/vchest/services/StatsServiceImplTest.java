@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vmw.bora.vchest.domain.Stats;
+import com.vmw.bora.vchest.services.impl.StatsServiceImpl;
 
 @Configurable
 @RunWith(SpringJUnit4ClassRunner.class)
