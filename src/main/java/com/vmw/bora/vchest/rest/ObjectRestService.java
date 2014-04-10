@@ -46,8 +46,9 @@ public class ObjectRestService {
 			@FormDataParam("file") FormDataContentDisposition fileDetail,
 			@FormDataParam("parent") String parent) {
 
-		logger.info("uploading file [{}] user [{}] tenant [{}]", fileDetail.getFileName(),
-				UserContext.getLoggedInUser(), UserContext.getUserTenant());
+		logger.info("uploading file [{}] parent [{}] user [{}] tenant [{}]", 
+				new Object[] {fileDetail.getFileName(), parent,
+				UserContext.getLoggedInUser(), UserContext.getUserTenant()});
 		
 		String fileName = null;
 		if (fileDetail != null) {

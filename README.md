@@ -60,7 +60,8 @@ vChest
     <field name="storage" type="long" indexed="true" stored="true"/>
     <field name="uploadedBytes" type="long" indexed="true" stored="true"/>
     <field name="downloadedBytes" type="long" indexed="true" stored="true"/>
-    
+
+    <field name="home" type="boolean" indexed="true" stored="true"/>    
     <field name="parent" type="text_general" indexed="true" stored="true"/>
     <field name="owner" type="text_general" indexed="true" stored="true"/>
     
@@ -71,7 +72,6 @@ vChest
 // run the below commends on cql cli.
 
 	 
-	 DROP KEYSPACE vChest;
      
      DROP COLUMNFAMILY users;
      DROP COLUMNFAMILY authority;
@@ -80,16 +80,19 @@ vChest
      DROP COLUMNFAMILY activity;
      DROP COLUMNFAMILY stats;
      
+	 DROP KEYSPACE vchest;
+     
      create keyspace vchest with replication = {'class':'SimpleStrategy', 'replication_factor':1} ;
      use vchest ;
     
      CREATE COLUMNFAMILY users ( id varchar PRIMARY KEY, username varchar, password varchar, enabled boolean, groupId varchar, tenantId varchar);
 	 CREATE COLUMNFAMILY authority( id varchar PRIMARY KEY, userId varchar, authority varchar );
 	 
-	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, name varchar, kind  varchar, location varchar, size  int, 
+	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, name varchar, kind  varchar, location varchar, size  bigint, 
 	 parent varchar, modified timestamp, chunkCount int, owner varchar, tenantId varchar, groupId varchar, shared varchar);
 	 
 	 ALTER COLUMNFAMILY obj ADD itemCount int;
+	 ALTER COLUMNFAMILY obj ADD home boolean;
 	 
 	 CREATE COLUMNFAMILY binary_content( id varchar PRIMARY KEY, objId varchar, content blob);
 	 
@@ -107,7 +110,7 @@ vChest
 ***START****
 
 // Register Tenant & Admin
-curl -X POST -H "Content-Type: application/json" -d '{"username":"amjad","password":"password", "tenantId":"amj.com"}' http://localhost:8080/vChest/rest/users
+curl -X POST -H "Content-Type: application/json" -d '{"username":"imran","password":"password", "tenantId":"imran.com"}' http://localhost:8080/vChest/rest/users
 
 // Add user to tenant
 curl -X POST -H "Content-Type: application/json" -d '{"username":"li2","password":"password"}' http://localhost:8080/vChest/rest/tenant/user -u bob2@citi2.com:password
@@ -124,7 +127,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"Music", "parent":"
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Pictures", "parent":"44a40505-a9e8-4fec-b61c-01c1d57421ae"}' http://localhost:8080/vChest/rest/bucket -u li2@citi2.com:password
 
 // view home bucket
-curl -X GET -H "Accept: application/json" http://localhost:8080/vChest/rest/bucket -u li2@citi2.com:password
+curl -X GET -H "Accept: application/json" http://localhost:8080/vChest/rest/bucket -u kulsum@bia.com:password
 !!!!ALERT!!!!!
 
 // view bucket contents
@@ -163,3 +166,14 @@ curl -H "Accept: application/json" -X GET http://localhost:8080/vChest/rest/stat
 
 // activity
 curl -H "Accept: application/json" -X GET http://localhost:8080/vChest/rest/activity/ -u li2@citi2.com:password
+
+
+Performance nos
+1 MB 3000 uploads - 18 seconds
+1 MB 4000 uploads - 15 seconds
+1 MB 10000 uploads - 18 seconds
+
+maxWarmingSearchers=50
+*** 1 MB 300 concurrent uploads - 12 seconds **
+
+
