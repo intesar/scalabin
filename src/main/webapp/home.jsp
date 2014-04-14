@@ -249,11 +249,11 @@
 			</div>
 			<div class="col-lg-4">
 				<a href="">Home</a> <a href="javascript:void(0)" data-toggle="modal"
-					data-target=".file-modal-sm">Upload</a>
+					data-target=".file-modal-sm">Upload file</a>
 				<!-- Small modal -->
 				<a href="javascript:void(0)" data-toggle="modal"
-					data-target=".folder-modal-sm">Add Folder</a> <a
-					href="j_spring_security_logout">logout</a>
+					data-target=".folder-modal-sm">Add folder</a> <a
+					href="j_spring_security_logout">Logout</a>
 			</div>
 		</div>
 
