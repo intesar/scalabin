@@ -5,72 +5,29 @@
 
 <html>
 <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>vChest</title>
 <link rel="stylesheet"
-	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<style>
-body {
-	font-size: 92.5%;
-}
+	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
-label,input {
-	display: block;
-}
-
-input.text {
-	margin-bottom: 12px;
-	width: 95%;
-	padding: .4em;
-}
-
-fieldset {
-	padding: 0;
-	border: 0;
-	margin-top: 25px;
-}
-
-h1 {
-	font-size: 1.2em;
-	margin: .6em 0;
-}
-
-div#users-contain {
-	width: 350px;
-	margin: 20px 0;
-}
-
-div#users-contain table {
-	margin: 1em 0;
-	border-collapse: collapse;
-	width: 100%;
-}
-
-div#users-contain table td,div#users-contain table th {
-	border: 1px solid #eee;
-	padding: .6em 10px;
-	text-align: left;
-}
-
-.ui-dialog .ui-state-error {
-	padding: .3em;
-}
-
-.validateTips {
-	border: 1px solid transparent;
-	padding: 0.3em;
-}
-</style>
 <script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
-	type="text/javascript"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
-
 
 <script type="text/javascript">
 	$(function() {
 		var currentBucket = "";
+		// Variable to store your files
+		var files;
 		$("#parent").val(currentBucket);
 		var objs = new Array();
 		$("#location").html("/");
@@ -85,14 +42,10 @@ div#users-contain table td,div#users-contain table th {
 										+ obj.id
 										+ ' name">'
 										+ obj.name
-										+ '</a></td> <td align="left"><a>'
-										+ obj.kind
-										+ '</a></td> <td align="left"><a>'
-										+ dateFormat(obj.modified)
 										+ '</a></td><td align="left">'
-										+ bytesToSize(obj.size)
+										+ dateFormat(obj.modified)
 										+ '</td><td align="left">'
-										+ obj.itemCount
+										+ bytesToSize(obj.size)
 										+ '</td><td align="left">'
 										+ obj.location
 										+ '</td><td align="left">'
@@ -108,15 +61,17 @@ div#users-contain table td,div#users-contain table th {
 		}
 		function dateFormat(dt) {
 			var date = new Date(dt);
-			return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+			return (date.getMonth() + 1) + '/' + date.getDate() + '/'
+					+ date.getFullYear();
 		}
 		function bytesToSize(bytes) {
-			   var k = 1000;
-			   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-			   if (bytes === 0) return '0 Bytes';
-			   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)),10);
-			   return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
-			}
+			var k = 1000;
+			var sizes = [ 'Bytes', 'KB', 'MB', 'GB', 'TB' ];
+			if (bytes === 0)
+				return '0 Bytes';
+			var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
+			return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+		}
 
 		$.getJSON("rest/bucket/", display);
 
@@ -192,9 +147,12 @@ div#users-contain table td,div#users-contain table th {
 						data : '{ "name": "' + $("#folderName").val()
 								+ '", "parent": "' + currentBucket + '" }',
 						error : function(xhr, status) {
+							$('#addFolderModal').modal('hide')
+							$("#folderName").val('')
 							$.getJSON("rest/bucket/" + currentBucket, display);
 						},
 						success : function(result) {
+							$('#addFolderModal').modal('hide')
 							$.getJSON("rest/bucket/" + currentBucket, display);
 						}
 					})
@@ -203,72 +161,173 @@ div#users-contain table td,div#users-contain table th {
 		$('#q').keypress(function(event) {
 			var keycode = (event.keyCode ? event.keyCode : event.which);
 			if (keycode == '13') {
-				if ($("#q").val().length > 0 )
+				if ($("#q").val().length > 0)
 					$.getJSON("rest/search/" + $("#q").val(), display);
-				else 
+				else
 					$.getJSON("rest/bucket/", display);
 			}
 		});
+
+		$('#search').click(function() {
+			if ($("#q").val().length > 0)
+				$.getJSON("rest/search/" + $("#q").val(), display);
+			else
+				$.getJSON("rest/bucket/", display);
+		})
+
+		
+
+		// Add events
+		$('input[type=file]').on('change', prepareUpload);
+
+		// Grab the files and set them to our variable
+		function prepareUpload(event) {
+			files = event.target.files;
+		}
+
+		$('#uploadFile').click(uploadFiles);
+
+		// Catch the form submit and upload the files
+		function uploadFiles(event) {
+			//event.stopPropagation(); // Stop stuff happening
+			//event.preventDefault(); // Totally stop stuff happening
+
+			// START A LOADING SPINNER HERE
+
+			// Create a formdata object and add the files
+			var data = new FormData();
+			$.each(files, function(key, value) {
+			    data.append("file", value);
+			});
+			data.append("parent", currentBucket);
+
+			$.ajax({
+				url : 'rest/object',
+				type : 'POST',
+				data : data,
+				cache : false,
+				//contentType : 'multipart/form-data',
+				processData : false, // Don't process the files
+				contentType : false, // Set content type to false as jQuery will tell the server its a query string request
+				success : function(data, textStatus, jqXHR) {
+					if (typeof data.error === 'undefined') {
+						// Success so call function to process the form
+						//submitForm(event, data);
+						$.getJSON("rest/bucket/" + currentBucket, display);
+						$('#addFileModal').modal('hide')
+						$("#file_").val('');
+					} else {
+						// Handle errors here
+						console.log('ERRORS: ' + data.error);
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					// Handle errors here
+					console.log('ERRORS: ' + textStatus);
+					// STOP LOADING SPINNER
+				}
+			});
+		}
 	});
 </script>
 
 </head>
 <body>
 
-	<div align="center">
+	<div class="container">
+		<br />
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="input-group">
+					<input type="text" id="q" class="form-control" placeholder="Search">
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-default" id="search">
+							<span class="glyphicon glyphicon-search"></span> Search
+						</button>
+					</span>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<a href="">Home</a> <a href="javascript:void(0)" data-toggle="modal"
+					data-target=".file-modal-sm">Upload</a>
+				<!-- Small modal -->
+				<a href="javascript:void(0)" data-toggle="modal"
+					data-target=".folder-modal-sm">Add Folder</a> <a
+					href="j_spring_security_logout">logout</a>
+			</div>
+		</div>
 
-		<a href="">Home</a> <a href="javascript:void(0)" id="create-user">Upload</a>
-		<a href="javascript:void(0)" id="create-user1">Add Folder</a> 
-		<a href="j_spring_security_logout">logout</a>
-	</div>
-	<div align="center">
-		<span> <input type="text" id="q" />
+		<div class="row">
 			<h3 id="location"></h3>
-		</span>
-	</div>
+		</div>
 
-	<div align="center">
-		<table style="width: 90%;" id="cart_table"
-			class="ui-widget ui-widget-content">
-			<tr class="ui-widget-header ">
-				<th>Name</th>
-				<th>Kind</th>
-				<th>Modified</th>
-				<th>Size</th>
-				<th>Items</th>
-				<th>Location</th>
-				<th>Owner</th>
-				<th>Shared</th>
-				<th></th>
-			</tr>
-		</table>
-	</div>
-
-	<div id="dialog-form" title="Upload document">
-		<form action="rest/object" method="post" enctype="multipart/form-data">
-			<fieldset>
-				<p>
-					<input type="file" name="file" size="45" />
-				</p>
-
-				<input type="hidden" name="parent" class="parent"
-					class="text ui-widget-content ui-corner-all"> <input
-					type="submit" value="Upload It" />
-
-			</fieldset>
-		</form>
-	</div>
-
-	<div id="dialog-form1" title="Add Folder">
-		<fieldset>
-
-			<input type="hidden" name="parent" class="parent"
-				class="text ui-widget-content ui-corner-all"> Name: <input
-				type="text" value="" id="folderName" /> <input type="submit"
-				value="Add" id="createFolder" />
+		<div class="panel panel-default">
+			<!-- Table -->
+			<table class="table col-lg-4" id="cart_table">
+				<tr class="">
+					<th>Name</th>
+					<th>Modified</th>
+					<th>Size</th>
+					<th>Location</th>
+					<th>Owner</th>
+					<th>Shared</th>
+					<th></th>
+				</tr>
+			</table>
+		</div>
 
 
-		</fieldset>
+		<div class="modal fade file-modal-sm" tabindex="-1" role="dialog"
+			aria-labelledby="mySmallModalLabel" aria-hidden="true"
+			id="addFileModal">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Upload File</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="parent" class="parent" class="" /> 
+						
+						<input
+							type="file" name="file" size="45" id="file_"/>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="uploadFile">Upload</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="modal fade folder-modal-sm" tabindex="-1" role="dialog"
+			aria-labelledby="mySmallModalLabel" aria-hidden="true"
+			id="addFolderModal">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">New folder</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="parent" class="parent" class="" /> 
+						
+						<input
+							type="text" id="folderName" class="form-control"
+							placeholder="Folder name">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="createFolder">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 </body>
