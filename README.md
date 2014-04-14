@@ -86,6 +86,8 @@ vChest
      use vchest ;
     
      CREATE COLUMNFAMILY users ( id varchar PRIMARY KEY, username varchar, password varchar, enabled boolean, groupId varchar, tenantId varchar);
+	 ALTER COLUMNFAMILY users ADD name varchar;
+	 
 	 CREATE COLUMNFAMILY authority( id varchar PRIMARY KEY, userId varchar, authority varchar );
 	 
 	 CREATE COLUMNFAMILY obj ( id varchar PRIMARY KEY, name varchar, kind  varchar, location varchar, size  bigint, 
@@ -173,7 +175,15 @@ Performance nos
 1 MB 4000 uploads - 15 seconds
 1 MB 10000 uploads - 18 seconds
 
-maxWarmingSearchers=50
+maxWarmingSearchers=50jiuhgy 
 *** 1 MB 300 concurrent uploads - 12 seconds **
+
+// misc
+https://www.serverpronto.com/accounts/knowledgebase.php?action=displayarticle&id=2
+http://stackoverflow.com/questions/18724334/cant-connect-to-cassandra-nohostavailableexception
+https://www.centos.org/docs/5/html/5.1/Deployment_Guide/s1-server-ports.html
+http://zee.linxsol.com/system-administration/qdevice-eth0-does-not-seem-to-be-presentq-after-moving-or-cloning-a-rhelcentos-64-virtual-machine-in-vsphere.html
+http://stackoverflow.com/questions/19034542/how-to-open-port-in-centos
+
 
 

@@ -33,14 +33,14 @@ public class UsersServiceImpl implements UsersService {
 	 * @see com.vmw.bora.vchest.services.impl.UsersService#addUserAndTenant(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Users addUserAndTenant(String username, String password,
+	public Users addUserAndTenant(String name, String username, String password,
 			String tenant) {
 
 		Users user = new Users();
 
 		user.setId(UUID.randomUUID().toString());
 		user.setEnabled(true);
-
+		user.setName(name);
 		user.setUsername(username);
 		user.setPassword(password);
 		user.setTenantId(tenant);

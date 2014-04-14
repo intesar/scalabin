@@ -41,7 +41,7 @@ public class UserRestService {
 		logger.info("adding user [{}] tenant [{}]", dto.getUsername(),
 				dto.getTenantId());
 
-		Users user = usersService.addUserAndTenant(dto.getUsername(),
+		Users user = usersService.addUserAndTenant(dto.getName(), dto.getUsername(),
 				dto.getPassword(), dto.getTenantId());
 
 		return Response.status(200).entity(user.getId()).build();

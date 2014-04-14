@@ -12,7 +12,7 @@ public interface UsersService {
 	 * @param tenant
 	 * @return
 	 */
-	public abstract Users addUserAndTenant(String username, String password,
+	public abstract Users addUserAndTenant(String name, String username, String password,
 			String tenant);
 
 	/**

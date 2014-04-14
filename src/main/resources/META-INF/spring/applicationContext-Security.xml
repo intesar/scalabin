@@ -7,13 +7,19 @@
 
 	<!-- HTTP basic authentication in Spring Security -->
 	<http pattern="/rest/users*" security="none" />
-	<http pattern="/index.html" security="none" />
+	<http pattern="/index.jsp" security="none" />
+	<http pattern="/login.jsp" security="none" />
+	<http pattern="/registration.jsp" security="none" />
 
 	<http>
-		<intercept-url pattern="/**" access="ROLE_USER" />
-		<form-login />
+		<intercept-url pattern="/rest/**" access="ROLE_USER" />
+		<intercept-url pattern="/home.jsp" access="ROLE_USER" />
+		<form-login login-page="/login.jsp" default-target-url="/home.jsp"
+			authentication-failure-url="/login.jsp?error" username-parameter="username"
+			password-parameter="password" />
+		<logout logout-success-url="/login.jsp?logout" />
 		<http-basic />
-    	<logout logout-url="/sign-out" logout-success-url="/index.html" />
+		<!--  <logout logout-url="/sign-out" logout-success-url="/index.html" /> -->
 	</http>
 
 	<authentication-manager>

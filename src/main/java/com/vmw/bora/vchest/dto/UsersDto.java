@@ -7,6 +7,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UsersDto {
 
 	@XmlElement
+	private String name;
+
+	@XmlElement
 	private String username;
 
 	@XmlElement
@@ -14,6 +17,14 @@ public class UsersDto {
 
 	@XmlElement
 	private String tenantId;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getUsername() {
 		return username;

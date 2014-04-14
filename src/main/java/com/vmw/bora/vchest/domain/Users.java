@@ -11,6 +11,9 @@ public class Users {
 	@Field
 	private String id;
 
+	@Field("name")
+	private String name;
+
 	@Field("users_username")
 	private String username;
 
@@ -36,6 +39,14 @@ public class Users {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setUsername(String username) {

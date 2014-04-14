@@ -1,5 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page session="true"%>
 
 <html>
 <head>
@@ -216,8 +218,8 @@ div#users-contain table td,div#users-contain table th {
 	<div align="center">
 
 		<a href="">Home</a> <a href="javascript:void(0)" id="create-user">Upload</a>
-		<a href="javascript:void(0)" id="create-user1">Add Folder</a> <a
-			href="sign-out">logout</a>
+		<a href="javascript:void(0)" id="create-user1">Add Folder</a> 
+		<a href="j_spring_security_logout">logout</a>
 	</div>
 	<div align="center">
 		<span> <input type="text" id="q" />
