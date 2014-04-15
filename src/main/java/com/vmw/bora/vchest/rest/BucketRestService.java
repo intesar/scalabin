@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.vmw.bora.vchest.services.ObjService;
 
 @Component
 @Path("/bucket")
+@Produces({"application/javascript;qs=1", "application/json;qs=0.5"})
 public class BucketRestService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -36,7 +38,6 @@ public class BucketRestService {
 
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response save(BucketDto bucket) {
 		logger.info(
 				"add bucket [{}] parent [{}] user [{}] tenant [{}]",
@@ -56,7 +57,6 @@ public class BucketRestService {
 
 	@DELETE
 	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{id}")
 	public Response delete(@PathParam("id") String id) {
 		logger.info("delete obj [{}] user [{}] tenant [{}]", id, UserContext.getLoggedInUser(),
@@ -72,8 +72,8 @@ public class BucketRestService {
 	}
 
 	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{id}")
+	@JSONP(callback = "eval", queryParam = "callback")
 	public List<Obj> get(@PathParam("id") String id) {
 		logger.info("get obj content for [{}] user [{}] tenant [{}]", id, UserContext.getLoggedInUser(),
 				UserContext.getUserTenant());
@@ -86,7 +86,7 @@ public class BucketRestService {
 	}
 
 	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@JSONP(callback = "eval", queryParam = "callback")
 	public List<Obj> getFromHome() {
 		logger.info("get obj content for [/] user [{}] tenant [{}]", UserContext.getLoggedInUser(),
 				UserContext.getUserTenant());
@@ -94,7 +94,6 @@ public class BucketRestService {
 	}
 
 	@POST
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path(value = "/public/{id}")
 	public Response makeBucketPublic(@PathParam("id") String id) {
 		logger.info("make obj [{}] public user [{}] tenant [{}]", id, UserContext.getLoggedInUser(),

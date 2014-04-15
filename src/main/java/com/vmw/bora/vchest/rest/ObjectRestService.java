@@ -15,13 +15,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
+//import com.sun.jersey.core.header.FormDataContentDisposition;
+//import com.sun.jersey.multipart.FormDataParam;
 import com.vmw.bora.vchest.domain.Blob;
 import com.vmw.bora.vchest.domain.Obj;
 import com.vmw.bora.vchest.services.ObjService;
