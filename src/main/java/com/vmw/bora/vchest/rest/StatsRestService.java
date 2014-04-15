@@ -16,6 +16,7 @@ import com.vmw.bora.vchest.services.impl.StatsServiceImpl;
 
 @Component
 @Path("/stats")
+@Produces({"application/json;qs=1", "application/xml;qs=0.5"})
 public class StatsRestService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -27,7 +28,6 @@ public class StatsRestService {
 	UsersService usersServiceImpl;
 
 	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Stats get() {
 		logger.info("get stats user [{}] tenants [{}]", UserContext.getLoggedInUser(), UserContext.getUserTenant());
 		String id = UserContext.getLoggedInUser();

@@ -25,7 +25,7 @@ import com.vmw.bora.vchest.services.ObjService;
 
 @Component
 @Path("/bucket")
-@Produces({"application/javascript;qs=1", "application/json;qs=0.5"})
+@Produces({"application/json;qs=1", "application/xml;qs=0.5"})
 public class BucketRestService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -73,7 +73,6 @@ public class BucketRestService {
 
 	@GET
 	@Path("/{id}")
-	@JSONP(callback = "eval", queryParam = "callback")
 	public List<Obj> get(@PathParam("id") String id) {
 		logger.info("get obj content for [{}] user [{}] tenant [{}]", id, UserContext.getLoggedInUser(),
 				UserContext.getUserTenant());
@@ -86,7 +85,6 @@ public class BucketRestService {
 	}
 
 	@GET
-	@JSONP(callback = "eval", queryParam = "callback")
 	public List<Obj> getFromHome() {
 		logger.info("get obj content for [/] user [{}] tenant [{}]", UserContext.getLoggedInUser(),
 				UserContext.getUserTenant());

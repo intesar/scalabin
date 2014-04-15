@@ -30,6 +30,7 @@ import com.vmw.bora.vchest.services.ObjService;
 
 @Component
 @Path("/object")
+@Produces({"application/json;qs=1", "application/xml;qs=0.5"})
 public class ObjectRestService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -73,7 +74,6 @@ public class ObjectRestService {
 	// http://localhost:8080/vChest/rest/bucket/706fa510-55d6-4cc3-82bd-6642309c3de8
 	@DELETE
 	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{id}")
 	public Response delete(@PathParam("id") String id) {
 		logger.info("delete file [{}] user [{}] tenant [{}]", id, UserContext.getLoggedInUser(), UserContext.getUserTenant());

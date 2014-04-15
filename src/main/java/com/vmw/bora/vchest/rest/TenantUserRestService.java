@@ -19,6 +19,7 @@ import com.vmw.bora.vchest.services.UsersService;
 
 @Component
 @Path("/tenant")
+@Produces({"application/json;qs=1", "application/xml;qs=0.5"})
 public class TenantUserRestService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -28,14 +29,12 @@ public class TenantUserRestService {
 
 	@GET
 	@Path("/ping")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public String save() {
 		return "live";
 	}
 
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/user")
 	public Response save(UsersDto dto) {
 

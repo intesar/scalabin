@@ -13,8 +13,8 @@
 
 	<http>
 		<intercept-url pattern="/rest/**" access="ROLE_USER" />
-		<intercept-url pattern="/home.jsp" access="ROLE_USER" />
-		<form-login login-page="/login.jsp" default-target-url="/home.jsp"
+		<intercept-url pattern="/home.html" access="ROLE_USER" />
+		<form-login login-page="/login.jsp" default-target-url="/home.html"
 			authentication-failure-url="/login.jsp?error" username-parameter="username"
 			password-parameter="password" />
 		<logout logout-success-url="/login.jsp?logout" />

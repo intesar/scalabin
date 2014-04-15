@@ -18,6 +18,7 @@ import com.vmw.bora.vchest.services.ActivityService;
 
 @Component
 @Path("/activity")
+@Produces({"application/json;qs=1", "application/xml;qs=0.5"})
 public class ActivityRestService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -26,7 +27,6 @@ public class ActivityRestService {
 	private ActivityService activityService;
 
 	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<Activity> get() {
 		logger.info("get activity user [{}] tenant [{}]", UserContext.getLoggedInUser(), UserContext.getUserTenant());
 		// TODO find user by tenant
