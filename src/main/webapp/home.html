@@ -31,7 +31,7 @@
 				</div>
 			</div>
 			<div class="col-lg-4">
-				<a href="">Home</a> <a href="javascript:void(0)" data-toggle="modal"
+				<a href="javascript:void(0)" id="home">Home</a> <a href="javascript:void(0)" data-toggle="modal"
 					data-target=".file-modal-sm">Upload file</a>
 				<!-- Small modal -->
 				<a href="javascript:void(0)" data-toggle="modal"
@@ -233,22 +233,25 @@
 						}
 					})
 				})
+		$("#home").click(function() {
+			$.getJSON(baseUrl + "rest/bucket/", display)
+		})
 
 		$('#q').keypress(function(event) {
 			var keycode = (event.keyCode ? event.keyCode : event.which);
 			if (keycode == '13') {
 				if ($("#q").val().length > 0)
-					$.getJSON(baseUrl + "rest/search/" + $("#q").val());
-				else
-					$.getJSON(baseUrl + "rest/bucket/");
+					$.getJSON(baseUrl + "rest/search/" + $("#q").val(), display);
+				//else
+					//$.getJSON(baseUrl + "rest/bucket/", display);
 			}
 		});
 
 		$('#search').click(function() {
 			if ($("#q").val().length > 0)
-				$.getJSON(baseUrl + "rest/search/" + $("#q").val());
-			else
-				$.getJSON(baseUrl + "rest/bucket/");
+				$.getJSON(baseUrl + "rest/search/" + $("#q").val(), display);
+			//else
+				//$.getJSON(baseUrl + "rest/bucket/");
 		})
 
 		// File upload begin
