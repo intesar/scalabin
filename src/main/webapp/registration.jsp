@@ -54,26 +54,19 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-lg-10">
-						By clicking <strong class="label label-primary">Register</strong>,
-						you agree to the <a href="#" data-toggle="modal"
-							data-target="#t_and_c_m">Terms and Conditions</a> set out by this
-						site.
-					</div>
-				</div>
 
-				<hr class="colorgraph">
 				<div class="row">
-					<div class="col-xs-6 col-md-6">
-						<input type="submit" value="Register"
+					<div class="col-lg-6">
+						<input type="submit" value="Sign Up"
 							class="btn btn-primary btn-block btn-lg" id="register" />
 					</div>
-					<div class="col-xs-6 col-md-6">
-						<a href="home.jsp" class="">Sign In</a>
-					</div>
 				</div>
-				<br/>
+				<br />
+
+				<div class="col-xs-6 col-md-6">
+					<a href="index.jsp">Home</a> <a href="home.html" class="">Sign
+						In</a>
+				</div>
 			</div>
 		</div>
 	</div>

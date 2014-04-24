@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-   
+
 <html>
 <head>
 <meta charset="utf-8">
@@ -13,6 +13,8 @@
 <!-- Optional theme -->
 <link rel="stylesheet"
 	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<style type="text/css">
+</style>
 
 </head>
 <body>
@@ -20,6 +22,19 @@
 	<div class="container">
 		<br />
 		<div class="row">
+			<div class="col-lg-4">
+				<a href="javascript:void(0)" id="home"
+					class="glyphicon glyphicon-home"></a> &nbsp;&nbsp;<a
+					href="javascript:void(0)" data-toggle="modal"
+					data-target=".file-modal-sm"
+					class="glyphicon glyphicon-cloud-upload"></a>&nbsp;&nbsp;
+				<!-- Small modal -->
+				<a href="javascript:void(0)" data-toggle="modal"
+					data-target=".folder-modal-sm"
+					class="glyphicon glyphicon-folder-close"></a>&nbsp;&nbsp; <a
+					href="j_spring_security_logout"><span
+					class="glyphicon glyphicon-log-out"></span></a>
+			</div>
 			<div class="col-lg-4">
 				<div class="input-group">
 					<input type="text" id="q" class="form-control" placeholder="Search">
@@ -29,14 +44,6 @@
 						</button>
 					</span>
 				</div>
-			</div>
-			<div class="col-lg-4">
-				<a href="javascript:void(0)" id="home">Home</a> <a href="javascript:void(0)" data-toggle="modal"
-					data-target=".file-modal-sm">Upload file</a>
-				<!-- Small modal -->
-				<a href="javascript:void(0)" data-toggle="modal"
-					data-target=".folder-modal-sm">Add folder</a> <a
-					href="j_spring_security_logout">Logout</a>
 			</div>
 		</div>
 
@@ -51,9 +58,7 @@
 					<th>Name</th>
 					<th>Modified</th>
 					<th>Size</th>
-					<th>Location</th>
 					<th>Owner</th>
-					<th>Shared</th>
 					<th></th>
 				</tr>
 			</table>
@@ -134,9 +139,9 @@
 		// converts bytes to readable format
 		function bytesToSize(bytes) {
 			var k = 1000;
-			var sizes = [ 'Bytes', 'KB', 'MB', 'GB', 'TB' ];
+			var sizes = [ 'B', 'KB', 'MB', 'GB', 'TB' ];
 			if (bytes === 0)
-				return '0 Bytes';
+				return '0 B';
 			var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
 			return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
 		}
@@ -157,19 +162,15 @@
 										+ '</td><td align="left">'
 										+ bytesToSize(obj.size)
 										+ '</td><td align="left">'
-										+ obj.location
-										+ '</td><td align="left">'
 										+ obj.owner
 										+ '</td><td align="left">'
-										+ obj.shared
-										+ '</td><td><a href="javascript:void(0)" class="'
-										+ obj.id
-										+ ' delete">Delete</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="'
-										+ obj.id + ' share">Share</a></td></tr>');
+										+ buildItemContext(obj.id)
+										+ '</td></tr>');
 								$('#cart_table tr:last').after(row);
+								$('.dropdown-toggle').dropdown();
 							});
 		}
-		
+
 		// tab/click on table
 		$("#cart_table").on(
 				"click",
@@ -180,34 +181,36 @@
 						if (tokens[1] == "name") {
 							currentBucket = tokens[0]
 							$(".parent").val(currentBucket);
-							$.getJSON(baseUrl + "rest/bucket/" + currentBucket, display);
-							$("#location").html(
-									objs[currentBucket].location + "/"
-											+ objs[currentBucket].name);
+							$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
+									display);
+							//$("#location").html(
+							//		objs[currentBucket].location + "/"
+							//				+ objs[currentBucket].name);
 						} else if (tokens[1] == "delete") {
 							$.ajax({
 								url : baseUrl + "rest/bucket/" + tokens[0],
 								type : "DELETE",
 								error : function(xhr, status) {
-									$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
-											display);
+									$.getJSON(baseUrl + "rest/bucket/"
+											+ currentBucket, display);
 								},
 								success : function(result) {
-									$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
-											display);
+									$.getJSON(baseUrl + "rest/bucket/"
+											+ currentBucket, display);
 								}
 							})
 						} else {
 							$.ajax({
-								url : baseUrl + "rest/bucket/public/" + tokens[0],
+								url : baseUrl + "rest/bucket/public/"
+										+ tokens[0],
 								type : "POST",
 								error : function(xhr, status) {
-									$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
-											display);
+									$.getJSON(baseUrl + "rest/bucket/"
+											+ currentBucket, display);
 								},
 								success : function(result) {
-									$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
-											display);
+									$.getJSON(baseUrl + "rest/bucket/"
+											+ currentBucket, display);
 								}
 							})
 						}
@@ -225,11 +228,13 @@
 						error : function(xhr, status) {
 							$('#addFolderModal').modal('hide')
 							$("#folderName").val('')
-							$.getJSON(baseUrl + "rest/bucket/" + currentBucket, display);
+							$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
+									display);
 						},
 						success : function(result) {
 							$('#addFolderModal').modal('hide')
-							$.getJSON(baseUrl + "rest/bucket/" + currentBucket, display);
+							$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
+									display);
 						}
 					})
 				})
@@ -237,21 +242,25 @@
 			$.getJSON(baseUrl + "rest/bucket/", display)
 		})
 
-		$('#q').keypress(function(event) {
-			var keycode = (event.keyCode ? event.keyCode : event.which);
-			if (keycode == '13') {
-				if ($("#q").val().length > 0)
-					$.getJSON(baseUrl + "rest/search/" + $("#q").val(), display);
-				//else
-					//$.getJSON(baseUrl + "rest/bucket/", display);
-			}
-		});
+		$('#q')
+				.keypress(
+						function(event) {
+							var keycode = (event.keyCode ? event.keyCode
+									: event.which);
+							if (keycode == '13') {
+								if ($("#q").val().length > 0)
+									$.getJSON(baseUrl + "rest/search/"
+											+ $("#q").val(), display);
+								//else
+								//$.getJSON(baseUrl + "rest/bucket/", display);
+							}
+						});
 
 		$('#search').click(function() {
 			if ($("#q").val().length > 0)
 				$.getJSON(baseUrl + "rest/search/" + $("#q").val(), display);
 			//else
-				//$.getJSON(baseUrl + "rest/bucket/");
+			//$.getJSON(baseUrl + "rest/bucket/");
 		})
 
 		// File upload begin
@@ -263,7 +272,7 @@
 		}
 
 		$('#uploadFile').click(uploadFiles);
-		
+
 		function postFileUpload() {
 			$.getJSON(baseUrl + "rest/bucket/" + currentBucket, display);
 			$('#addFileModal').modal('hide')
@@ -309,17 +318,35 @@
 					// STOP LOADING SPINNER
 				}
 			});
+			
+		}
+		function buildItemContext(id) {
+			<!-- Single button -->
+			var itemContextDiv =  "<div class=\"dropdown\" style=\"display:inline;\"><a  href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><b class=\"caret\"></b></a><ul class=\"dropdown-menu pull-left\" role=\"menu\">"
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-cloud-download\"> </span> &nbsp; Download</a>   </li>"
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-pencil\"> </span> &nbsp; Rename</a>  </li>"
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-retweet\"> </span> &nbsp; Copy</a>    </li>"
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-retweet\"> </span> &nbsp; Move</a>    </li>"
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-trash\"> </span> &nbsp; Delete</a>   </li>"
+			
+				+ "</li><li class=\"divider\"></li>"
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-share-alt\"> </span> &nbsp; Share</a> </li>"
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-envelope\"> </span> &nbsp; Email</a>  </li> "
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-print\"> </span> &nbsp; Print</a>  </li> "
+				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-tags\"> </span> &nbsp; Tags</a> </li> </ul></div>";
+			return itemContextDiv;
 		}
 		$(function() {
 
 			$(".parent").val(currentBucket);
 
 			// we need breadcrumbs for this
-			$("#location").html("/");
+			//$("#location").html(buildItemContext(0));
 
 			$.getJSON(baseUrl + "rest/bucket/" + currentBucket, display);
 
 		});
+		
 	</script>
 </body>
 </html>

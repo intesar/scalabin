@@ -169,7 +169,8 @@ public class ObjServiceImpl implements ObjService {
 		} else {
 			obj.setParent(parentId);
 			parent = getByObjId(obj.getParent());
-			obj.setLocation(parent.getLocation() + "/" + parent.getName());
+			String parentLoc = StringUtils.isEmpty(parent.getLocation()) ? "" : parent.getLocation() + "/";
+			obj.setLocation(parentLoc + parent.getId() + ":" + parent.getName());
 		}
 
 		obj.setModified(new Date());

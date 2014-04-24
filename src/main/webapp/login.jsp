@@ -25,37 +25,55 @@
 			<div>${msg}</div>
 		</c:if>
 
-		<!--login modal-->
-		<div id="loginModal" class="modal show" tabindex="-1" role="dialog"
-			aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="text-center">Login</h1>
-					</div>
-					<div class="modal-body">
-						<form class="form col-md-12 center-block"
-							action="<c:url value='/j_spring_security_check' />" method='POST'>
+		<div class="row">
+			<div
+				class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+				<h2>Sign In</h2>
+				<hr class="colorgraph">
+				<form class="form col-md-12 center-block"
+					action="<c:url value='/j_spring_security_check' />" method='POST'>
+					<div class="row">
+						<div class="col-lg-6">
 							<div class="form-group">
 								<input type="text" class="form-control input-lg"
 									placeholder="Username" name="username">
 							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6">
 							<div class="form-group">
 								<input type="password" class="form-control input-lg"
 									placeholder="Password" name="password">
 							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6">
 							<div class="form-group">
 								<button class="btn btn-primary btn-lg btn-block">Sign
 									In</button>
 							</div>
-						</form>
+						</div>
 					</div>
-					<div class="modal-footer">
-						<a href="registration.jsp">Sign up</a>
+				</form>
+				<div class="row">
+
+					<div class="col-lg-6">
+						<div class="form-group">
+							<div class="modal-footer">
+								<a href="index.jsp">Home</a> <a href="registration.jsp">Sign
+									up</a>
+							</div>
+						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
+
 
 	</div>
 	<!-- /container -->

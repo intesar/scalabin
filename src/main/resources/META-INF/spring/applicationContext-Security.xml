@@ -17,7 +17,7 @@
 		<form-login login-page="/login.jsp" default-target-url="/home.html"
 			authentication-failure-url="/login.jsp?error" username-parameter="username"
 			password-parameter="password" />
-		<logout logout-success-url="/login.jsp?logout" />
+		<logout logout-success-url="/index.jsp" />
 		<http-basic />
 		<!--  <logout logout-url="/sign-out" logout-success-url="/index.html" /> -->
 	</http>
