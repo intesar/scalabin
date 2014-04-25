@@ -53,7 +53,7 @@
 
 		<div class="panel panel-default">
 			<!-- Table -->
-			<table class="table col-lg-4" id="cart_table">
+			<table class="table col-lg-4" id="file_table">
 				<tr class="">
 					<th>Name</th>
 					<th>Modified</th>
@@ -147,15 +147,14 @@
 		}
 
 		var display = function(data) {
-			$('#cart_table').find("tr:gt(0)").remove();
+			$('#file_table').find("tr:gt(0)").remove();
 			$
 					.each(
 							data,
 							function(arrayID, obj) {
 								objs[obj.id] = obj;
-								var row = ('<tr> <td align="left"> <a href="javascript:void(0)" class="'
-										+ obj.id
-										+ ' name">'
+								var row = ('<tr> <td align="left"> <a href="javascript:void(0)" class="navigate" id="navigate-'
+										+ obj.id + '" >'
 										+ obj.name
 										+ '</a></td><td align="left">'
 										+ dateFormat(obj.modified)
@@ -166,55 +165,54 @@
 										+ '</td><td align="left">'
 										+ buildItemContext(obj.id)
 										+ '</td></tr>');
-								$('#cart_table tr:last').after(row);
+								$('#file_table tr:last').after(row);
 								$('.dropdown-toggle').dropdown();
 							});
 		}
 
 		// tab/click on table
-		$("#cart_table").on(
-				"click",
-				"td",
+		$("#file_table").on(
+				"click", ".navigate",
 				function(event) {
-					if (event.target.className) {
-						var tokens = event.target.className.split(" ");
-						if (tokens[1] == "name") {
-							currentBucket = tokens[0]
+					//if (event.target.className) {
+						var tokens = this.id.split("navigate-");
+						//if (tokens[1] == "name") {
+							currentBucket = tokens[1]
 							$(".parent").val(currentBucket);
 							$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
 									display);
 							//$("#location").html(
 							//		objs[currentBucket].location + "/"
 							//				+ objs[currentBucket].name);
-						} else if (tokens[1] == "delete") {
-							$.ajax({
-								url : baseUrl + "rest/bucket/" + tokens[0],
-								type : "DELETE",
-								error : function(xhr, status) {
-									$.getJSON(baseUrl + "rest/bucket/"
-											+ currentBucket, display);
-								},
-								success : function(result) {
-									$.getJSON(baseUrl + "rest/bucket/"
-											+ currentBucket, display);
-								}
-							})
-						} else {
-							$.ajax({
-								url : baseUrl + "rest/bucket/public/"
-										+ tokens[0],
-								type : "POST",
-								error : function(xhr, status) {
-									$.getJSON(baseUrl + "rest/bucket/"
-											+ currentBucket, display);
-								},
-								success : function(result) {
-									$.getJSON(baseUrl + "rest/bucket/"
-											+ currentBucket, display);
-								}
-							})
-						}
-					}
+// 						} else if (tokens[1] == "delete") {
+// 							$.ajax({
+// 								url : baseUrl + "rest/bucket/" + tokens[0],
+// 								type : "DELETE",
+// 								error : function(xhr, status) {
+// 									$.getJSON(baseUrl + "rest/bucket/"
+// 											+ currentBucket, display);
+// 								},
+// 								success : function(result) {
+// 									$.getJSON(baseUrl + "rest/bucket/"
+// 											+ currentBucket, display);
+// 								}
+// 							})
+// 						} else {
+// 							$.ajax({
+// 								url : baseUrl + "rest/bucket/public/"
+// 										+ tokens[0],
+// 								type : "POST",
+// 								error : function(xhr, status) {
+// 									$.getJSON(baseUrl + "rest/bucket/"
+// 											+ currentBucket, display);
+// 								},
+// 								success : function(result) {
+// 									$.getJSON(baseUrl + "rest/bucket/"
+// 											+ currentBucket, display);
+// 								}
+// 							})
+// 						}
+//					}
 				});
 
 		$("#createFolder").click(
@@ -222,7 +220,7 @@
 					$.ajax({
 						url : baseUrl + "rest/bucket/",
 						type : "POST",
-						contentType : "application/json",
+						contentType : "application/json; charset=iso-8859-1",
 						data : '{ "name": "' + $("#folderName").val()
 								+ '", "parent": "' + currentBucket + '" }',
 						error : function(xhr, status) {
@@ -323,19 +321,35 @@
 		function buildItemContext(id) {
 			<!-- Single button -->
 			var itemContextDiv =  "<div class=\"dropdown\" style=\"display:inline;\"><a  href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><b class=\"caret\"></b></a><ul class=\"dropdown-menu pull-left\" role=\"menu\">"
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-cloud-download\"> </span> &nbsp; Download</a>   </li>"
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-pencil\"> </span> &nbsp; Rename</a>  </li>"
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-retweet\"> </span> &nbsp; Copy</a>    </li>"
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-retweet\"> </span> &nbsp; Move</a>    </li>"
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-trash\"> </span> &nbsp; Delete</a>   </li>"
+				+ "<li><a href=\"javascript:void(0)\" class=\"donwload\" id=\"download-" + id + "\"><span class=\"glyphicon glyphicon-cloud-download\"> </span> &nbsp; Download</a>   </li>"
+				+ "<li><a href=\"javascript:void(0)\" class=\"rename\" id=\"rename-" + id + "\"><span class=\"glyphicon glyphicon-pencil\"> </span> &nbsp; Rename</a>  </li>"
+				+ "<li><a href=\"javascript:void(0)\" class=\"copy\" id=\"copy-" + id + "\"><span class=\"glyphicon glyphicon-retweet\"> </span> &nbsp; Copy</a>    </li>"
+				+ "<li><a href=\"javascript:void(0)\" class=\"move\" id=\"move-" + id + "\"><span class=\"glyphicon glyphicon-retweet\"> </span> &nbsp; Move</a>    </li>"
+				+ "<li><a href=\"javascript:void(0)\" class=\"delete\" id=\"delete-" + id + "\"><span class=\"glyphicon glyphicon-trash\"> </span> &nbsp; Delete</a>   </li>"
 			
 				+ "</li><li class=\"divider\"></li>"
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-share-alt\"> </span> &nbsp; Share</a> </li>"
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-envelope\"> </span> &nbsp; Email</a>  </li> "
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-print\"> </span> &nbsp; Print</a>  </li> "
-				+ "<li><a class=\"rename " + id +"\"><span class=\"glyphicon glyphicon-tags\"> </span> &nbsp; Tags</a> </li> </ul></div>";
+				+ "<li><a href=\"javascript:void(0)\" class=\"share\" id=\"share-" + id + "\"><span class=\"glyphicon glyphicon-share-alt\"> </span> &nbsp; Share</a> </li>"
+				+ "<li><a href=\"javascript:void(0)\" class=\"email\" id=\"email-" + id + "\"><span class=\"glyphicon glyphicon-envelope\"> </span> &nbsp; Email</a>  </li> "
+				+ "<li><a href=\"javascript:void(0)\" class=\"print\" id=\"print-" + id + "\"><span class=\"glyphicon glyphicon-print\"> </span> &nbsp; Print</a>  </li> "
+				+ "<li><a href=\"javascript:void(0)\" class=\"tags\" id=\"tags-" + id + "\"><span class=\"glyphicon glyphicon-tags\"> </span> &nbsp; Tags</a> </li> </ul></div>";
 			return itemContextDiv;
 		}
+		
+		$("body").on("click", ".delete", function(event) {
+			var tokens = this.id.split("delete-");
+			$.ajax({
+					url : baseUrl + "rest/bucket/" + tokens[1],
+					type : "DELETE",
+					error : function(xhr, status) {
+						$.getJSON(baseUrl + "rest/bucket/"
+								+ currentBucket, display);
+					},
+					success : function(result) {
+						$.getJSON(baseUrl + "rest/bucket/"
+								+ currentBucket, display);
+					}
+				})
+		})
 		$(function() {
 
 			$(".parent").val(currentBucket);
