@@ -54,6 +54,26 @@ public class BucketRestService {
 
 		return Response.status(200).entity(obj.getId()).build();
 	}
+	
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Path("/rename")
+	public Response rename(BucketDto bucket) {
+		logger.info(
+				"add bucket [{}] parent [{}] user [{}] tenant [{}]",
+				new Object[] { bucket.getName(), bucket.getParent(),
+						UserContext.getLoggedInUser(),
+						UserContext.getUserTenant() });
+
+		Obj obj = objService
+				.renameObj(bucket.getId(), bucket.getName());
+
+		// activity
+		activityService.addActivity("post", obj.getId(), 100,
+				UserContext.getUserTenant());
+
+		return Response.status(200).entity(obj.getId()).build();
+	}
 
 	@DELETE
 	@Consumes({ MediaType.APPLICATION_JSON })

@@ -20,6 +20,7 @@
 
 	<div class="jumbotron">
 		<div class="container">
+			<img src="images/ScalaBin Logo Icon.png" alt="ScalaBin" height="84" width="84">
 			<h1>Welcome to vChest</h1>
 			<p>Store, discover and collaborate your content!</p>
 			<h4>New user? sign up using:</h4>

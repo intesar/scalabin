@@ -22,15 +22,16 @@
 	<div class="container">
 		<br />
 		<div class="row">
+
 			<div class="col-lg-4">
-				<a href="javascript:void(0)" id="home"
-					class="glyphicon glyphicon-home"></a> &nbsp;&nbsp;<a
+				<img src="images/ScalaBin Logo Icon.png" alt="ScalaBin" height="84"
+					width="84"> <a href="javascript:void(0)" class="home"
+					class="glyphicon glyphicon-home"></a> &nbsp;&nbsp; <a
 					href="javascript:void(0)" data-toggle="modal"
 					data-target=".file-modal-sm"
-					class="glyphicon glyphicon-cloud-upload"></a>&nbsp;&nbsp;
-				<!-- Small modal -->
-				<a href="javascript:void(0)" data-toggle="modal"
-					data-target=".folder-modal-sm"
+					class="glyphicon glyphicon-cloud-upload"></a>&nbsp;&nbsp; <a
+					href="javascript:void(0)" data-toggle="modal"
+					data-target=".new-folder-modal-sm"
 					class="glyphicon glyphicon-folder-close"></a>&nbsp;&nbsp; <a
 					href="j_spring_security_logout"><span
 					class="glyphicon glyphicon-log-out"></span></a>
@@ -46,9 +47,15 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="row">
-			<h3 id="location"></h3>
+		<br />
+		<div>
+			<ol class="breadcrumb">
+				<li><a href="javascript:void(0)" class="home">Home</a></li>
+				<!-- 
+				<li><a href="#">Library</a></li>
+				<li class="active">Data</li>
+				 -->
+			</ol>
 		</div>
 
 		<div class="panel panel-default">
@@ -65,7 +72,7 @@
 		</div>
 
 
-		<div class="modal fade file-modal-sm" tabindex="-1" role="dialog"
+		<div class="modal fade folder-modal-sm file-modal-sm" tabindex="-1" role="dialog"
 			aria-labelledby="mySmallModalLabel" aria-hidden="true"
 			id="addFileModal">
 			<div class="modal-dialog modal-sm">
@@ -89,8 +96,8 @@
 		</div>
 
 
-		<div class="modal fade folder-modal-sm" tabindex="-1" role="dialog"
-			aria-labelledby="mySmallModalLabel" aria-hidden="true"
+		<div class="modal fade folder-modal-sm new-folder-modal-sm" tabindex="-1"
+			role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
 			id="addFolderModal">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
@@ -107,6 +114,29 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" id="createFolder">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade rfolder-modal-sm ename-modal-sm" tabindex="-1" role="dialog"
+			aria-labelledby="mySmallModalLabel" aria-hidden="true"
+			id="renameModal">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Change name</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="parent" class="parent" class="" /> <input
+							type="text" id="renameName" class="form-control"
+							placeholder="new name">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="renameBtn">Save</button>
 					</div>
 				</div>
 			</div>
@@ -129,6 +159,7 @@
 		// Variable to store your files
 		var files;
 		var objs = new Array();
+		var renameId;
 		// formats modified date
 		// TODO should also format time
 		function dateFormat(dt) {
@@ -153,8 +184,8 @@
 							data,
 							function(arrayID, obj) {
 								objs[obj.id] = obj;
-								var row = ('<tr> <td align="left"> <a href="javascript:void(0)" class="navigate" id="navigate-'
-										+ obj.id + '" >'
+								var row = ('<tr> <td align="left"> <a href="javascript:void(0)" class="navigate ' + getClassByType(obj.kind) +'" id="navigate-'
+										+ obj.id + '" >&nbsp;'
 										+ obj.name
 										+ '</a></td><td align="left">'
 										+ dateFormat(obj.modified)
@@ -178,9 +209,15 @@
 						var tokens = this.id.split("navigate-");
 						//if (tokens[1] == "name") {
 							currentBucket = tokens[1]
-							$(".parent").val(currentBucket);
-							$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
+							var obj = objs[currentBucket];
+							if (obj.kind == 'folder') {
+								// TODO: add breadcrumb
+								//$(".breadcrumb").append("<li class=\"active\">" + obj.name +"</li>");
+								addBreadcrumbsByLoc(obj.location, obj.id, obj.name)
+								$(".parent").val(currentBucket);
+								$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
 									display);
+							}
 							//$("#location").html(
 							//		objs[currentBucket].location + "/"
 							//				+ objs[currentBucket].name);
@@ -236,9 +273,21 @@
 						}
 					})
 				})
-		$("#home").click(function() {
-			$.getJSON(baseUrl + "rest/bucket/", display)
+		$("body").on("click", ".home", function(event) {
+			var idTokens = this.className.split(" ");
+			var id = idTokens.length == 2 ? idTokens[1] : '';
+			if (id.length > 0 ) {
+				addBreadcrumbsByLoc(objs[id].location, objs[id].id, objs[id].name);
+			} else {
+				resetBreadcrumb();
+			}
+			$.getJSON(baseUrl + "rest/bucket/" + id, display)
 		})
+		
+		function resetBreadcrumb() {
+			$(".breadcrumb").empty();
+			$(".breadcrumb").append('<li><a href="javascript:void(0)" class="home">Home</a></li>');
+		}
 
 		$('#q')
 				.keypress(
@@ -320,7 +369,7 @@
 		}
 		function buildItemContext(id) {
 			<!-- Single button -->
-			var itemContextDiv =  "<div class=\"dropdown\" style=\"display:inline;\"><a  href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><b class=\"caret\"></b></a><ul class=\"dropdown-menu pull-left\" role=\"menu\">"
+			var itemContextDiv =  "<div class=\"dropdown\" style=\"display:inline;\"><a  href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Actions</a><ul class=\"dropdown-menu pull-left\" role=\"menu\">"
 				+ "<li><a href=\"javascript:void(0)\" class=\"donwload\" id=\"download-" + id + "\"><span class=\"glyphicon glyphicon-cloud-download\"> </span> &nbsp; Download</a>   </li>"
 				+ "<li><a href=\"javascript:void(0)\" class=\"rename\" id=\"rename-" + id + "\"><span class=\"glyphicon glyphicon-pencil\"> </span> &nbsp; Rename</a>  </li>"
 				+ "<li><a href=\"javascript:void(0)\" class=\"copy\" id=\"copy-" + id + "\"><span class=\"glyphicon glyphicon-retweet\"> </span> &nbsp; Copy</a>    </li>"
@@ -333,6 +382,24 @@
 				+ "<li><a href=\"javascript:void(0)\" class=\"print\" id=\"print-" + id + "\"><span class=\"glyphicon glyphicon-print\"> </span> &nbsp; Print</a>  </li> "
 				+ "<li><a href=\"javascript:void(0)\" class=\"tags\" id=\"tags-" + id + "\"><span class=\"glyphicon glyphicon-tags\"> </span> &nbsp; Tags</a> </li> </ul></div>";
 			return itemContextDiv;
+		}
+		
+		function getClassByType(type) {
+			if (type == 'folder') 
+				return 'glyphicon glyphicon-folder-open';
+			return '';
+		}
+		
+		function addBreadcrumbsByLoc(loc, id, curFolder) {
+			resetBreadcrumb();
+			if (loc.length > 0) {
+				var crumbs = loc.split("/")
+				$.each( crumbs, function( key, value ) {
+					  var idName = value.split(":")
+					  $(".breadcrumb").append('<li><a href="javascript:void(0)" class="home ' + idName[0] +'">'+ idName[1] +'</a></li>');
+					});
+			}
+			$(".breadcrumb").append('<li class="home ' + id +'">'+ curFolder +'</li>');
 		}
 		
 		$("body").on("click", ".delete", function(event) {
@@ -350,6 +417,36 @@
 					}
 				})
 		})
+		
+		$("body").on("click", ".rename", function(event) {
+			var tokens = this.id.split("rename-");
+			renameId = tokens[1];
+			$('#renameModal').modal('show')
+		})
+			
+		$("body").on("click", "#renameBtn", function() {
+				$.ajax({
+					url : baseUrl + "rest/bucket/rename",
+					type : "POST",
+					contentType : "application/json; charset=iso-8859-1",
+					data : '{ "id" : "' + renameId + '", "name": "' + $("#renameName").val() + '" }',
+					error : function(xhr, status) {
+						$('#renameModal').modal('hide')
+						renameId = ''
+						$("#renameName").val('')
+						$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
+								display);
+					},
+					success : function(result) {
+						$('#renameModal').modal('hide')
+						renameId = ''
+						$("#renameName").val('')
+						$.getJSON(baseUrl + "rest/bucket/" + currentBucket,
+								display);
+					}
+				})
+		})
+		
 		$(function() {
 
 			$(".parent").val(currentBucket);

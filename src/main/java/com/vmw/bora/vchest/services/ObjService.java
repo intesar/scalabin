@@ -40,6 +40,8 @@ public interface ObjService {
 
 	public abstract Obj getHomeBucket();
 
+	public Obj renameObj(String id, String newName);
+
 	/**
 	 * TODO: check folder name exits? TODO: verify parent exits null or empty
 	 * parent is home

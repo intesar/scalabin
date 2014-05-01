@@ -42,9 +42,9 @@ public class ObjServiceImpl implements ObjService {
 	public String addObject(String fileName, String parent, ByteBuffer bb) {
 
 		Obj parentBucket = null;
-		parentBucket = getBucket(parent);
+		parentBucket = getParentBucket(parent);
 
-		isUniqueName(fileName, parentBucket);
+		isUniqueName(fileName, parentBucket.getId());
 
 		Obj obj = new Obj();
 		obj.setId(UUID.randomUUID().toString());
@@ -71,7 +71,7 @@ public class ObjServiceImpl implements ObjService {
 		return blob.getId();
 	}
 
-	private Obj getBucket(String parent) {
+	private Obj getParentBucket(String parent) {
 		Obj parentBucket;
 		if (StringUtils.isBlank(parent)) {
 			parentBucket = getHomeBucket();
@@ -81,12 +81,12 @@ public class ObjServiceImpl implements ObjService {
 		return parentBucket;
 	}
 
-	private void isUniqueName(String fileName, Obj parentBucket) {
+	private void isUniqueName(String fileName, String parentBucketId) {
 		Obj unique = this.objSolrRepo.findByNameAndParentAndOwnerAndTenantId(
-				fileName, parentBucket.getId(), UserContext.getLoggedInUser(),
+				fileName, parentBucketId, UserContext.getLoggedInUser(),
 				UserContext.getUserTenant());
 		if (unique != null) {
-			//throw new RuntimeException("Not unique file name: " + fileName);
+			//throw new RuntimeException("File exists with the name : " + fileName);
 		}
 	}
 
@@ -148,6 +148,17 @@ public class ObjServiceImpl implements ObjService {
 		return objSolrRepo.findByHomeAndOwnerAndTenantId(true,
 				UserContext.getLoggedInUser(), UserContext.getUserTenant());
 	}
+	
+	public Obj renameObj(String id, String newName) {
+		String owner = UserContext.getLoggedInUser();
+		String tenant = UserContext.getUserTenant();
+		Obj obj = objSolrRepo.findByIdAndOwnerAndTenantId(id, owner, tenant);
+		isUniqueName(newName, obj.getParent());
+		obj.setName(newName);
+		save(obj);
+		return obj;
+		
+	}
 
 	/* (non-Javadoc)
 	 * @see com.vmw.bora.vchest.services.impl.ObjService#addFolder(java.lang.String, java.lang.String)
@@ -156,7 +167,7 @@ public class ObjServiceImpl implements ObjService {
 	public Obj addFolder(String name, String parentId) {
 
 		Obj parent = null;
-		isUniqueName(name, getBucket(parentId));
+		isUniqueName(name, getParentBucket(parentId).getId());
 
 		Obj obj = new Obj();
 		obj.setId(UUID.randomUUID().toString());

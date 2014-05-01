@@ -7,9 +7,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class BucketDto {
 
 	@XmlElement
+	private String id;
+	@XmlElement
 	public String name;
 	@XmlElement
 	public String parent;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

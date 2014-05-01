@@ -57,6 +57,7 @@ public class ObjectRestService {
 		if (fileDetail != null) {
 			fileName = fileDetail.getFileName();
 		}
+		logger.info(" file type [{}]", fileDetail.getType());
 		ByteBuffer bb = null;
 		try {
 			bb = ByteBuffer.wrap(IOUtils.toByteArray(is));
