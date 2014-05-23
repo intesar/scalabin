@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.vmw.bora</groupId>
-	<artifactId>vChest</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 
@@ -11,6 +10,7 @@
 	<url>http://maven.apache.org</url>
 
 	<build>
+		<finalName>Scalabin</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -243,7 +243,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-cassandra</artifactId>
-			<version>1.0.0.BUILD-SNAPSHOT</version>
+			<version>1.0.0.RC1</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -289,4 +289,5 @@
 		</dependency>
 
 	</dependencies>
+	<artifactId>Scalabin</artifactId>
 </project>
